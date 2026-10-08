@@ -330,6 +330,22 @@ table.cmp.lb{min-width:0}
 .pcard{position:relative;aspect-ratio:.55;border:0;padding:0;background:none;cursor:pointer;transform-style:preserve-3d;color:#fff;text-align:center;font:inherit}
 .pgrid.pk-reveal .pcard{animation:flipin .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d)}
 @keyframes flipin{0%{transform:rotateY(180deg) translateY(30px) scale(.8);opacity:0}40%{opacity:1}100%{transform:none}}
+/* Pack opening: shake (rarity glow) -> flash -> tear -> cards fly out face down, then flip in order. Timings live in PK_* in openPack. */
+#packside{position:relative}
+.pack.drop{animation:pkdrop .15s ease-out both}
+.pack.shake{animation:pkshake .35s ease-in-out both;pointer-events:none}
+.pack.glow-elite{box-shadow:0 0 0 3px #b78bff,0 0 46px 12px rgba(183,139,255,.85)}
+.pack.glow-legend{box-shadow:0 0 0 3px #ffc93c,0 0 56px 16px rgba(255,201,60,.9)}
+.pack.ghost{position:absolute;margin:0;z-index:0;pointer-events:none;animation-duration:.45s}
+.pkflash{position:fixed;inset:0;z-index:45;background:#fff;pointer-events:none;animation:pkflash .12s ease-out both}
+.pgrid.pk-fly.go .pcard{animation:pkfly .68s cubic-bezier(.2,.8,.2,1) both,pkshow 0s both;animation-delay:var(--fd),calc(var(--fd) + 1ms)}
+@keyframes pkdrop{0%{transform:translateY(-24px) scale(.85);opacity:0}100%{transform:none;opacity:1}}
+@keyframes pkshake{0%,100%{transform:rotate(0)}18%{transform:rotate(-8deg) scale(1.04)}42%{transform:rotate(7deg) scale(1.05)}66%{transform:rotate(-6deg) scale(1.05)}85%{transform:rotate(3deg) scale(1.03)}}
+@keyframes pkflash{0%{opacity:.9}100%{opacity:0}}
+/* visibility, not opacity: an opacity animation flattens the 3D card and shows its front mirrored instead of the back.
+   The hide-until-launch lives in its own 0s animation (pkshow) so pkfly is transform-only and stays on the compositor. */
+@keyframes pkfly{0%{transform:translate(var(--fx),var(--fy)) rotateY(180deg) scale(.35)}30%{transform:translate(0,0) rotateY(180deg) scale(1)}66%{transform:translate(0,0) rotateY(180deg) scale(1)}100%{transform:translate(0,0) rotateY(0deg) scale(1)}}
+@keyframes pkshow{from{visibility:hidden}to{visibility:visible}}
 .pfront,.pback{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;overflow:hidden}
 .pback{transform:rotateY(180deg);display:grid;place-items:center;background:repeating-linear-gradient(45deg,#14243f 0 8px,#1b2f50 8px 16px);border:2px solid var(--gold)}
 .pback span{font-family:var(--font-display);font-size:30px;color:var(--gold)}
@@ -354,10 +370,12 @@ table.cmp.lb{min-width:0}
 .t-mystery{--fr:#5cb2ff;--bg1:#1b2f50;--bg2:#0a1424;--ink:#eef3fb}
 .t-legend{--fr:#fff;--bg1:#1a1a1a;--bg2:#000;--ink:#fff}
 .t-legend .pfront{border:0;padding:9px 9px 8px}
-.t-legend .pfront::before{content:"";position:absolute;inset:0;border-radius:12px;padding:2px;background:conic-gradient(from var(--a,0deg),#ff5d6c,#ffc93c,#2fd27a,#5cb2ff,#b78bff,#ff5d6c);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spinborder 3s linear infinite}
+/* Spinning rainbow frame (Legend, Baby GOAT): a static ring mask (.pc-ring) over an oversized conic square that rotates.
+   A transform runs on the compositor; the old animated conic angle (@property --a) restyled and repainted the card every frame. */
+.t-legend .pc-ring,.t-gronk .pc-ring{position:absolute;inset:0;border-radius:12px;padding:2px;overflow:hidden;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.t-legend .pc-ring::before,.t-gronk .pc-ring::before{content:"";position:absolute;left:50%;top:50%;width:250%;aspect-ratio:1;transform:translate(-50%,-50%);background:conic-gradient(#ff5d6c,#ffc93c,#2fd27a,#5cb2ff,#b78bff,#ff5d6c);animation:spinborder 3s linear infinite}
 .t-legend .pfront::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.22) 50%,transparent 65%);animation:shine 2.6s linear infinite;pointer-events:none}
-@property --a{syntax:"<angle>";inherits:false;initial-value:0deg}
-@keyframes spinborder{to{--a:360deg}}
+@keyframes spinborder{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
 .t-elite .pfront{box-shadow:0 0 18px rgba(183,139,255,.45),0 8px 22px rgba(0,0,0,.45)}
 .pactions{margin-top:14px;min-height:52px;display:flex;justify-content:center}
 .walkout{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:radial-gradient(circle at 50% 50%,var(--c2),var(--c1) 55%,#000);animation:walk 1.5s ease both;color:#fff;text-align:center}
@@ -370,7 +388,7 @@ table.cmp.lb{min-width:0}
 .walkout.variant b{font-size:clamp(34px,9vw,84px);max-width:92vw;padding:0 16px}
 .walkout.variant i{font-family:var(--font-label);font-weight:700;font-size:22px;letter-spacing:.08em;color:#e6d9ff}
 .vplate{position:absolute;bottom:-6px;left:-8px;font-family:var(--font-label);font-weight:800;font-size:11px;line-height:1;padding:3px 4px;border-radius:5px;background:#b78bff;color:#120a24;border:1px solid #fff}
-@media (prefers-reduced-motion: reduce){.pack,.pack .pk-shine,.pgrid.pk-reveal .pcard,.t-legend .pfront::before,.t-legend .pfront::after{animation:none}}
+@media (prefers-reduced-motion: reduce){.pack,.pack .pk-shine,.pgrid.pk-reveal .pcard,.t-legend .pc-ring::before,.t-legend .pfront::after{animation:none}}
 .po-line{margin:0 0 10px;color:var(--muted)}
 .games.po .game.bye{opacity:.55}
 .games.po .game.sb.W{box-shadow:0 0 0 2px var(--tier-elite) inset}
@@ -378,7 +396,12 @@ table.cmp.lb{min-width:0}
 .ring-strip{margin:22px 0 0;padding:16px 18px;border-radius:var(--r);background:var(--surface);border:1px solid var(--gold)}
 .ring-strip h3{margin:0;font-family:var(--font-display);font-weight:400;font-size:28px;letter-spacing:.02em;color:var(--gold)}
 .ring-head{font-family:var(--font-label);font-weight:700;font-size:18px;margin:2px 0 10px}
-.ring-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;perspective:900px}
+.ring-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.ring-strip .ring-grid{perspective:900px}   /* only the Signing Day flip needs 3D; on the full Ring it made every tile repaint as sprites filled in */
+/* full Ring (1,319 tiles): off-screen tiles skip style, layout and paint; the placeholder is the measured content height
+   (tile minus padding and border) so the page height and scrollbar match the fully rendered grid */
+#ringgrid .ring-tile{content-visibility:auto;contain-intrinsic-size:auto 80px}
+@media (max-width:640px){#ringgrid .ring-tile{contain-intrinsic-size:auto 115.9px}body.retro #ringgrid .ring-tile{contain-intrinsic-size:auto 112.9px}}
 .ring-tile{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:8px;align-items:center;padding:8px 10px;border-radius:10px;background:var(--surface);border:1px solid var(--line);min-width:0}
 .ring-dot{grid-row:span 2;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--c1) 0 55%,var(--c2) 55%);border:2px solid rgba(255,255,255,.8)}
 .ring-nm{font-family:var(--font-label);font-weight:700;font-size:15px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -482,6 +505,11 @@ body.retro .verdict.perfect{background:#5a3f00;border-color:var(--gold)}
 /* sealed pack: flat gold, dark frame, hard offset shadow block */
 body.retro .pack{background:var(--c1);border:3px solid #1b1200;outline:3px solid rgba(255,243,196,.75);outline-offset:-10px;box-shadow:4px 4px 0 #000;animation-timing-function:steps(4)}
 body.retro .pack.tear{animation-timing-function:steps(6)}
+body.retro .pack.shake{animation-timing-function:steps(3)}
+body.retro .pack.glow-elite{box-shadow:0 0 0 4px #fff,0 0 0 10px #b78bff,10px 10px 0 #000}
+body.retro .pack.glow-legend{box-shadow:0 0 0 4px #1b1200,0 0 0 10px #ffc93c,10px 10px 0 #000}
+body.retro .pkflash{animation-timing-function:steps(2)}
+body.retro .pgrid.pk-fly.go .pcard{animation-timing-function:steps(3);animation-delay:var(--fd),calc(var(--fd) + 68ms)}   /* stepped: the card shows on pkfly's first step (.68s x 30% / 3) */
 body.retro .pack .pk-logo{font-family:var(--px);font-size:30px;text-shadow:3px 3px 0 rgba(255,255,255,.45)}
 body.retro .pack .pk-name{font-family:var(--px);font-weight:400;font-size:11px;letter-spacing:.04em;text-align:center;line-height:1.4;padding:0 14px}
 body.retro .pack .pk-shine{background:linear-gradient(115deg,transparent 46%,rgba(255,255,255,.45) 46% 52%,transparent 52%);animation-timing-function:steps(8)}
@@ -498,7 +526,8 @@ body.retro .pback{border:3px solid var(--gold)}
 body.retro .pback span{font-family:var(--px);font-size:14px}
 body.retro .pgrid.pk-reveal .pcard,body.retro .ring-in{animation-timing-function:steps(6)}
 body.retro .t-legend .pfront{padding:10px 10px 9px}
-body.retro .t-legend .pfront::before{padding:3px;background:conic-gradient(from var(--a,0deg),#ff5d6c 0 25%,#ffc93c 0 50%,#2fd27a 0 75%,#5cb2ff 0);animation-timing-function:steps(8)}
+body.retro .t-legend .pc-ring{padding:3px}
+body.retro .t-legend .pc-ring::before{background:conic-gradient(#ff5d6c 0 25%,#ffc93c 0 50%,#2fd27a 0 75%,#5cb2ff 0);animation-timing-function:steps(8)}
 body.retro .t-legend .pfront::after{background:linear-gradient(115deg,transparent 45%,rgba(255,255,255,.16) 45% 55%,transparent 55%);animation-timing-function:steps(6)}
 body.retro .walkout{background:var(--c1);border:14px solid var(--c2);animation-timing-function:steps(6)}
 body.retro .walkout span{font-family:var(--px);font-weight:400;font-size:11px;letter-spacing:.1em}
@@ -508,7 +537,8 @@ body.retro .walkout.variant{box-shadow:inset 0 0 0 6px #b78bff}
 /* ---------- Baby GOAT (formerly Baby Gronk; Packs only, the 1 of 1): card, reveal, field token, Ring header ---------- */
 .t-gronk{--fr:#ffc93c;--bg1:#5a4208;--bg2:#140e00;--ink:#fff}
 .t-gronk .pfront{border:0;padding:9px 9px 8px;box-shadow:0 0 22px rgba(255,201,60,.6),0 8px 22px rgba(0,0,0,.45)}
-.t-gronk .pfront::before{content:"";position:absolute;inset:0;border-radius:12px;padding:3px;background:conic-gradient(from var(--a,0deg),#ffc93c,#fff,#ffe08a,#ff5d6c,#ffc93c,#fff,#5cb2ff,#ffc93c);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spinborder 6s linear infinite}
+.t-gronk .pc-ring{padding:3px}
+.t-gronk .pc-ring::before{background:conic-gradient(#ffc93c,#fff,#ffe08a,#ff5d6c,#ffc93c,#fff,#5cb2ff,#ffc93c);animation-duration:6s}
 .t-gronk .pc-ovr,.t-gronk .pc-tier{color:#ffc93c;opacity:1}
 .walkout.gronk{z-index:49;--c1:#3a2a05;--c2:#ffc93c;animation-duration:3.2s;box-shadow:inset 0 0 0 6px #ffc93c,inset 0 0 160px rgba(255,201,60,.6)}
 .walkout.gronk span{color:#ffe08a}
@@ -521,8 +551,8 @@ body.retro .walkout.variant{box-shadow:inset 0 0 0 6px #b78bff}
 .ring-gronk .spr{flex:none;width:96px;height:120px}
 .ring-gronk.on,.ring-gtile{border:2px solid var(--gold);box-shadow:0 0 16px rgba(255,201,60,.4)}
 .ring-gronk.on .spr{filter:drop-shadow(0 0 10px rgba(255,201,60,.7))}
-@media (prefers-reduced-motion: reduce){.walkout.gronk,.t-gronk .pfront::before{animation:none}}
-body.retro .t-gronk .pfront::before{background:conic-gradient(from var(--a,0deg),#ffc93c 0 25%,#fff 0 50%,#ffc93c 0 75%,#fff 0);animation-timing-function:steps(8)}
+@media (prefers-reduced-motion: reduce){.walkout.gronk,.t-gronk .pc-ring::before{animation:none}}
+body.retro .t-gronk .pc-ring::before{background:conic-gradient(#ffc93c 0 25%,#fff 0 50%,#ffc93c 0 75%,#fff 0);animation-timing-function:steps(8)}
 body.retro .walkout.gronk{box-shadow:inset 0 0 0 6px #ffc93c}
 body.retro .walkout.gronk i{font-family:var(--px);font-size:12px;letter-spacing:.04em}
 body.retro .spot.filled .tok.gronk{border-color:#ffc93c}
@@ -983,22 +1013,27 @@ const packHof = () => !(S.level==="hard" && !showFor(S.level,S.mode).ovr);
 // (Hard, Medium Packs): cards and field tokens draw sprites only when ratings show.
 const packSpr = () => S.level!=="hard"; // Easy and Medium show sprites (Medium shows rarity labels anyway); Hard stays names-only
 // Ring tiles: the strip (team given) draws scale 2 at once; the grid paints empty imgs at once and fillSprites() draws
-// scale 1 (shown 2x, pixelated) in ~12 ms slices (~0.7 ms each), so 1,319 tiles open fast. Cached sprites get their src at once.
+// scale 1 (shown 2x, pixelated) in <=8 ms slices (~1 ms each), so 1,319 tiles open fast. Cached sprites get their src at once.
+// Tiles on or near the screen fill first; the rest fill in order but wait while the player is scrolling (iPhone smoothness).
 function ringSpr(p, team, cls=""){
   const r = spriteRow(p); if(!r) return `<span class="ring-dot"></span>`;
   if(team) return `<img class="spr ${cls}" src="${sprURL(r,team,true,2)}" width="64" height="80" alt="">`;
   const t = primaryTeam(p), h = cls!=="spr-sil", u = SPR_URL.get(sprId(r,t,h,1));   // a silhouette carries no HOF plate
   return `<img class="spr ${cls}" ${u?`src="${u}"`:`data-sk="${esc(r.key)}" data-st="${t}" data-sh="${h?1:0}"`} width="64" height="80" alt="">`;
 }
-let SPR_JOB = 0;
+let SPR_JOB = 0, SPR_SCROLL = 0;
+["scroll","touchmove"].forEach(e=>addEventListener(e, ()=>{ SPR_SCROLL = performance.now(); }, {passive:true}));
 function fillSprites(root){
-  const job = ++SPR_JOB, todo = [...root.querySelectorAll("img[data-sk]")];
+  const job = ++SPR_JOB, todo = [...root.querySelectorAll("img[data-sk]")], near = [];
+  const io = window.IntersectionObserver && new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) near.push(e.target); }), {rootMargin:"400px 0px"});
+  const fill = m => { if(io) io.unobserve(m); if(!m.dataset.sk) return; m.src = sprURL(SPR.get(m.dataset.sk), m.dataset.st, m.dataset.sh==="1", 1); m.removeAttribute("data-sk"); };
+  if(io) todo.forEach(m=>io.observe(m));
   let i = 0;
   const step = () => {
-    if(job!==SPR_JOB || !root.isConnected) return;
-    const t = performance.now();
-    for(; i<todo.length && performance.now()-t<12; i++){ const m = todo[i]; m.src = sprURL(SPR.get(m.dataset.sk), m.dataset.st, m.dataset.sh==="1", 1); m.removeAttribute("data-sk"); }
-    if(i<todo.length) setTimeout(step, 0);
+    if(job!==SPR_JOB || !root.isConnected) return io && io.disconnect();
+    const t = performance.now(), calm = t - SPR_SCROLL > 150;
+    while(performance.now()-t < 8){ const m = near.length ? near.shift() : calm && i<todo.length ? todo[i++] : null; if(!m) break; fill(m); }
+    if(i<todo.length || near.length) setTimeout(step, near.length || calm ? 0 : 50); else if(io) io.disconnect();
   };
   if(todo.length) setTimeout(step, 0);
 }
@@ -1011,14 +1046,18 @@ const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replac
 // Stars (85+) get a boost toward 99; everyone else gets a smaller lift that stays below star level.
 const LIFT = 0.5, STAR = 0.25;
 const lift = o => o>=85 ? Math.min(99, Math.round(o + (99-o)*STAR)) : Math.min(88, Math.round(o + (90-o)*LIFT*Math.min(1,(o-40)/30)));
+// One pass per player (30,027 at boot): same fields as the old map/spread/Set version, without the throwaway arrays.
 const PLAYERS = PDATA.map(([name,pos,st,ovr,stats],i)=>{
-  // Each stint carries its own rating: how good he was for that team in those years.
-  const stints = st.split(",").map(x=>{ const [t,r,o] = x.split(":"); const [a,b] = r.split("-"); return {t,from:+a,to:+b||NOW,o:lift(o?+o:ovr)}; });
-  const from = Math.min(...stints.map(x=>x.from));
-  const active = st.split(",").some(x=>x.endsWith("-0"));
-  const to = active ? 0 : Math.max(...stints.map(x=>x.to));
+  const stints = [], teams = []; let from = Infinity, last = -Infinity, best = -Infinity, active = false;
+  for(const x of st.split(",")){
+    // Each stint carries its own rating: how good he was for that team in those years.
+    const [t,r,o] = x.split(":"), [a,b] = r.split("-"), s = {t,from:+a,to:+b||NOW,o:lift(o?+o:ovr)};
+    stints.push(s); if(!teams.includes(t)) teams.push(t);
+    from = Math.min(from, s.from); last = Math.max(last, s.to); best = Math.max(best, s.o);
+    if(x.endsWith("-0")) active = true;
+  }
   const n = norm(name);
-  return {id:i,name,pos,stints,teams:[...new Set(stints.map(x=>x.t))],from,to,ovr:Math.max(...stints.map(x=>x.o)),stats,n,words:n.split(" ")};
+  return {id:i,name,pos,stints,teams,from,to:active ? 0 : last,ovr:best,stats,n,words:n.split(" ")};
 });
 
 const UNITS = UDATA.map(([team,pos,season,ovr,stats],i)=>({id:"u"+i,unit:true,pos,teams:[team],season,decade:Math.floor(season/10)*10,ovr,stats,
@@ -1101,14 +1140,15 @@ const fitKey = p => p.unit ? "U:"+p.pos : p.pos;
 const slotFits = (p,s) => s.acc.includes(fitKey(p));
 
 // Index every player and unit by "TEAM|decade" once, so spins stay instant with thousands of players.
-const BY_SPIN = new Map();
+// Built on first use (Classic / Full Roster), not at boot: Packs never needs it.
+let BY_SPIN = null;
 const ALL = [...PLAYERS,...UNITS];
-ALL.forEach(p=>{
+const bySpin = k => (BY_SPIN ||= (()=>{ const m = new Map(); ALL.forEach(p=>{
   const keys = new Set();
   if(p.unit) keys.add(`${p.teams[0]}|${p.decade}`);
   else p.stints.forEach(s=>{ for(let d=Math.floor(s.from/10)*10; d<=s.to; d+=10) keys.add(`${s.t}|${d}`); });
-  keys.forEach(k=>{ if(!BY_SPIN.has(k)) BY_SPIN.set(k,[]); BY_SPIN.get(k).push(p); });
-});
+  keys.forEach(k=>{ if(!m.has(k)) m.set(k,[]); m.get(k).push(p); });
+}); return m; })()).get(k);
 
 // ---------- State ----------
 let S = null;
@@ -1125,9 +1165,9 @@ function newDraft(level, mode, off, def){
 }
 const openSlots = () => SLOTS.filter(s=>!S.roster[s.key]);
 const canUse = p => !S.used.has(p.id) && openSlots().some(s=>slotFits(p,s));
-const options = (t,d) => (BY_SPIN.get(`${t}|${d}`)||[]).filter(canUse);
+const options = (t,d) => (bySpin(`${t}|${d}`)||[]).filter(canUse);
 function countOptions(t,d,limit){
-  const list = BY_SPIN.get(`${t}|${d}`); if(!list) return 0;
+  const list = bySpin(`${t}|${d}`); if(!list) return 0;
   const open = openSlots(); let n = 0;
   for(const p of list){ if(!S.used.has(p.id) && open.some(s=>slotFits(p,s)) && ++n>=limit) break; }
   return n;
@@ -1242,7 +1282,7 @@ function rulesHTML(k){
 }
 
 function renderHome(){
-  applyLook(false); clearTimeout(spinTimer); S = null; $("#confetti").hidden = true;
+  pkStop(); applyLook(false); clearTimeout(spinTimer); S = null; $("#confetti").hidden = true;
   const rec = loadRecords();
   $("#app").innerHTML = `<section class="home">
     ${cloudOn()?`<button class="ghost acctbtn" id="acctbtn">${signedIn()?"Account ●":"Account"}</button>`:""}
@@ -1388,7 +1428,7 @@ function posHits(t){
   if(S.mode==="classic" && want.has("OL")) return null;   // Classic drafts the line as a unit
   want = [...want].filter(p=>S.posSet.has(p));
   if(!want.length) return null;
-  return (BY_SPIN.get(`${S.team}|${S.decade}`)||[]).filter(p=>!p.unit && want.includes(p.pos))
+  return (bySpin(`${S.team}|${S.decade}`)||[]).filter(p=>!p.unit && want.includes(p.pos))
     .sort((a,b)=>ovrFor(b,S.team,S.decade)-ovrFor(a,S.team,S.decade));
 }
 
@@ -1398,7 +1438,7 @@ function renderResults(text){
   if(!byPos && (t.length<1 || (t.length<2 && t!=="d"))){ box.innerHTML = ""; return; }
   const show = showFor(S.level,S.mode);
   // Easy only suggests names that fit the spin; Medium and Hard search everyone in this mode.
-  const pool = S.level==="beginner" ? (BY_SPIN.get(`${S.team}|${S.decade}`)||[]).filter(p=>!p.unit && S.posSet.has(p.pos)) : PLAYERS.filter(p=>S.posSet.has(p.pos));
+  const pool = S.level==="beginner" ? (bySpin(`${S.team}|${S.decade}`)||[]).filter(p=>!p.unit && S.posSet.has(p.pos)) : PLAYERS.filter(p=>S.posSet.has(p.pos));
   const starts = p => p.n.startsWith(t);
   const hits = byPos ? byPos.slice(0,60) : t.length<2 ? [] : pool.filter(p=>starts(p) || p.words.some(w=>w.startsWith(t)) || (t.length>=3 && p.n.includes(t)))
     .sort((a,b)=>starts(a)===starts(b) ? a.name.localeCompare(b.name) : starts(a)?-1:1)
@@ -1531,7 +1571,7 @@ function bestPossible(){
       if(top){ taken.add(top.p.id); best[pk.key] = cardPlayer(top); }
       return;
     }
-    const pool = (BY_SPIN.get(`${pk.team}|${pk.decade}`)||[]).filter(p=>slotFits(p,slot) && !taken.has(p.id));
+    const pool = (bySpin(`${pk.team}|${pk.decade}`)||[]).filter(p=>slotFits(p,slot) && !taken.has(p.id));
     const r = p => ovrFor(p,pk.team,pk.decade);
     const top = pool.reduce((a,b)=>!a||r(b)>r(a)?b:a, null);
     if(top){ taken.add(top.id); best[pk.key] = {...top, ovr:r(top), draftedFor:pk.team, decade:pk.decade}; }
@@ -1601,8 +1641,6 @@ function finish(w,l,po0,quiet){   // po0: precomputed playoffs (Retro Bowl seaso
       <div class="res num"><b>${g.win?"W":"L"}</b><div>${g.us}–${g.them}</div></div></div>`;}).join("")}</div>`:""}`;
   const best = bestPossible();
   const mine = Math.round(teamOvr()), ideal = Math.round(teamOvr({...S.roster,...best}));
-  const oddsMine = perfectOdds(teamOvr()), oddsBest = perfectOdds(teamOvr({...S.roster,...best}));
-  const pct = x => x<0.005 ? "<1%" : `${Math.round(x*100)}%`;
   const sub = p => p.gronk ? "1 of 1 · Plays any position" : p.unit ? esc(p.stats) : p.pos==="HC" ? `${esc(p.stats)} · ${dec(p.decade)} ${TEAMS[p.draftedFor][1]}` : `${years(p)} · ${dec(p.decade)} ${TEAMS[p.draftedFor][1]}`;
   const rows = SLOTS.map(s=>{
     const p = S.roster[s.key], b = best[s.key] || p;
@@ -1621,8 +1659,8 @@ function finish(w,l,po0,quiet){   // po0: precomputed playoffs (Retro Bowl seaso
     ${poHTML}${banked?ringStripHTML(banked):""}
     <h3 class="cmp-h">How you could have done better</h3>
     <div class="cmp-sum">
-      <div><span class="label">Your team</span><b class="num">${mine}</b><small class="num">${pct(oddsMine)} chance of 17–0</small></div>
-      <div class="best"><span class="label">Best possible</span><b class="num">${ideal}</b><small class="num">${pct(oddsBest)} chance of 17–0</small></div>
+      <div><span class="label">Your team</span><b class="num">${mine}</b><small>Team OVR</small></div>
+      <div class="best"><span class="label">Best possible</span><b class="num">${ideal}</b><small>Team OVR</small></div>
     </div>
     <p class="hint">Best possible uses the same spins you got and swaps in the top-rated option each spin offered for that spot.</p>
     <div class="tablewrap"><table class="cmp"><thead><tr><th>Spot</th><th>Your pick</th><th>OVR</th><th>Should have picked</th><th>OVR</th></tr></thead><tbody>${rows}</tbody></table></div>`;
@@ -2149,7 +2187,7 @@ function helmetSVG(c1, c2){
 function cardHTML(c, i){
   // Baby GOAT shows 100 / ANY / 1 OF 1 and his sprite on every level, Hard included.
   if(c.gronk) return `<button class="pcard t-gronk ${S.packSel===i?"sel":""}" data-i="${i}" style="--c1:#ffe08a;--c2:#fff;--d:${i*0.14}s" aria-label="Baby GOAT">
-    <div class="pfront">
+    <div class="pfront"><i class="pc-ring"></i>
       <div class="pc-top"><div class="pc-ovr num">100</div><div class="pc-pos">ANY</div></div>
       <div class="pc-art"><span class="pc-num">NE</span>${gronkImg(2)}</div>
       <div class="pc-name">BABY GOAT</div>
@@ -2167,7 +2205,7 @@ function cardHTML(c, i){
   const line = p.unit ? (p.pos==="OL"?"O-Line":"Defense") : (show.years ? years(p) : `${dec(c.d)} ${nick}`);
   const stat = show.stats ? esc(p.stats) : "";
   return `<button class="pcard t-${tier.k} ${S.packSel===i?"sel":""}" data-i="${i}" style="--c1:${c1};--c2:${c2};--d:${i*0.14}s" aria-label="${esc(name)}">
-    <div class="pfront">
+    <div class="pfront">${tier.k==="legend"?`<i class="pc-ring"></i>`:""}
       <div class="pc-top"><div class="pc-ovr num">${show.ovr?c.ovr:"??"}</div><div class="pc-pos">${pos}</div></div>
       <div class="pc-art"><span class="pc-num">${c.t}</span>${(!p.unit && packSpr() && sprImg(p, {team:c.t, hof:packHof(), scale:2})) || helmetSVG(c1,c2)}</div>
       <div class="pc-name">${esc(name)}</div>
@@ -2192,6 +2230,7 @@ function renderPackDraft(){
   </div>`;
   $("#quit").onclick = renderHome; $("#homebtn").onclick = renderHome; wireLook();
   renderField(); renderPackStage("closed");
+  setTimeout(()=>{ cardPool(); ringPool(); }, 300);   // build the lazy pools while the sealed pack floats, not on the first tap / at the season's end
 }
 function renderPackStage(state){
   const box = $("#packside"); if(!box) return;
@@ -2208,33 +2247,75 @@ function renderPackStage(state){
     <h2 class="packtitle">${esc(title)} pack</h2>
     ${state==="closed" ? `<button class="pack" id="openpack" style="--c1:${slot.label==="DEFENSE"?"#c43d4b":"#ffc93c"}">
         <span class="pk-shine"></span><span class="pk-logo">17–0</span><span class="pk-name">${esc(title)}</span><span class="pk-sub">6 cards · tap to open</span></button>`
-      : `<div class="pgrid ${state==="reveal"?"pk-reveal":"pk-shown"}">${S.pack.map((c,i)=>cardHTML(c,i)).join("")}</div>
+      : `<div class="pgrid ${state==="reveal"?"pk-reveal":state==="fly"?"pk-fly":"pk-shown"}">${S.pack.map((c,i)=>cardHTML(c,i)).join("")}</div>
          <div class="pactions">${S.packSel!=null?`<button class="btn" id="keep">Keep ${esc(S.pack[S.packSel].p.unit?S.pack[S.packSel].p.name:S.pack[S.packSel].p.name)}</button>`:`<p class="hint">Tap a card to keep it for your ${esc(slot.label)} spot.</p>`}</div>
          <div class="pactions">${S.respins>0?`<button class="btn alt" id="reroll2">None of these? Open a new pack (${S.respins} left)</button>`:`<p class="hint">No new packs left. Keep one of these.</p>`}</div>`}`;
   $("#openpack") && ($("#openpack").onclick = () => openPack(slot));
-  const reroll = () => { if(S.respins>0){ S.respins--; S.packSel=null; openPack(slot, true); } };
+  // A reroll shows the new sealed pack, then opens it on its own (one tap = reroll + open). Reduced motion: instant, as before.
+  const reroll = () => { if(S.respins>0){ pkStop(); S.respins--; S.packSel=null;
+    if(reduce) return openPack(slot);
+    renderPackStage("closed"); $("#openpack").classList.add("drop"); pkLater(()=>$("#openpack")?.click(), PK_SEAL); } };
   $("#reroll") && ($("#reroll").onclick = reroll);
   $("#reroll2") && ($("#reroll2").onclick = reroll);
-  box.querySelectorAll(".pcard").forEach(b=>b.onclick=()=>{ S.packSel=+b.dataset.i; renderPackStage("open"); });
+  // Mid fly-out a card can be kept the moment it is face up; a face-down card ignores taps.
+  box.querySelectorAll(".pcard").forEach(b=>b.onclick=()=>{ if(PK.fly && performance.now() < PK.fly + b.dataset.i*PK_STAG + PK_UP) return; pkStop(); S.packSel=+b.dataset.i; renderPackStage("open"); });
   $("#keep") && ($("#keep").onclick = () => keepCard(slot));
 }
-function openPack(slot, quick){
+// Pack-opening timers all go through pkLater so Quit/Home, a reroll or a card pick can cancel them (pkStop).
+const PK = {t:[], fly:0};
+const PK_SEAL = 200, PK_SHAKE = 350, PK_FLASH = 120, PK_GHOST = 450, PK_STAG = 110, PK_UP = 570;
+const pkLater = (fn, ms) => PK.t.push(setTimeout(fn, ms));
+function pkStop(){
+  PK.t.forEach(clearTimeout); PK.t = []; PK.fly = 0;
+  document.querySelectorAll(".pkflash,.pack.ghost,.walkout:not(.variant)").forEach(e=>e.remove());
+}
+function openPack(slot){
+  pkStop();
   S.pack = drawPack(slot); S.packSel = null;
   const pk = $("#openpack");
   const top = Math.max(...S.pack.map(c=>c.ovr));
-  const go = () => {
-    // A Legend in the pack gets a walkout flash in its team's colors before the reveal.
-    const star = S.pack.find(c=>c.ovr===top);
-    // Baby GOAT replaces the Legend walkout for his pack, on every level (a static 2 s overlay under reduced motion).
-    if(star.gronk){ gronkWalkout(); setTimeout(()=>renderPackStage("reveal"), reduce?2000:2700); }
-    else if(top>=94 && !reduce){
+  const star = S.pack.find(c=>c.ovr===top);
+  if(reduce || !pk){
+    // Reduced motion: instant reveal as before (Baby GOAT keeps his static 2 s overlay).
+    if(star.gronk){ gronkWalkout(); pkLater(()=>renderPackStage("reveal"), 2000); } else renderPackStage("reveal");
+    return;
+  }
+  pk.onclick = null;
+  // Draw the six card sprites while the pack shakes, so the fly-out frame only lays out cards (cardHTML then hits the cache).
+  if(packSpr()) pkLater(()=>S.pack.forEach(c=>{ if(!c.gronk && !c.p.unit) spriteURL(c.p, {team:c.t, hof:packHof(), scale:2}); }), 0);
+  // Rarity glow while it shakes: gold for a Legend (94+, Baby GOAT too), purple for Elite (89+) where the level shows tiers (Hard hides them).
+  const tiers = showFor(S.level,S.mode).ovr || S.level==="medium";
+  const glow = top>=94 ? "glow-legend" : top>=89 && tiers ? "glow-elite" : "";
+  pk.classList.remove("drop"); pk.classList.add("shake"); glow && pk.classList.add(glow);
+  // Cards fly from where the pack sits into their grid spots, face down, then flip in order.
+  const fly = ghost => {
+    const box = $("#packside"); if(!box) return;
+    const r = pk.getBoundingClientRect(), b0 = box.getBoundingClientRect();
+    renderPackStage("fly");
+    if(ghost){
+      pk.removeAttribute("id"); pk.className = "pack ghost tear";
+      Object.assign(pk.style, {left:r.left-b0.left+"px", top:r.top-b0.top+"px", width:r.width+"px", height:r.height+"px"});
+      box.prepend(pk); pkLater(()=>pk.remove(), PK_GHOST);
+    }
+    const cx = r.left+r.width/2, cy = r.top+r.height/2, grid = box.querySelector(".pgrid");
+    grid.querySelectorAll(".pcard").forEach((c,i)=>{ const q = c.getBoundingClientRect();
+      c.style.setProperty("--fx", cx-(q.left+q.width/2)+"px"); c.style.setProperty("--fy", cy-(q.top+q.height/2)+"px"); c.style.setProperty("--fd", i*PK_STAG+"ms"); });
+    grid.classList.add("go"); PK.fly = performance.now();
+    pkLater(()=>{ PK.fly = 0; }, (S.pack.length-1)*PK_STAG + PK_UP);
+  };
+  pkLater(()=>{
+    document.body.insertAdjacentHTML("beforeend", `<div class="pkflash"></div>`);
+    pkLater(()=>document.querySelector(".pkflash")?.remove(), PK_FLASH);
+    // Baby GOAT keeps his own overlay; a Legend gets the walkout in its team's colors before the cards come out.
+    if(star.gronk){ pk.classList.replace("shake","tear"); gronkWalkout(); pkLater(()=>fly(false), 2700); }
+    else if(top>=94){
+      pk.classList.replace("shake","tear");
       const [,nick,c1,c2] = TEAMS[star.t];
       document.body.insertAdjacentHTML("beforeend", `<div class="walkout" style="--c1:${c1};--c2:${c2}"><span>${star.p.unit?"Legend unit":"Legend pulled"}</span><b>${esc(nick)}</b><i>${dec(star.d)}</i></div>`);
-      setTimeout(()=>document.querySelector(".walkout")?.remove(), 1500);
-      setTimeout(()=>renderPackStage("reveal"), 1100);
-    } else renderPackStage("reveal");
-  };
-  if(pk && !quick && !reduce){ pk.classList.add("tear"); setTimeout(go, 650); } else go();
+      pkLater(()=>document.querySelector(".walkout")?.remove(), 1500);
+      pkLater(()=>fly(false), 1100);
+    } else fly(true);
+  }, PK_SHAKE);
 }
 function keepCard(slot){
   const c = S.pack[S.packSel]; if(!c) return;
