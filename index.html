@@ -469,7 +469,7 @@ table.cmp.lb{min-width:0}
 @keyframes v-spin{to{transform:rotateY(360deg)}}
 body.retro .wv .spr{animation-timing-function:steps(4)}
 body.retro .pc-art .spr,body.retro .wv .spr{filter:none}
-/* ---------- Retro look (Packs only): every rule lives under body.retro, set by applyLook() ---------- */
+/* ---------- Retro look (every screen): every rule lives under body.retro, set by applyLook() ---------- */
 body.retro{--px:"Press Start 2P","Courier New",monospace;background:#0a1424;background-image:none}
 body.retro *,body.retro *::before,body.retro *::after{border-radius:0!important}
 body.retro::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.12;border:1px solid #000;background:repeating-linear-gradient(180deg,#000 0 2px,transparent 2px 4px)}
@@ -577,7 +577,7 @@ body.retro .ring-strip .ring-in{animation-timing-function:steps(4)}
 body.retro .ring-strip .ring-in .ring-hof{animation-timing-function:steps(2)}
 body.retro .ring-hof,body.retro .ring-lv,body.retro .ring-var,body.retro .ring-vt,body.retro .vplate{font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:0;padding:2px 4px}
 body.retro .ring-gb{border-width:3px;font-family:var(--px);font-size:18px}
-/* ---------- Retro Bowl season (Packs + Retro): the canvas is drawn by JS, CSS only sizes and frames it ---------- */
+/* ---------- Retro Bowl season (Retro look, every mode): the canvas is drawn by JS, CSS only sizes and frames it ---------- */
 .rs{--px:"Press Start 2P","Courier New",monospace}
 .rs-main{display:grid;grid-template-columns:minmax(0,384px) minmax(0,1fr);gap:18px;align-items:start}
 .rs-stad{background:#101a3c;border:3px solid #000;box-shadow:4px 4px 0 #000}
@@ -648,6 +648,88 @@ body{-webkit-tap-highlight-color:transparent;overflow-x:hidden}
 .acct .fine{margin-top:16px}
 .acct .fine a{color:var(--sky)}
 @media (max-width:640px){ .acct .btn{flex:1;min-height:44px} .sheet.acct{padding:18px 16px 16px} }
+/* ---------- v3 looks: the MODERN/RETRO switch on every screen ---------- */
+.hometop{align-self:stretch;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 16px}
+.hometop .acctbtn{position:static}
+/* ---------- Broadcast season (Modern look): bcDraw() paints the canvas; CSS sizes the TV panel and the end cards ---------- */
+.bc-tv{max-width:760px;margin:0 auto 16px;border-radius:14px;overflow:hidden;background:#070d18;border:1px solid var(--line);box-shadow:0 22px 50px -18px rgba(0,0,0,.75)}
+#stad.bc-cv{display:block;width:100%;height:auto;aspect-ratio:16/9;image-rendering:auto;background:#1d5229}
+.bc-side{max-width:760px;margin:0 auto}
+.bc-over{position:fixed;inset:0;z-index:48;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:radial-gradient(circle at 50% 40%,rgba(10,20,36,.55),rgba(3,8,18,.9));cursor:pointer}   /* under the confetti (z 50) */
+.bc-card{width:min(520px,100%);text-align:center;padding:26px 22px 22px;border-radius:18px;background:linear-gradient(165deg,#17284a,#0b1424 70%);border:1px solid #2c4673;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:bcIn .45s cubic-bezier(.2,.8,.2,1) both}
+.bc-kick{display:inline-block;font-family:var(--font-label);font-weight:700;letter-spacing:.14em;font-size:13px;color:#0b1424;background:var(--gold);padding:4px 10px;border-radius:4px}
+.bc-h{margin:12px 0 4px;font-family:var(--font-display);font-weight:400;font-size:clamp(40px,11vw,68px);line-height:.95;letter-spacing:.01em;color:#fff}
+.bc-h.bc-gold{background:linear-gradient(180deg,#fff 0%,#ffe08a 55%,var(--gold) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bc-sub{margin:0;font-family:var(--font-label);font-weight:600;font-size:19px;letter-spacing:.04em;color:var(--muted)}
+.bc-line{margin:8px 0 0;color:var(--muted);font-size:15px}
+.bc-score{display:flex;align-items:center;justify-content:center;gap:12px;margin:18px 0 20px;font-family:var(--font-label);font-weight:700;font-size:20px;letter-spacing:.04em}
+.bc-score b{font-family:var(--font-display);font-weight:400;font-size:40px;line-height:1;margin:0 4px}
+.bc-score .chip{margin:0 8px}
+.bc-dash{color:var(--muted)}
+.bc-tap{margin:16px 0 0;font-family:var(--font-label);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:12px;color:var(--muted)}
+.bc-trophy{display:block;width:clamp(96px,26vw,132px);height:auto;margin:14px auto 6px;filter:drop-shadow(0 10px 24px rgba(255,201,60,.35));animation:bcRise .7s .15s cubic-bezier(.2,.8,.2,1) both}
+@keyframes bcIn{from{opacity:0;transform:translateY(18px) scale(.97)}}
+@keyframes bcRise{from{opacity:0;transform:translateY(24px)}}
+@media (prefers-reduced-motion:reduce){.bc-card,.bc-trophy{animation:none}}
+/* ---------- Retro on every screen: Home, spin draft, formations, leaderboard, verdict table ---------- */
+body.retro .home h1{font-family:var(--px);font-size:clamp(44px,15vw,96px);line-height:1.15;background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--gold);text-shadow:6px 6px 0 #000;letter-spacing:0;margin:8px 0 10px}
+body.retro .home .tag,body.retro .bc-kick{font-family:var(--px);font-weight:400;font-size:9px;letter-spacing:.06em;line-height:1.6}
+body.retro .mode{border:3px solid var(--line);background:var(--surface);box-shadow:4px 4px 0 #000;transition:none}
+body.retro .mode:hover{transform:none;border-color:var(--c)}
+body.retro .mode .go b{font-family:var(--px);font-size:16px;line-height:1.4}
+body.retro .mode .info{border-left-width:3px}
+body.retro .mode .info span{border-width:3px;font:400 10px/1 var(--px)}
+body.retro .sheet{border:3px solid var(--line);box-shadow:6px 6px 0 #000}
+body.retro .sheet h2{font-family:var(--px);font-size:20px;line-height:1.4}
+body.retro .sheet .see span{font-family:var(--px);font-weight:400;font-size:8px;border-width:2px}
+/* spin draft: flat team reel, pixel decade, square search and results */
+body.retro .spin{transition:none;box-shadow:4px 4px 0 #000;border:3px solid #000}
+body.retro .spin::after{background:linear-gradient(100deg,transparent 60%,rgba(0,0,0,.3) 60%)}
+body.retro .spin .city{font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:.04em;line-height:1.6}
+body.retro .spin{container-type:inline-size}   /* the nickname scales with the reel, so "Commanders" fits on one line at any width */
+body.retro .spin .name{font-family:var(--px);font-size:clamp(9px,5.2cqi,22px);line-height:1.35;text-shadow:3px 3px 0 #000;white-space:nowrap}
+body.retro .spin .abbr{font-family:var(--px);font-size:clamp(16px,8cqi,30px);text-shadow:4px 4px 0 #000}
+@media (max-width:440px){body.retro .spin .name{font-size:clamp(9px,7.6cqi,20px)}}
+body.retro .decade{border:3px solid var(--gold);box-shadow:4px 4px 0 #000}
+body.retro .decade .dv{font-family:var(--px);font-size:clamp(15px,3.6vw,24px);line-height:1.4}
+body.retro .decade .label{font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:0}
+body.retro .reel-spin .name,body.retro .reel-spin .abbr,body.retro .decade.rolling .dv{filter:none;opacity:.7}
+body.retro .round small{font-family:var(--px);font-size:8px;letter-spacing:0}
+body.retro .search input{border-width:3px;box-shadow:4px 4px 0 #000}
+body.retro .search input:focus{box-shadow:4px 4px 0 var(--gold)}
+body.retro .results{border-width:3px;box-shadow:4px 4px 0 #000}
+body.retro .opt{border-top-width:2px}
+body.retro .opt .pos,body.retro .pos{font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:0;border-width:2px;padding:4px 4px}
+body.retro .opt .ovr{font-family:var(--px);font-size:13px!important}
+body.retro .pending{border-width:3px;background:#2c2408;box-shadow:4px 4px 0 #000}
+body.retro .msg{font-family:var(--font-label);font-size:16px}
+body.retro .field-head .label{font-size:12px}
+body.retro .spot.sm .tok,body.retro .spot.sm.filled .tok i{font-size:7px}
+body.retro .spot.bench .nm{font-family:var(--px);font-size:8px}
+/* formation picker */
+body.retro .fhead,body.retro .lboard h2{font-family:var(--px);font-weight:400;font-size:16px;line-height:1.4;letter-spacing:0}
+body.retro .form{border-width:3px;box-shadow:4px 4px 0 #000}
+body.retro .form.sel{box-shadow:4px 4px 0 var(--gold)}
+body.retro .form b{font-family:var(--px);font-size:10px;line-height:1.5;letter-spacing:0}
+body.retro .mini{background:repeating-linear-gradient(180deg,#1d7a3a 0 calc(12.5% - 1px),rgba(255,255,255,.55) calc(12.5% - 1px) 12.5%);border:2px solid #fff}
+/* tables: leaderboard + "how you could have done better" */
+body.retro table.cmp{border-collapse:collapse}
+body.retro .cmp th{font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:0}
+body.retro .cmp td{border-top-width:2px}
+body.retro .cmp .cp,body.retro .cmp.lb .rank{font-family:var(--px);font-weight:400;font-size:8px}
+body.retro .cmp.lb .rec{font-family:var(--px);font-weight:400;font-size:11px}
+body.retro .cmp .up{font-family:var(--px);font-size:7px}
+body.retro .cmp .cn.good{font-family:var(--px);font-weight:400;font-size:9px;line-height:1.5}
+body.retro .cmp-sum div{box-shadow:4px 4px 0 #000}
+body.retro .verdict{box-shadow:4px 4px 0 #000}
+body.retro .actions .seg{align-self:center}
+@media (max-width:640px){
+  body.retro .btn,body.retro .respin{min-height:44px}
+  body.retro .mode .go b{font-size:14px}
+  body.retro .fhead,body.retro .lboard h2{font-size:13px}
+  body.retro .brand .logo{font-size:18px}
+  body.retro .pill{font-size:9px}
+}
 </style>
 </head>
 <body>
@@ -1251,8 +1333,8 @@ function header(extra=""){
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">${extra}</div>
   </header>`;
 }
-// Retro / Modern look: Packs screens only. One class on <body>; every non-Packs screen clears it.
-const lookRetro = () => store.get("seventeen-look","modern")==="retro";
+// Retro / Modern look, every screen and mode: one class on <body>, set from the saved look at the top of each render. Retro unless the player picked Modern.
+const lookRetro = () => store.get("seventeen-look","retro")==="retro";
 function applyLook(on){ document.body.classList.toggle("retro", !!on); }
 const lookBtn = () => `<div class="seg small" id="lookbtn" role="tablist" aria-label="Look" style="margin:0">${["modern","retro"].map(k=>`<button role="tab" data-look="${k}" aria-selected="${lookRetro()===(k==="retro")}">${k.toUpperCase()}</button>`).join("")}</div>`;
 function wireLook(){
@@ -1282,10 +1364,10 @@ function rulesHTML(k){
 }
 
 function renderHome(){
-  pkStop(); applyLook(false); clearTimeout(spinTimer); S = null; $("#confetti").hidden = true;
+  pkStop(); applyLook(lookRetro()); clearTimeout(spinTimer); S = null; $("#confetti").hidden = true;
   const rec = loadRecords();
   $("#app").innerHTML = `<section class="home">
-    ${cloudOn()?`<button class="ghost acctbtn" id="acctbtn">${signedIn()?"Account ●":"Account"}</button>`:""}
+    <div class="hometop">${lookBtn()}${cloudOn()?`<button class="ghost acctbtn" id="acctbtn">${signedIn()?"Account ●":"Account"}</button>`:""}</div>
     <h1>17–0</h1>
     <p class="tag">Draft a perfect season</p>
     <div class="seg" role="tablist" aria-label="Game mode">${Object.entries(MODES).map(([k,m])=>`<button role="tab" aria-selected="${MODE===k}" data-mode="${k}">${m.label}</button>`).join("")}</div>
@@ -1301,7 +1383,7 @@ function renderHome(){
     <p class="free">Free · unlimited plays</p>
     <p class="disc">${DISCLAIMER}</p>
   </section>`;
-  $("#lbbtn").onclick = () => renderBoard(MODE, "all");
+  $("#lbbtn").onclick = () => renderBoard(MODE, "all"); wireLook();
   if(cloudOn()) $("#acctbtn").onclick = openAcct;
   if(MODE==="packs") $("#ringhome").onclick = renderRing;
   document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{ MODE=b.dataset.mode; store.set("seventeen-mode",MODE); renderHome(); });
@@ -1323,17 +1405,18 @@ function miniDiagram(spots, side){
 }
 
 function renderFormations(level){
+  applyLook(lookRetro());
   const L = LEVELS[level];
   let off = store.get("seventeen-off","shotgun"), def = store.get("seventeen-def","43");
   if(!OFFENSE[off]) off = "shotgun"; if(!DEFENSE[def]) def = "43";
   const draw = () => {
-    $("#app").innerHTML = `${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${MODES[MODE].label} · ${L.label}</span><button class="ghost" id="quit">Back</button>`)}
+    $("#app").innerHTML = `${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${MODES[MODE].label} · ${L.label}</span>${lookBtn()}<button class="ghost" id="quit">Back</button>`)}
     <h2 class="fhead">Offensive formation</h2>
     <div class="forms">${Object.entries(OFFENSE).map(([k,f])=>`<button class="form ${k===off?"sel":""}" data-off="${k}" aria-pressed="${k===off}">${miniDiagram(f.spots,"O")}<b>${f.label}</b><small>${f.desc}</small></button>`).join("")}</div>
     ${MODE==="full"?`<h2 class="fhead">Defensive formation</h2>
     <div class="forms">${Object.entries(DEFENSE).map(([k,f])=>`<button class="form ${k===def?"sel":""}" data-def="${k}" aria-pressed="${k===def}">${miniDiagram(f.spots,"D")}<b>${f.label}</b><small>${f.desc}</small></button>`).join("")}</div>`:""}
     <div class="actions" style="margin-top:20px"><button class="btn" id="startdraft">Start draft</button></div>`;
-    $("#quit").onclick = renderHome; $("#homebtn").onclick = renderHome;
+    $("#quit").onclick = renderHome; $("#homebtn").onclick = renderHome; wireLook();
     document.querySelectorAll("[data-off]").forEach(b=>b.onclick=()=>{ off=b.dataset.off; store.set("seventeen-off",off); draw(); });
     document.querySelectorAll("[data-def]").forEach(b=>b.onclick=()=>{ def=b.dataset.def; store.set("seventeen-def",def); draw(); });
     $("#startdraft").onclick = () => newDraft(level, MODE, off, def);
@@ -1342,9 +1425,9 @@ function renderFormations(level){
 }
 
 function renderDraft(){
-  applyLook(false);
+  applyLook(lookRetro());
   const L = LEVELS[S.level];
-  $("#app").innerHTML = `${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${MODES[S.mode].label} · ${L.label}</span><button class="ghost" id="quit">Quit</button>`)}
+  $("#app").innerHTML = `${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${MODES[S.mode].label} · ${L.label}</span>${lookBtn()}<button class="ghost" id="quit">Quit</button>`)}
   <div class="board">
     <section style="min-width:0">
       <div class="reels">
@@ -1359,7 +1442,7 @@ function renderDraft(){
     </section>
     <section class="field-wrap" id="fieldwrap"></section>
   </div>`;
-  $("#quit").onclick = renderHome; $("#homebtn").onclick = renderHome;
+  $("#quit").onclick = renderHome; $("#homebtn").onclick = renderHome; wireLook();
   $("#respin").onclick = () => { if(S.respins>0 && !S.spinning){ S.respins--; spin(); } };
   renderField(); updateSpinBar();
 }
@@ -1579,42 +1662,14 @@ function bestPossible(){
   return best;
 }
 
+// Every mode plays its season on screen: Retro look = the pixel stadium, Modern look = the TV broadcast. One engine (rs*), two painters.
 function startSeason(){
   S.season = simulate();
-  if(S.mode==="packs" && lookRetro()) renderRetroSeason(); else renderSeason();
+  if(lookRetro()) renderRetroSeason(); else renderModernSeason();
 }
 
-function renderSeason(){
-  applyLook(S.mode==="packs" && lookRetro()); clearTimeout(spinTimer);
-  const L = LEVELS[S.level];
-  $("#app").innerHTML = `${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${L.label}</span>`)}
-  <div class="season-head">
-    <div><div class="label">Regular season</div><div class="bigrec num" id="rec"><span class="w">0</span><span class="d">–</span><span class="l">0</span></div></div>
-    <div style="text-align:right"><div class="label">Team rating</div><div class="teamovr num" style="font-size:54px">${Math.round(teamOvr())}</div></div>
-  </div>
-  <div class="games" id="games">${S.season.map(g=>{const [,n,c1,c2]=TEAMS[g.team];return `
-    <div class="game" id="g${g.week}">
-      <div><div class="wk">WEEK ${g.week}</div><div class="opp"><i class="chip" style="--c1:${c1};--c2:${c2}"></i>${g.away?"@ ":"vs "}${g.team}</div></div>
-      <div class="res num"><b></b><div></div></div>
-    </div>`;}).join("")}</div>
-  <div id="after"></div>`;
-  let w=0,l=0,k=0;
-  const tick = () => {
-    const g = S.season[k];
-    const el = $("#g"+g.week); if(!el) return;
-    el.classList.add("done", g.win?"W":"L");
-    el.querySelector(".res b").textContent = g.win?"W":"L";
-    el.querySelector(".res div").textContent = `${g.us}–${g.them}`;
-    g.win?w++:l++;
-    $("#rec").innerHTML = `<span class="w">${w}</span><span class="d">–</span><span class="l">${l}</span>`;
-    k++;
-    if(k<S.season.length) spinTimer = setTimeout(tick, reduce?0:260);
-    else finish(w,l);
-  };
-  spinTimer = setTimeout(tick, reduce?0:500);
-}
-
-function finish(w,l,po0,quiet){   // po0: precomputed playoffs (Retro Bowl season only); quiet: that flow already fired confetti
+function finish(w,l,po0,quiet){   // po0: the playoffs the animated season already played; quiet: that flow already fired confetti
+  applyLook(lookRetro());
   const rec = loadRecords(), rk = S.mode+"-"+S.level;
   const r = rec[rk] || {played:0,perfect:0,best:null,bestW:-1};
   r.played++; if(l===0) r.perfect++;
@@ -1654,7 +1709,7 @@ function finish(w,l,po0,quiet){   // po0: precomputed playoffs (Retro Bowl seaso
     </tr>`;}).join("");
   $("#after").innerHTML = `
     <div class="verdict ${perfect?"perfect":""}"><h2>${msg[0]}</h2><p>${msg[1]} Perfect seasons in ${MODES[S.mode].label} · ${LEVELS[S.level].label}: ${r.perfect} of ${r.played}. Titles: ${r.titles||0}.</p>${nearMissHTML(w,l)}
-    <div class="actions"><button class="btn ${perfect?"alt":""}" id="again">Draft again</button><button class="btn alt" id="home">Change mode</button><button class="btn alt" id="share">Copy result</button><button class="btn alt" id="board">🏆 Leaderboard</button>${S.mode==="packs"?lookBtn():""}</div>
+    <div class="actions"><button class="btn ${perfect?"alt":""}" id="again">Draft again</button><button class="btn alt" id="home">Change mode</button><button class="btn alt" id="share">Copy result</button><button class="btn alt" id="board">🏆 Leaderboard</button>${lookBtn()}</div>
     <p class="hint num">Drafted in ${fmtTime(S.draftSecs)}.</p></div>
     ${poHTML}${banked?ringStripHTML(banked):""}
     <h3 class="cmp-h">How you could have done better</h3>
@@ -1669,7 +1724,7 @@ function finish(w,l,po0,quiet){   // po0: precomputed playoffs (Retro Bowl seaso
   $("#share").onclick = () => share(w,l);
   $("#board").onclick = () => renderBoard(S.mode, S.level);
   if(banked){ $("#ringopen").onclick = renderRing; ringCeremony(banked.pct[0], banked.pct[1]); }
-  if(S.mode==="packs") wireLook();
+  wireLook();
   if((perfect || po.champ) && !quiet) confetti();
 }
 
@@ -1755,19 +1810,30 @@ function rbSpr(pal, face, f){
   }
   return c;
 }
-function rbTeam(){
-  const sk = SLOTS.map(s=>S.roster[s.key]).filter(p=>p && !p.unit && (p.gronk || RING_POS.includes(p.pos)));
+// Your 11 from any roster: Packs/Classic = QB + skill (the O-Line and Defense units play as generic linemen and defenders);
+// Full Roster = the same skill six plus the real LT..RT and the 11 defenders by slot (K and coach stay off the field).
+// lab: the jersey label per rbForm spot (O = offense U0..U10, D = defense D0..D10): a sprite-pool player's real number, else position letters.
+const RB_OPOS = ["QB","RB","TE","WR","WR","WR","LT","LG","C","RG","RT"], RB_DPOS = ["DE","DT","DT","DE","OLB","MLB","OLB","CB","CB","FS","SS"];
+const rbNum = (p, pos) => { if(p && p.gronk) return "1"; const r = p ? spriteRow(p) : null; return r && r.number ? String(r.number) : pos; };
+function rbTeam(bc){
+  const on = SLOTS.map(s=>[s, S.roster[s.key]]).filter(([,p])=>p);
+  const sk = on.map(([,p])=>p).filter(p=>!p.unit && (p.gronk || RING_POS.includes(p.pos)));
   const take = f => { const i = sk.findIndex(f); return i<0 ? null : sk.splice(i,1)[0]; };
   const six = ["QB","RB","TE","WR","WR","WR"].map(pos=>take(p=>p.pos===pos));
   for(let i=0;i<6;i++) if(!six[i]) six[i] = sk.shift() || null;
+  const ol = on.filter(([s])=>s.role==="OL"), grp = {dl:[], lb:[], cb:[], s:[]};
+  on.filter(([s])=>s.role==="DEF").forEach(e=>grp[/^(DE|DT|NT)$/.test(e[0].label) ? "dl" : /LB$/.test(e[0].label) ? "lb" : /^(CB|NB|DB)$/.test(e[0].label) ? "cb" : "s"].push(e));
+  const dset = RB_DPOS.map((_,i)=>grp[i<4 ? "dl" : i<7 ? "lb" : i<9 ? "cb" : "s"].shift() || null), rest = Object.values(grp).flat();
+  const lab = {O:RB_OPOS.map((pos,i)=>i<6 ? rbNum(six[i], six[i] && !six[i].gronk ? six[i].pos : pos) : ol[i-6] ? rbNum(ol[i-6][1], ol[i-6][0].label) : pos),
+    D:RB_DPOS.map((pos,i)=>{ const e = dset[i] || rest.shift(); return e ? rbNum(e[1], e[0].label) : pos; })};
   const spr = {};
-  for(let i=0;i<11;i++){
+  for(let i=0;i<11 && !bc;i++){
     // helmet-first, one team look: every offense player shows the back of the navy helmet; a skill player's real skin shows on his nape and arms
     const p = six[i], row = p && !p.gronk ? spriteRow(p) : null, sk = row ? SPRITE.SKIN[SPRITE.fromTraits(row, TEAMS).skin|0] : null;
     const pal = {h:RB.NAVY, s:RB.GOLD, k:sk || SPRITE.SKIN[(i*5+1)%6], m:"#a5acaf", j:RB.JERSEY, n:RB.GOLD, p:"#f2f2ec", b:"#141414"};
     spr["U"+i] = [0,1].map(f=>rbSpr(pal, false, f));
   }
-  return {six, spr};
+  return {six, spr, lab};
 }
 function rbOpp(t){
   const TL = SPRITE.TEAM_LOOK[t] || {}, [, , c1, c2] = TEAMS[t], spr = {};
@@ -1918,14 +1984,14 @@ function rbGame(q){
   segs.push({t:3600, f:[{...last, ms:450, flash:0, big:null, small:null, arc:null, tgt:null, alt:0, u:g.us, t:g.them, dn:"FINAL", fin:1,
     band:{bg:"#000", a:[`FINAL · ${g.win ? "W" : "L"} ${g.us}-${g.them}`, g.win ? RB.WIN : RB.LOSS]}}]});
   const F = []; let t0 = 0;
-  segs.forEach(s=>{   // the clock runs to the event's time exactly when its score lands, then holds
+  segs.forEach((s,sg)=>{   // the clock runs to the event's time exactly when its score lands, then holds; sg: the Broadcast tweens only inside one segment
     const j = s.b ? s.f.findIndex(fr=>fr.u!==s.b.u || fr.t!==s.b.t) : -1, k = j<0 ? s.f.length : j+1;
-    s.f.forEach((fr,i)=>F.push({...fr, clk:i<k ? Math.round(t0 + (s.t - t0)*(i+1)/k) : s.t})); t0 = s.t; });
-  return {q, opp, field:rbField(opp), spr:{...RS.team.spr, ...rbOpp(opp)}, F, fin:F.findIndex(f=>f.fin)};
+    s.f.forEach((fr,i)=>F.push({...fr, sg, clk:i<k ? Math.round(t0 + (s.t - t0)*(i+1)/k) : s.t})); t0 = s.t; });
+  return {q, opp, field:RS.bc ? null : rbField(opp), spr:RS.bc ? null : {...RS.team.spr, ...rbOpp(opp)}, F, fin:F.findIndex(f=>f.fin)};
 }
 function rbBye(q){
   const fr = {cam:60, pl:[], u:0, t:0, clk:0, dn:"FIRST-ROUND BYE", band:{bg:RB.PANEL, a:["BYE WEEK", RB.YEL], b:["NO. 1 SEED · FIRST-ROUND BYE", RB.WHITE]}};
-  return {q, opp:null, field:rbField(null), spr:{}, F:Array.from({length:4}, (_,i)=>({...fr, alt:i&1, ms:200, fin:i===3 ? 1 : 0})), fin:3};
+  return {q, opp:null, field:RS.bc ? null : rbField(null), spr:{}, F:Array.from({length:4}, (_,i)=>({...fr, alt:i&1, ms:200, fin:i===3 ? 1 : 0})), fin:3};
 }
 function rbDraw(x, G, fr, fi){
   const P = RB.PY, top = fr.cam, sy = Math.round((RB.TOP - top)*P), Y = v => Math.round((top - v)*P), FW = RB.X1 - RB.X0 - 1;
@@ -1971,6 +2037,177 @@ function rbFireworks(x, f){
   rbTrophy(x, 80, 95);
 }
 
+// ---------- Broadcast season (Modern look): rbGame's frames painted as a TV sideline camera ----------
+// 320x180 logical on a fixed 640x360 backing. Field coords are the Retro Bowl frames' own: Y = yards (17-0 drives to +Y), x = retro px across
+// (X0 far sideline .. X1 near). The camera sits high on the near sideline: Y runs left to right, depth D (1 near .. 1.4 far) narrows the far side.
+const BC = {W:320, H:180, S:2, CX:160, PX:8.4, FAR:1.4, HZ:-193, K:343,
+  HOME:{j:"#17294f", h:"#ffc93c", p:"#d9dee7", n:"#ffffff", m:"#c9ced8"}, ROAD:{j:"#f2f2ec", h:"#ffc93c", p:"#17294f", n:"#17294f", m:"#c9ced8"}};
+const bcPt = (Y, x, C) => { const D = BC.FAR - (BC.FAR - 1)*(x - RB.X0)/(RB.X1 - RB.X0); return [BC.CX + (Y - C)*BC.PX/D, BC.HZ + BC.K/D, 1/D]; };
+const bcRR = (x, X, Y, w, h, r) => { x.beginPath(); if(x.roundRect) x.roundRect(X, Y, w, h, r); else x.rect(X, Y, w, h); x.fill(); };
+const bcFont = (x, px, w="700", f="'Barlow Condensed'") => { x.font = `${w} ${px}px ${f}`; };
+// The stands: one soft-dot crowd strip for the whole session, scrolled with the camera (parallax 5 px a yard)
+let BC_CROWD = null;
+function bcCrowd(){
+  if(BC_CROWD) return BC_CROWD;
+  const W = 1000, H = 46, c = document.createElement("canvas"); c.width = W*BC.S; c.height = H*BC.S; const x = c.getContext("2d"), R = rbRng(7);
+  x.scale(BC.S, BC.S);
+  const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#070d18"); g.addColorStop(1, "#1a2740"); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  const cols = ["#c9ced8","#7a8aa6","#d8b04a","#a83a3a","#3d5a99","#e8e2d0","#5a6478","#ffc93c"];
+  for(let row=0; row<9; row++){ const y = 7 + row*4.3, r = .8 + row*.13;
+    for(let i=0; i<W/2.5; i++){ x.globalAlpha = .25 + R()*.5 + row*.02; x.fillStyle = cols[R()*cols.length|0]; x.beginPath(); x.arc(i*2.5 + R()*1.3, y + R()*1.2, r, 0, 6.283); x.fill(); } }
+  return BC_CROWD = c;
+}
+// Kit per game: home team in color, road team in white (Super Bowl: 17-0 is home). Opponent numbers are made up per team, deterministic.
+function bcKits(G){
+  if(G.kit) return G.kit;
+  const t = G.opp, away = G.q.away, us = {...(away ? BC.ROAD : BC.HOME), lab:RS.team.lab};
+  if(!t) return G.kit = {us, them:us};
+  const TL = SPRITE.TEAM_LOOK[t] || {}, [, , c1, c2] = TEAMS[t], R = rbRng(t.charCodeAt(0)*131 + (t.charCodeAt(1)||0)*7 + t.length);
+  const n = (a, b) => String(a + (R()*(b - a + 1)|0)), ink = rbLum(c1) > .62 ? "#16181d" : "#ffffff";
+  const lab = {O:[n(1,19), n(20,39), n(80,89), n(10,19), n(80,89), n(11,19), n(60,79), n(60,79), n(60,79), n(60,79), n(60,79)],
+    D:[n(90,99), n(90,99), n(90,99), n(90,99), n(50,59), n(50,59), n(50,59), n(20,39), n(20,39), n(20,49), n(20,49)]};
+  const them = away ? {j:c1, h:TL.h || c1, p:TL.p || "#e6e8ec", n:ink, m:TL.m || "#a5acaf", lab} : {j:"#f2f2ec", h:TL.h || c1, p:TL.p || "#e6e8ec", n:rbLum(c1) > .7 ? c2 : c1, m:TL.m || "#a5acaf", lab};
+  return G.kit = {us, them};
+}
+// One player: ground shadow, legs (a stride while he moves), rounded jersey, helmet + mask on the side he faces, a small number.
+function bcMan(x, pt, c, lab, face, ph){
+  const [px, py, s] = pt, k = s*1.15, st = ph==null ? 0 : Math.sin(ph), top = py - (ph==null ? 0 : Math.abs(Math.cos(ph))*.5*k);
+  x.fillStyle = "rgba(0,0,0,.3)"; x.beginPath(); x.ellipse(px + 1.6*k, py, 4.8*k, 1.5*k, 0, 0, 6.283); x.fill();
+  x.fillStyle = c.p; bcRR(x, px - 2.7*k + st*k, top - 6.4*k, 2.3*k, 6.4*k, k); bcRR(x, px + .4*k - st*k, top - 6.4*k, 2.3*k, 6.4*k, k);
+  x.fillStyle = "#15171c"; bcRR(x, px - 2.9*k + st*k, top - 1.3*k, 2.7*k, 1.3*k, .5*k); bcRR(x, px + .3*k - st*k, top - 1.3*k, 2.7*k, 1.3*k, .5*k);
+  x.fillStyle = c.j; bcRR(x, px - 3.8*k, top - 12.6*k, 7.6*k, 7*k, 2.3*k);
+  x.fillStyle = c.h; x.beginPath(); x.arc(px + face*.35*k, top - 14.5*k, 2.6*k, 0, 6.283); x.fill();
+  x.strokeStyle = c.m; x.lineWidth = .7*k; x.beginPath(); x.arc(px + face*1.1*k, top - 14.1*k, 1.8*k, face>0 ? -1 : 2.14, face>0 ? 1 : 4.14); x.stroke();
+  x.fillStyle = c.n; bcFont(x, (lab.length>2 ? 3.6 : 4.4)*k); x.textAlign = "center"; x.fillText(lab, px, top - 8.9*k);
+}
+// A clean banner that wipes in from the left: title slab + a colored sub-strip. Re-animates whenever its key changes.
+function bcBanner(x, G, key, title, sub, col, y=56){
+  const now = performance.now(); if(G.bk!==key){ G.bk = key; G.bt = now; }
+  const e = Math.min(1, (now - G.bt)/260), k = 1 - Math.pow(1 - e, 3);
+  bcFont(x, 27, "400", "Anton"); const w = Math.max(x.measureText(title).width + 40, 150), X = BC.CX - w/2;
+  x.save(); x.beginPath(); x.rect(X - 2, y - 2, (w + 4)*k, 60); x.clip();
+  x.fillStyle = "rgba(7,12,24,.9)"; bcRR(x, X, y, w, 36, 3);
+  x.fillStyle = col; x.fillRect(X, y, 4, 36);
+  x.fillStyle = "#fff"; x.textAlign = "center"; x.textBaseline = "alphabetic"; x.fillText(title, BC.CX + 2 + (1 - k)*-24, y + 30);
+  if(sub){ bcFont(x, 8.5); const sw = Math.max(x.measureText(sub).width + 20, 70); x.fillStyle = col; bcRR(x, BC.CX - sw/2, y + 36, sw, 12, 2);
+    x.fillStyle = rbLum(col) > .55 ? "#0c0c10" : "#fff"; x.textBaseline = "middle"; x.fillText(sub, BC.CX, y + 42.5); }
+  x.restore(); x.textBaseline = "middle";
+}
+// Lower-third scorebug: week tab, both teams (color chip, code, score, possession arrow), quarter + clock, down & distance.
+function bcBug(x, G, fr, fi){
+  const y = 157, h = 17, opp = G.opp, dn = fr.dn || "", them = !!opp && dn.startsWith(opp + " · "), ours = !them && fr.los!=null;
+  bcFont(x, 7); const tw = x.measureText(G.q.label).width + 12;
+  x.fillStyle = "#ffc93c"; bcRR(x, 8, y - 9, tw, 10, 2); x.fillStyle = "#1b1200"; x.textAlign = "center"; x.fillText(G.q.label, 8 + tw/2, y - 3.6);
+  x.save(); x.shadowColor = "rgba(0,0,0,.5)"; x.shadowBlur = 8; x.shadowOffsetY = 2; x.fillStyle = "#0d1628"; bcRR(x, 8, y, 304, h, 3); x.restore();
+  const team = (X, code, c1, c2, pts, ball) => {
+    x.fillStyle = c1; x.fillRect(X, y + 2, 4, h - 4); x.fillStyle = c2; x.fillRect(X + 4, y + 2, 1.5, h - 4);
+    x.fillStyle = "#eef3fb"; bcFont(x, 10); x.textAlign = "left"; x.fillText(code, X + 9, y + h/2 + .5);
+    if(ball){ x.fillStyle = "#ffc93c"; x.beginPath(); x.moveTo(X + 32, y + h/2 - 2.5); x.lineTo(X + 36, y + h/2); x.lineTo(X + 32, y + h/2 + 2.5); x.fill(); }
+    x.fillStyle = "#fff"; bcFont(x, 12, "400", "Anton"); x.textAlign = "right"; x.fillText(String(pts ?? 0), X + 57, y + h/2 + 1);
+  };
+  team(11, "17-0", RB.JERSEY, RB.GOLD, fr.u, ours);
+  if(opp){ const [,,c1,c2] = TEAMS[opp]; team(73, opp, c1, c2, fr.t, them); } else team(73, "BYE", RB.PANEL, "#28406a", 0, false);
+  x.fillStyle = "#1b2a48"; x.fillRect(135, y, 50, h);
+  const q = Math.min(4, Math.floor((fr.clk||0)/900) + 1), fin = fr.fin || fi>G.fin;
+  x.fillStyle = fin ? "#ffc93c" : "#eef3fb"; bcFont(x, 9.5); x.textAlign = "center";
+  x.fillText(G.q.bye ? "BYE" : fin ? "FINAL" : `Q${q}  ${fmtTime(Math.max(0, 900*q - (fr.clk||0)))}`, 160, y + h/2 + .5);
+  const d = them ? dn.slice(opp.length + 3) : dn, room = 116; let f = 9;
+  bcFont(x, f); while(f > 6 && x.measureText(d).width > room){ f -= .5; bcFont(x, f); }
+  x.fillStyle = "#ffd766"; x.textAlign = "left"; x.fillText(d, 191, y + h/2 + .5);
+}
+function bcDraw(x, G, fr, fi){
+  const C = (fr.cam ?? 60) - 18, P = (Y, X) => bcPt(Y, X, C), F = RB.X0, N = RB.X1, lo = Math.floor((C - 30)/5)*5, hi = C + 30;
+  x.setTransform(BC.S, 0, 0, BC.S, 0, 0); x.globalAlpha = 1; x.textBaseline = "middle"; x.lineCap = "round"; x.lineJoin = "round";
+  const cr = bcCrowd(), sx = Math.max(0, Math.min(cr.width - BC.W*BC.S, (200 + (C + 10)*5 - BC.CX)*BC.S));
+  x.drawImage(cr, sx, 0, BC.W*BC.S, cr.height, 0, 0, BC.W, 46);
+  x.fillStyle = "#0b1528"; x.fillRect(0, 44, BC.W, 7); x.fillStyle = "rgba(255,201,60,.6)"; x.fillRect(0, 50.4, BC.W, .7);
+  const sg = x.createLinearGradient(0, 51, 0, BC.H); sg.addColorStop(0, "#1d5229"); sg.addColorStop(1, "#2b7337"); x.fillStyle = sg; x.fillRect(0, 51, BC.W, BC.H - 51);
+  const quad = (Y0, Y1, X0, X1) => { const a = P(Y0,X0), b = P(Y1,X0), c = P(Y1,X1), d = P(Y0,X1); x.beginPath(); x.moveTo(a[0],a[1]); x.lineTo(b[0],b[1]); x.lineTo(c[0],c[1]); x.lineTo(d[0],d[1]); x.closePath(); };
+  const seg = (Y0, X0, Y1, X1) => { const a = P(Y0, X0), b = P(Y1, X1); x.moveTo(a[0], a[1]); x.lineTo(b[0], b[1]); };
+  const gg = x.createLinearGradient(0, 52, 0, 150); gg.addColorStop(0, "#2a7036"); gg.addColorStop(1, "#46a44d");
+  quad(-10, 110, F, N); x.fillStyle = gg; x.fill();
+  x.fillStyle = "rgba(255,255,255,.055)"; for(let Y = Math.max(0, lo); Y < Math.min(100, hi); Y += 5) if((Y/5) % 2){ quad(Y, Y + 5, F, N); x.fill(); }
+  // end zones in team colors, lettering laid along the field's width
+  const ez = (Y0, col, txt, ink) => { if(Y0 + 10 < C - 32 || Y0 > C + 32) return; quad(Y0, Y0 + 10, F, N); x.fillStyle = col; x.fill();
+    const a = P(Y0 + 5, N), b = P(Y0 + 5, F), m = P(Y0 + 5, RB.XC), L = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    bcFont(x, 34, "400", "Anton"); const f = Math.min(34, 34*L*.84/(x.measureText(txt).width*.8));   // long nicknames shrink to fit sideline to sideline
+    x.save(); x.transform((b[0] - a[0])/L*.8, (b[1] - a[1])/L*.8, 1.25, 0, m[0], m[1]); bcFont(x, f, "400", "Anton"); x.textAlign = "center"; x.fillStyle = ink; x.fillText(txt, 0, 1); x.restore(); };
+  ez(-10, RB.NAVY, "17-0", RB.GOLD);
+  if(G.opp){ const [c1, c2] = TEAMS[G.opp].slice(2); ez(100, c1, TEAMS[G.opp][1].toUpperCase(), Math.abs(rbLum(c1) - rbLum(c2)) > .25 ? c2 : rbInk(c1)); } else ez(100, RB.NAVY, "17-0", RB.GOLD);
+  // chalk: yard lines every 5, heavier goal lines, sidelines and end lines, hash marks
+  x.strokeStyle = "rgba(255,255,255,.82)"; x.lineWidth = .9; x.beginPath();
+  for(let Y = Math.max(0, lo); Y <= Math.min(100, hi); Y += 5) seg(Y, F, Y, N);
+  x.stroke(); x.lineWidth = 1.7; x.strokeStyle = "rgba(255,255,255,.92)"; x.beginPath();
+  [0, 100, -10, 110].forEach(Y=>seg(Y, F, Y, N)); seg(-10, F, 110, F); seg(-10, N, 110, N); x.stroke();
+  x.lineWidth = .7; x.strokeStyle = "rgba(255,255,255,.7)"; x.beginPath();
+  for(let Y = Math.max(1, Math.ceil(C - 32)); Y < Math.min(100, hi); Y++) if(Y % 5) [F + 6, RB.XC - 12, RB.XC + 11, N - 6].forEach(X=>seg(Y, X - 1.6, Y, X + 1.6));
+  x.stroke();
+  x.textAlign = "center"; x.fillStyle = "rgba(255,255,255,.88)";
+  for(let Y = 10; Y <= 90; Y += 10) if(Y > C - 34 && Y < C + 34) [N - 15, F + 15].forEach(X=>{ const p = P(Y, X);
+    x.save(); x.translate(p[0], p[1]); x.scale(p[2], p[2]*.6); bcFont(x, 17); x.fillText(String(Y<=50 ? Y : 100 - Y), 0, 0); x.restore(); });
+  if(C > 20 && C < 80){ const m = P(50, RB.XC); x.save(); x.translate(m[0], m[1]); x.scale(m[2], m[2]*.5);
+    x.fillStyle = "rgba(11,20,36,.55)"; x.beginPath(); x.arc(0, 0, 20, 0, 6.283); x.fill(); x.strokeStyle = "rgba(255,201,60,.8)"; x.lineWidth = 1.6; x.stroke();
+    x.fillStyle = "#ffc93c"; bcFont(x, 15, "400", "Anton"); x.fillText("17-0", 0, 1); x.restore(); }
+  // line of scrimmage, first-down line, target spot
+  const tv = (Y, col) => { x.strokeStyle = col; x.lineWidth = 1.6; x.beginPath(); seg(Y, F, Y, N); x.stroke(); };
+  if(fr.los!=null) tv(fr.los, "rgba(59,130,246,.95)");
+  if(fr.fd!=null) tv(fr.fd, "rgba(255,214,51,.95)");
+  if(fr.tgt){ const p = P(fr.tgt[1], fr.tgt[0]); x.beginPath(); x.ellipse(p[0], p[1], 8*p[2], 2.8*p[2], 0, 0, 6.283);
+    x.fillStyle = "rgba(255,214,51,.2)"; x.fill(); x.strokeStyle = "rgba(255,214,51,.95)"; x.lineWidth = 1.1; x.stroke(); }
+  // ball shadow on the turf while it is in the air
+  const b = fr.ball, bg = b && P(b[1], b[0]);
+  if(b && b[2] > 1){ const r = 4.5*bg[2], sh = x.createRadialGradient(bg[0], bg[1], 0, bg[0], bg[1], r);
+    sh.addColorStop(0, "rgba(0,0,0,.38)"); sh.addColorStop(1, "rgba(0,0,0,0)"); x.fillStyle = sh; x.beginPath(); x.ellipse(bg[0], bg[1], r, r*.4, 0, 0, 6.283); x.fill(); }
+  // players, far side first; 17-0 always faces +Y (right), the opponent faces left
+  const kit = bcKits(G), t = performance.now()/1000;
+  (fr.pl||[]).slice().sort((a, c)=>a[0] - c[0]).forEach(p=>{
+    const us = p[2][0]==="U", k = us ? kit.us : kit.them, lab = k.lab[p[4]>=11 ? "D" : "O"][+p[2].slice(1)] || "";
+    bcMan(x, P(p[1], p[0]), k, lab, us ? 1 : -1, p[3] ? t*11 + p[4] : null); });
+  // the pass: a quadratic bezier through the throw's apex, drawn on as the QB aims (d), with a soft glow
+  if(fr.arc){ const a = fr.arc, d = a.d==null ? 1 : a.d, lift = (pt, z) => [pt[0], pt[1] - z*1.15*pt[2]];
+    const q0 = lift(P(a.Y0, a.x0), 7), q2 = lift(P(a.Y1, a.x1), 7), m = lift(P((a.Y0 + a.Y1)/2, (a.x0 + a.x1)/2), 7 + a.h);
+    const q1 = [2*m[0] - (q0[0] + q2[0])/2, 2*m[1] - (q0[1] + q2[1])/2], L = (u, v, t) => [u[0] + (v[0] - u[0])*t, u[1] + (v[1] - u[1])*t];
+    const r1 = L(q0, q1, d), r2 = L(r1, L(q1, q2, d), d);
+    [[3.4, "rgba(255,255,255,.2)"], [1.2, "rgba(255,255,255,.96)"]].forEach(([w, c])=>{ x.lineWidth = w; x.strokeStyle = c; x.beginPath(); x.moveTo(q0[0], q0[1]); x.quadraticCurveTo(r1[0], r1[1], r2[0], r2[1]); x.stroke(); }); }
+  if(b){ const s = bg[2], bx = bg[0], by = bg[1] - b[2]*1.15*s;
+    x.save(); x.translate(bx, by); x.rotate(-.5); x.fillStyle = "#7a3f17"; x.beginPath(); x.ellipse(0, 0, 2.5*s, 1.55*s, 0, 0, 6.283); x.fill();
+    x.strokeStyle = "rgba(0,0,0,.45)"; x.lineWidth = .5; x.stroke(); x.strokeStyle = "#fff"; x.lineWidth = .45; x.beginPath(); x.moveTo(-1*s, -.2*s); x.lineTo(1*s, -.2*s); x.stroke(); x.restore(); }
+  if(fr.flash){ x.fillStyle = "rgba(255,255,255,.6)"; x.fillRect(0, 0, BC.W, BC.H); }
+  // network bug + scorebug, then this frame's graphic
+  x.fillStyle = "rgba(255,255,255,.6)"; bcFont(x, 12, "400", "Anton"); x.textAlign = "right"; x.fillText("17–0", 310, 12);
+  bcBug(x, G, fr, fi);
+  const sc = `17-0 ${fr.u ?? 0}  ·  ${G.opp || "BYE"} ${fr.t ?? 0}`, ink = G.opp ? rbTeamInk(G.opp) : "#ffc93c";
+  if(fr.big) bcBanner(x, G, "b" + fr.big[0] + sc, fr.big[0].replace(/!+$/, ""), sc, fr.big[1]===RB.YEL ? "#ffc93c" : fr.big[1]);
+  else if(fr.band && fr.fin) bcBanner(x, G, "fin", "FINAL", sc, G.q.g && G.q.g.win ? "#2fd27a" : "#ff5d6c");
+  else if(fr.band && G.q.bye) bcBanner(x, G, "bye", "FIRST-ROUND BYE", "NO. 1 SEED · STRAIGHT TO THE DIVISIONAL ROUND", "#ffc93c");
+  else if(fr.band && fr.dn==="KICKOFF") bcBanner(x, G, "ko", G.q.label, `17-0 ${G.q.away ? "@" : "VS"} ${TEAMS[G.opp][0]} ${TEAMS[G.opp][1]}`.toUpperCase(), "#ffc93c");
+  else if(fr.band){ const us = fr.band.a[0].startsWith("17-0 "); bcBanner(x, G, "c" + fr.band.a[0] + sc, fr.band.a[0].replace(/^\S+ /, ""), (us ? "17-0" : G.opp) + "  ·  " + sc, us ? "#ffc93c" : ink); }
+  else G.bk = null;
+  if(fr.small){ bcFont(x, 11); const w = x.measureText(fr.small[0]).width + 22; x.fillStyle = "rgba(7,12,24,.85)"; bcRR(x, BC.CX - w/2, 62, w, 17, 3);
+    x.fillStyle = "#fff"; x.textAlign = "center"; x.fillText(fr.small[0], BC.CX, 71); }
+}
+// Between two engine frames the broadcast tweens players, ball, camera and the arc's draw-on; a cut (new segment, flash) never tweens.
+function bcMix(a, b, t){
+  if(!b || a.sg!==b.sg || a.flash || b.flash || !a.pl || !b.pl || a.pl.length!==b.pl.length || a.pl.some((p,i)=>p[2]!==b.pl[i][2])) return a;
+  const L = (u, v) => u + (v - u)*t;
+  return {...a, cam:L(a.cam, b.cam), pl:a.pl.map((p,i)=>{ const q = b.pl[i]; return [L(p[0], q[0]), L(p[1], q[1]), p[2], p[3] || q[3], p[4]]; }),
+    ball:a.ball && b.ball ? [L(a.ball[0], b.ball[0]), L(a.ball[1], b.ball[1]), L(a.ball[2], b.ball[2])] : a.ball,
+    arc:a.arc && b.arc ? {...b.arc, d:L(a.arc.d ?? 1, b.arc.d ?? 1)} : a.arc};
+}
+// The frame's time (ms) plays out on a 33 ms paint grid (<= 30 fps); the engine still advances exactly on the frame's own timing.
+function bcTween(G, a, fi, ms){
+  const b = G.F[RS.fi], t0 = performance.now();
+  const go = () => {
+    const now = performance.now(), e = now - t0;
+    if(e >= ms - 1 || RS.skip || RS.all) return rsStep();
+    const wait = 33 - (now - (RS.drawn || 0));
+    if(wait > 1) return rsLater(go, Math.min(wait, ms - e));
+    bcDraw(RS.ctx, G, bcMix(a, b, e/ms), fi); RS.drawn = now;
+    rsLater(go, Math.min(33, ms - e));
+  };
+  go();
+}
+
 let RS = null, RS_TOK = 0;
 const rsLive = tok => RS && RS.tok===tok && tok===RS_TOK && S && document.getElementById("stad");
 function rsLater(fn, ms){ const tok = RS.tok; clearTimeout(spinTimer); spinTimer = setTimeout(()=>{ if(rsLive(tok)) fn(); }, ms); }
@@ -1982,37 +2219,43 @@ const rsTile = (id, label, g, away, cls="") => { const [,,c1,c2] = TEAMS[g.team]
       <div class="res num"><b></b><div></div></div>
     </div>`; };
 
-function renderRetroSeason(){
-  applyLook(true); clearTimeout(spinTimer); $("#confetti").hidden = true;
+function renderRetroSeason(){ rsRender(false); }
+function renderModernSeason(){ rsRender(true); }
+// bc = Broadcast (Modern look): same Q, frames, timers and end cards; the canvas is 320x180 at a fixed 2x backing and the scorebug lives on it.
+function rsRender(bc){
+  applyLook(lookRetro()); clearTimeout(spinTimer); $("#confetti").hidden = true;
   const L = LEVELS[S.level], po = playoffs(S.season.filter(g=>g.win).length);
   const Q = S.season.map(g=>({g, reg:true, label:`WEEK ${g.week}`, short:`WK${g.week}`, away:g.away}));
   if(po.seed===1) Q.push({bye:true, label:"BYE WEEK", short:"BYE"});
   po.games.forEach(g=>Q.push({g, label:g.round.toUpperCase(), short:RS_SHORT[g.round], away:g.round!=="Super Bowl" && !g.home}));
-  RS = {tok:++RS_TOK, po, Q, k:0, w:0, l:0, fast:false, skip:false, all:false, over:false, ended:false, team:rbTeam()};
-  $("#app").innerHTML = `${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${L.label}</span><span id="rlook">${lookBtn()}</span>`)}
-  <div class="rs"><div class="rs-main">
-    <div class="rs-stad">
-      <div class="rs-sb num"><span id="rsWk">WK1</span><span class="tm">17-0</span><b id="rsU">0</b><span class="tm" id="rsOpp">---</span><b id="rsT">0</b><span class="q"><span id="rsQ">Q1</span> <span id="rsC">15:00</span></span></div>
-      <canvas id="stad" width="${RB.W}" height="${RB.H}" aria-label="Game field"></canvas>
-      <div class="rs-dn" id="rsDn">KICKOFF</div>
-    </div>
-    <div>
-      <div class="rs-top">
+  RS = {tok:++RS_TOK, bc, po, Q, k:0, w:0, l:0, fast:false, skip:false, all:false, over:false, ended:false, team:rbTeam(bc)};
+  const side = `<div class="rs-top">
         <div><div class="label">Regular season</div><div class="bigrec num" id="rsRec"><span class="w">0</span><span class="d">–</span><span class="l">0</span></div></div>
         <div class="rs-ctl" id="rsCtl"><button class="ghost" id="rsSkip">Skip</button><button class="ghost" id="rsFast" aria-pressed="false">Fast</button><button class="ghost" id="rsAll" hidden>Skip season</button></div>
       </div>
       <div class="games" id="games">${S.season.map(g=>rsTile("g"+g.week, `WEEK ${g.week}`, g, g.away)).join("")}</div>
       <div class="label rs-poh" id="rpoh" hidden>Playoffs</div>
-      <div class="games po" id="rpo"></div>
+      <div class="games po" id="rpo"></div>`;
+  $("#app").innerHTML = `${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${MODES[S.mode].label} · ${L.label}</span><span id="rlook">${lookBtn()}</span><button class="ghost" id="quit">Quit</button>`)}
+  ${bc ? `<div class="bc">
+    <div class="bc-tv"><canvas id="stad" class="bc-cv" width="${BC.W*BC.S}" height="${BC.H*BC.S}" aria-label="Game broadcast"></canvas></div>
+    <div class="bc-side">${side}</div>
+  </div>` : `<div class="rs"><div class="rs-main">
+    <div class="rs-stad">
+      <div class="rs-sb num"><span id="rsWk">WK1</span><span class="tm">17-0</span><b id="rsU">0</b><span class="tm" id="rsOpp">---</span><b id="rsT">0</b><span class="q"><span id="rsQ">Q1</span> <span id="rsC">15:00</span></span></div>
+      <canvas id="stad" width="${RB.W}" height="${RB.H}" aria-label="Game field"></canvas>
+      <div class="rs-dn" id="rsDn">KICKOFF</div>
     </div>
-  </div></div>
+    <div>${side}</div>
+  </div></div>`}
   <div id="after"></div>`;
   document.querySelectorAll("#rlook button").forEach(b=>{ b.disabled = true; });
-  $("#homebtn").onclick = renderHome;
+  $("#homebtn").onclick = renderHome; $("#quit").onclick = renderHome;
   $("#rsSkip").onclick = () => { RS.skip = true; };
   $("#rsFast").onclick = e => { RS.fast = !RS.fast; e.currentTarget.setAttribute("aria-pressed", RS.fast); };
   $("#rsAll").onclick = () => { RS.all = RS.skip = true; };
   RS.ctx = $("#stad").getContext("2d");
+  if(bc && document.fonts) ["700 10px 'Barlow Condensed'","10px Anton"].forEach(f=>document.fonts.load(f).catch(()=>{}));
   rsLater(rsNext, reduce ? 0 : 300);
 }
 function rsNext(){
@@ -2023,27 +2266,32 @@ function rsNext(){
       : rsTile(q.id = "rp"+RS.k, q.label, q.g, q.away, q.g.round==="Super Bowl" ? "sb" : "")); }
   RS.G = q.bye ? rbBye(q) : rbGame(q); RS.fi = 0; RS.skip = false; // a Skip tapped during the FINAL hold must not skip the next game too
   const o = $("#rsOpp"), t = q.bye ? null : TEAMS[q.g.team];
-  o.textContent = q.bye ? "BYE" : q.g.team; o.style.setProperty("--c1", t ? t[2] : RB.PANEL); o.style.setProperty("--c2", t ? t[3] : "#28406a");
+  if(o){ o.textContent = q.bye ? "BYE" : q.g.team; o.style.setProperty("--c1", t ? t[2] : RB.PANEL); o.style.setProperty("--c2", t ? t[3] : "#28406a"); }
   rsSet("rsWk", q.short);
   rsStep();
 }
+// Draw caps: Retro paints at most every 50 ms (20 fps), Broadcast every 33 ms (30 fps).
+const rsMin = ms => Math.max(RS.bc ? 33 : 50, ms);
 function rsStep(){
   const G = RS.G;
   if(RS.skip || RS.all || reduce){ RS.skip = false; RS.fi = Math.max(RS.fi, G.fin); }
-  const fr = G.F[RS.fi];
-  rbDraw(RS.ctx, G, fr, RS.fi);
+  const fi = RS.fi, fr = G.F[fi];
+  if(!RS.bc) rbDraw(RS.ctx, G, fr, fi);   // Broadcast paints in bcTween on its own 33 ms grid
   const q = Math.min(4, Math.floor((fr.clk||0)/900) + 1);
-  rsSet("rsU", fr.u); rsSet("rsT", fr.t); rsSet("rsQ", fr.fin || RS.fi>G.fin ? "FINAL" : `Q${q}`); rsSet("rsC", fmtTime(Math.max(0, 900*q - (fr.clk||0)))); rsSet("rsDn", fr.dn);
-  if(RS.fi>=G.fin && !G.done){ G.done = true; rsResult(G.q); }
-  if(RS.fi >= G.F.length-1 || (G.done && (RS.all || reduce))){
+  rsSet("rsU", fr.u); rsSet("rsT", fr.t); rsSet("rsQ", fr.fin || fi>G.fin ? "FINAL" : `Q${q}`); rsSet("rsC", fmtTime(Math.max(0, 900*q - (fr.clk||0)))); rsSet("rsDn", fr.dn);
+  if(fi>=G.fin && !G.done){ G.done = true; rsResult(G.q); }
+  if(fi >= G.F.length-1 || (G.done && (RS.all || reduce))){
+    if(RS.bc){ bcDraw(RS.ctx, G, fr, fi); RS.drawn = performance.now(); }   // the FINAL hold always shows
     RS.k++;
-    const wait = RS.all ? 40 : reduce ? 200 : (fr.ms || 50) / (RS.fast ? 2 : 1);   // the FINAL stamp holds ~500 ms
+    const wait = rsMin(RS.all ? 40 : reduce ? 200 : (fr.ms || 50) / (RS.fast ? 2 : 1));   // the FINAL stamp holds ~500 ms
     if(G.q.reg && !G.q.g.win && RS.l===1 && !RS.over && !RS.all){ RS.over = true; return rsLater(()=>rsGameOver(G.q), wait); }
     return rsLater(rsNext, wait);
   }
-  const nx = RS.fi + 1;
+  const nx = fi + 1;
   RS.fi = RS.fast && nx < G.F.length-1 && !G.F[nx].key && !G.F[nx].fin ? nx + 1 : nx;
-  rsLater(rsStep, (fr.ms || 50) / (RS.fast && fr.ms ? 2 : 1));
+  const ms = rsMin((fr.ms || 50) / (RS.fast && fr.ms ? 2 : 1));
+  if(RS.bc) return bcTween(G, fr, fi, ms);
+  rsLater(rsStep, ms);
 }
 function rsResult(q){
   if(q.bye) return;
@@ -2064,11 +2312,27 @@ function rsSprImg(p, i, scale){
     SPRITE.draw(c.getContext("2d"), sp, scale); u = c.toDataURL(); }
   return `<img class="spr" src="${u}" width="${32*scale}" height="${40*scale}" alt="">`;
 }
+// Broadcast end cards: a dark TV card over the dimmed game (confetti, z 50, stays on top of it)
+const bcChip = t => { const [c1,c2] = t ? TEAMS[t].slice(2) : [RB.JERSEY, RB.GOLD]; return `<i class="chip" style="--c1:${c1};--c2:${c2}"></i>`; };
+const bcOver = (label, html) => { const ov = document.createElement("div"); ov.className = "bc-over"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-label", label);
+  ov.innerHTML = `<div class="bc-card">${html}</div>`; return ov; };
+const BC_TROPHY = `<svg class="bc-trophy" viewBox="0 0 120 180" aria-hidden="true"><defs>
+  <linearGradient id="bct" x1="0" x2="1"><stop offset="0" stop-color="#8d96a5"/><stop offset=".35" stop-color="#f4f6fa"/><stop offset=".6" stop-color="#c9d0db"/><stop offset="1" stop-color="#7b8494"/></linearGradient>
+  <linearGradient id="bcb" x1="0" x2="1"><stop offset="0" stop-color="#1b2f50"/><stop offset=".5" stop-color="#2c4673"/><stop offset="1" stop-color="#14243f"/></linearGradient></defs>
+  <ellipse cx="60" cy="38" rx="21" ry="30" transform="rotate(-28 60 38)" fill="url(#bct)"/>
+  <path d="M47 24 L70 54" stroke="#fff" stroke-opacity=".7" stroke-width="2" stroke-linecap="round"/>
+  <path d="M52 62 Q60 70 68 62 L74 132 L46 132 Z" fill="url(#bct)"/>
+  <rect x="36" y="132" width="48" height="10" rx="2" fill="url(#bct)"/>
+  <path d="M30 142 H90 L96 172 H24 Z" fill="url(#bcb)"/>
+  <rect x="44" y="152" width="32" height="8" rx="1.5" fill="#ffc93c"/></svg>`;
 function rsGameOver(q){
-  const g = q.g, ov = document.createElement("div");
-  ov.className = "rs-over"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-label", "Game over");
-  ov.innerHTML = `<h2 class="rs-lose rs-stamp">YOU LOSE</h2><p>17-0 DREAM OVER · WEEK ${g.week} · ${g.us}-${g.them} ${g.away ? "@" : "VS"} ${g.team}</p>
-    <div class="rs-slump">${rsSprImg(RS.team.six[0], 0, 4)}</div><button class="btn" id="rscont">Continue season</button>`;
+  const g = q.g;
+  const ov = RS.bc ? bcOver("Game over", `<div class="bc-kick">WEEK ${g.week} · FINAL</div><h2 class="bc-h">DREAM OVER</h2><p class="bc-sub">17–0 is gone</p>
+      <div class="bc-score num"><span>${bcChip(null)}17-0 <b>${g.us}</b></span><span class="bc-dash">–</span><span><b>${g.them}</b> ${g.away ? "@" : "vs"} ${g.team}${bcChip(g.team)}</span></div>
+      <button class="btn" id="rscont">Continue season</button>`) : document.createElement("div");
+  if(!RS.bc){ ov.className = "rs-over"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-label", "Game over");
+    ov.innerHTML = `<h2 class="rs-lose rs-stamp">YOU LOSE</h2><p>17-0 DREAM OVER · WEEK ${g.week} · ${g.us}-${g.them} ${g.away ? "@" : "VS"} ${g.team}</p>
+    <div class="rs-slump">${rsSprImg(RS.team.six[0], 0, 4)}</div><button class="btn" id="rscont">Continue season</button>`; }
   $("#app").appendChild(ov);
   let gone = false; const go = () => { if(gone) return; gone = true; ov.remove(); rsLater(rsNext, 0); };
   $("#rscont").onclick = go;
@@ -2077,18 +2341,21 @@ function rsGameOver(q){
 function rsEnd(){
   if(RS.ended) return; RS.ended = true;
   const po = RS.po, w = S.season.filter(g=>g.win).length, l = S.season.length - w, pw = po.games.filter(g=>g.win).length, last = po.games[po.games.length-1];
-  const rec = `${w}-${l}${po.games.length ? ` · ${pw}-${po.games.length-pw} PLAYOFFS` : ""}`, ov = document.createElement("div");
-  ov.className = "rs-over rs-end"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-label", "Season over");
+  const rec = `${w}-${l}${po.games.length ? ` · ${pw}-${po.games.length-pw} PLAYOFFS` : ""}`;
+  const ov = RS.bc ? bcOver("Season over", (po.champ ? `<div class="bc-kick num">${rec}</div><h2 class="bc-h bc-gold">SUPER BOWL CHAMPIONS</h2>${BC_TROPHY}<p class="bc-sub">Beat the ${esc(TEAMS[last.team][1])} ${last.us}–${last.them} in the Super Bowl</p>`
+      : l===0 ? `<div class="bc-kick">PLAYOFF EXIT · ${last.round.toUpperCase()}</div><h2 class="bc-h bc-gold">PERFECT SEASON</h2><p class="bc-sub num">${rec}</p>`
+      : `<div class="bc-kick">FINAL STANDINGS</div><h2 class="bc-h">SEASON OVER</h2><p class="bc-sub num">${rec}</p><p class="bc-line">${esc(playoffLine(po))}</p>`) + `<p class="bc-tap">Tap to continue</p>`) : document.createElement("div");
+  if(!RS.bc){ ov.className = "rs-over rs-end"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-label", "Season over");
   ov.innerHTML = (po.champ ? `<h2 class="rs-gold rs-stamp">SUPER BOWL<br>CHAMPIONS</h2><canvas class="rs-fw" id="rsfw" width="160" height="96"></canvas>
       <div class="rs-row">${RS.team.six.map((p,i)=>rsSprImg(p, i, 2)).join("")}</div><p class="rs-big">${rec}</p>`
     : l===0 ? `<h2 class="rs-gold rs-stamp">PERFECT<br>SEASON</h2><p class="rs-stamp rs-late">PLAYOFF EXIT · ${last.round.toUpperCase()}</p><p>${rec}</p>`
-    : `<h2>SEASON OVER</h2><p class="rs-big">${rec}</p><p>${esc(playoffLine(po).toUpperCase())}</p>`) + `<p class="rs-tap">Tap to continue</p>`;
+    : `<h2>SEASON OVER</h2><p class="rs-big">${rec}</p><p>${esc(playoffLine(po).toUpperCase())}</p>`) + `<p class="rs-tap">Tap to continue</p>`; }
   $("#app").appendChild(ov);
   const cv = $("#rsfw"), x = cv && cv.getContext("2d"), dur = reduce ? 2000 : 3000, t0 = Date.now();
   let gone = false; const go = () => { if(gone) return; gone = true; ov.remove(); rsFinish(); };
   ov.onclick = go;
   if(po.champ) confetti();
-  if(reduce){ if(x) rbFireworks(x, 8); return rsLater(go, dur); }
+  if(reduce || !x){ if(x) rbFireworks(x, 8); return rsLater(go, dur); }
   const tick = f => { if(x) rbFireworks(x, f); if(Date.now() - t0 >= dur) return go(); rsLater(()=>tick(f+1), 50); };
   tick(0);
 }
@@ -2808,9 +3075,9 @@ async function submitRun(run){
   if(!testWin()) await syncScores();
 }
 async function renderBoard(mode, level){
-  applyLook(false); clearTimeout(spinTimer); $("#confetti").hidden = true;
+  applyLook(lookRetro()); clearTimeout(spinTimer); $("#confetti").hidden = true;
   const tabs = (items, cur, attr) => `<div class="seg">${items.map(([k,l])=>`<button aria-selected="${cur===k}" data-${attr}="${k}">${l}</button>`).join("")}</div>`;
-  $("#app").innerHTML = `${header(`<button class="ghost" id="back">Home</button>`)}
+  $("#app").innerHTML = `${header(`${lookBtn()}<button class="ghost" id="back">Home</button>`)}
   <section class="lboard">
     <h2>Leaderboard</h2>
     ${tabs(Object.entries(MODES).map(([k,m])=>[k,m.label]), mode, "bmode")}
@@ -2818,7 +3085,7 @@ async function renderBoard(mode, level){
     <p class="hint">Best run per player. Ranked by wins, then playoff finish, then fastest draft.</p>
     <div id="lbrows"><p class="msg">Loading…</p></div>
   </section>`;
-  $("#back").onclick = renderHome; $("#homebtn").onclick = renderHome;
+  $("#back").onclick = renderHome; $("#homebtn").onclick = renderHome; wireLook();
   document.querySelectorAll("[data-bmode]").forEach(b=>b.onclick=()=>renderBoard(b.dataset.bmode, level));
   document.querySelectorAll("[data-blevel]").forEach(b=>b.onclick=()=>renderBoard(mode, b.dataset.blevel));
   const tok = renderBoard.tok = (renderBoard.tok||0)+1;   // a slow reply for an earlier tab must not paint over this one

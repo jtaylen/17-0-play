@@ -2,7 +2,7 @@
 // Strategy: the game shell (index.html, manifest, icons) is cached on install; navigations and
 // same-origin assets are served from cache first and refreshed in the background. Bump VERSION
 // whenever index.html changes so players get the new build on their next visit.
-const VERSION = "17-0-v2";
+const VERSION = "17-0-v3";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-180.png", "./icons/icon-192.png", "./icons/icon-512.png"];
 
 self.addEventListener("install", e => {
