@@ -2530,7 +2530,7 @@ function renderPackStage(state){
 }
 // Pack-opening timers all go through pkLater so Quit/Home, a reroll or a card pick can cancel them (pkStop).
 const PK = {t:[], fly:0};
-const PK_SEAL = 200, PK_SHAKE = 350, PK_FLASH = 120, PK_GHOST = 450, PK_STAG = 110, PK_UP = 570;
+const PK_SEAL = 200, PK_SHAKE = 350, PK_FLASH = 120, PK_GHOST = 450, PK_STAG = 110, PK_UP = 570, PK_FLY = 680;   // PK_FLY = the pkfly CSS duration
 const pkLater = (fn, ms) => PK.t.push(setTimeout(fn, ms));
 function pkStop(){
   PK.t.forEach(clearTimeout); PK.t = []; PK.fly = 0;
@@ -2569,6 +2569,8 @@ function openPack(slot){
       c.style.setProperty("--fx", cx-(q.left+q.width/2)+"px"); c.style.setProperty("--fy", cy-(q.top+q.height/2)+"px"); c.style.setProperty("--fd", i*PK_STAG+"ms"); });
     grid.classList.add("go"); PK.fly = performance.now();
     pkLater(()=>{ PK.fly = 0; }, (S.pack.length-1)*PK_STAG + PK_UP);
+    // Once the last card lands, drop the fly animation: iOS WebKit can leave a finished 3D flip painted mid-turn (tilted cards until one is tapped).
+    pkLater(()=>{ grid.classList.remove("pk-fly","go"); grid.classList.add("pk-shown"); }, (S.pack.length-1)*PK_STAG + PK_FLY + 50);
   };
   pkLater(()=>{
     document.body.insertAdjacentHTML("beforeend", `<div class="pkflash"></div>`);
