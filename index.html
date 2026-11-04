@@ -55,7 +55,7 @@
   --loss:#ff5d6c;
   --sky:#5cb2ff;
   --tier-elite:#ffc93c; --tier-star:#b78bff; --tier-good:#4fd1a5; --tier-ok:#8fa3c2;
-  --fam-moment:#ff8a3d; --fam-alt:#5cb2ff; --fam-legend:#b78bff; --fam-mythic:#ffc93c; --fam-ghouls:#ff7a1a;   /* v3 card families; ghouls = the v6 seasonal set */
+  --fam-moment:#ff8a3d; --fam-alt:#5cb2ff; --fam-legend:#b78bff; --fam-mythic:#ffc93c; --fam-ghouls:#ff7a1a; --fam-turkey:#e8a33a;   /* v3 card families; ghouls and turkey = the seasonal sets */
   --font-display:"Anton","Impact","Arial Narrow Bold",sans-serif;
   --font-label:"Barlow Condensed","Arial Narrow",sans-serif;
   --font-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -228,6 +228,7 @@ body:not(.retro) .home h1{padding:.06em .03em .04em;margin:-.06em -.03em -.04em;
 .home .free{margin-top:18px;font-size:13px;color:var(--muted)}
 /* v6 SEASONS: the one-line Home notice while a set's window is open (Gridiron Ghouls: orange on purple) */
 .szban{margin:-14px 0 4px;padding:3px 10px;border-radius:6px;font-family:var(--font-label);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;line-height:1.3;white-space:nowrap;color:#ff7a1a;background:#2b0f3f;border:1px solid #5b2287}
+.szban.sz-turkey{color:#e8a33a;background:#3d1a08;border-color:#7a4a1c}   /* Turkey Day: harvest gold on brown */
 body.retro .szban{font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:0;line-height:1.6;border-radius:0;border-width:2px;box-shadow:3px 3px 0 #000}
 /* phones: 12 px tall and tucked under the tag (the Modern Home at 375x667 has 13 px to spare) */
 @media (max-width:640px){.home .szban{margin:-6px 0 0;padding:0 8px;border:0;border-radius:4px;font-size:11px;line-height:12px;letter-spacing:.04em} body.retro .home .szban{font-size:8px;line-height:12px;border-radius:0;box-shadow:none}}
@@ -479,6 +480,14 @@ body.retro :is(.pcard,.bigcard).vc-ghouls .pfront{background:#0b0610}
 .bigcard .pc-mark{right:30px;bottom:24px;transform:scale(2);transform-origin:0 0}
 .vplate.vp-ghouls{background:var(--fam-ghouls);color:#120818}
 .seg button.ring-tabsz{color:var(--fam-ghouls)} .seg button.ring-tabsz[aria-selected="true"]{background:#2b0f3f;color:var(--fam-ghouls)}   /* .seg button scope: plain .ring-tabsz lost to .seg button */
+/* v10 Turkey Day (SEASONS): harvest gold frame on a brown-to-black card, a pixel drumstick (box-shadow pixels, 9 by 9 at 2 px, drawn up and left
+   of the anchor so it sits in the pumpkin's corner) in the art corner; the card text is the game line (seasonV desc) */
+.vc-turkey{--fam:var(--fam-turkey);--bg1:#5a2d0c;--bg2:#140a04;--ink:#fff1d6}
+:is(.pcard,.bigcard).vc-turkey .pfront{background:radial-gradient(120% 70% at 50% 30%,rgba(232,163,58,.26),transparent 70%),linear-gradient(170deg,#5a2d0c,#140a04)}
+body.retro :is(.pcard,.bigcard).vc-turkey .pfront{background:#140a04}
+.pc-mark.mk-turkey{box-shadow:-2px -6px 0 #b0602a,0 -6px 0 #b0602a,2px -6px 0 #b0602a,-4px -4px 0 #b0602a,-2px -4px 0 #f0a04a,0 -4px 0 #f0a04a,2px -4px 0 #b0602a,4px -4px 0 #b0602a,-4px -2px 0 #b0602a,-2px -2px 0 #f0a04a,0 -2px 0 #b0602a,2px -2px 0 #b0602a,4px -2px 0 #b0602a,6px -2px 0 #b0602a,-4px 0 0 #b0602a,-2px 0 0 #b0602a,0 0 0 #b0602a,2px 0 0 #b0602a,4px 0 0 #b0602a,6px 0 0 #b0602a,-2px 2px 0 #b0602a,0 2px 0 #b0602a,2px 2px 0 #b0602a,4px 2px 0 #b0602a,6px 2px 0 #fff1d6,0 4px 0 #b0602a,2px 4px 0 #b0602a,4px 4px 0 #b0602a,6px 4px 0 #fff1d6,8px 4px 0 #fff1d6,12px 4px 0 #fff1d6,8px 6px 0 #fff1d6,10px 6px 0 #fff1d6,12px 6px 0 #fff1d6,6px 8px 0 #fff1d6,8px 8px 0 #fff1d6,10px 8px 0 #fff1d6,6px 10px 0 #fff1d6}
+.vplate.vp-turkey{background:var(--fam-turkey);color:#140a04}
+.seg button.ring-tabturkey{color:var(--fam-turkey)} .seg button.ring-tabturkey[aria-selected="true"]{background:#3d1a08;color:var(--fam-turkey)}
 .bigcard.vc{--fr:var(--fam)}
 .bigcard.vc .pfront::after,.pcard.vc .pfront::after{display:none}   /* no double sheen on Legends: the foil carries it */
 .pc-stamp{position:relative;z-index:2;align-self:center;margin-top:2px;font-family:var(--font-label);font-weight:800;font-size:11px;letter-spacing:.22em;padding:2px 10px;border-radius:4px;background:var(--fam,#b78bff);color:#120a24}
@@ -542,6 +551,8 @@ body.retro .myth .mtitle{font-family:var(--px);font-size:clamp(16px,5.2vw,34px);
 /* v6 seasonal pull (szReveal): a purple fog rolls in, one flash, the set-palette art rises with the title and odds; 2.4 s, a tap skips */
 .pack.glow-ghouls{box-shadow:0 0 0 3px #ff7a1a,0 0 56px 16px rgba(123,47,190,.9)}
 body.retro .pack.glow-ghouls{box-shadow:0 0 0 4px #120818,0 0 0 10px #7b2fbe,10px 10px 0 #000}
+.pack.glow-turkey{box-shadow:0 0 0 3px #e8a33a,0 0 56px 16px rgba(160,82,29,.9)}
+body.retro .pack.glow-turkey{box-shadow:0 0 0 4px #140a04,0 0 0 10px #c8741e,10px 10px 0 #000}
 .szrev{position:fixed;inset:0;z-index:49;overflow:hidden;background:#07030b;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;cursor:pointer;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px))}
 .szrev .sfog{position:absolute;inset:-20%;background:radial-gradient(40% 30% at 30% 60%,rgba(123,47,190,.75),transparent 70%),radial-gradient(45% 35% at 70% 45%,rgba(91,34,135,.8),transparent 70%),radial-gradient(60% 40% at 50% 90%,rgba(160,80,220,.55),transparent 70%);animation:sfog 2.4s ease-out both}
 @keyframes sfog{0%{opacity:0;transform:translateY(12%) scale(1.15)}35%{opacity:1}100%{opacity:1;transform:translateY(-4%) scale(1)}}
@@ -560,6 +571,17 @@ body.retro .szrev>:not(i){animation-timing-function:steps(4)}
 body.retro .szrev .sart .spr{filter:none}
 body.retro .szrev .sname,body.retro .szrev .sodds{font-family:var(--px);font-weight:400;font-size:10px;letter-spacing:.04em}
 body.retro .szrev .stitle{font-family:var(--px);font-size:clamp(14px,4.6vw,30px);line-height:1.3;text-shadow:4px 4px 0 #2b0f3f}
+/* the set card's text (a Turkey Day game line) under the title; Turkey Day: an amber haze instead of the purple fog */
+.szrev .sdesc{font-family:var(--font-label);font-weight:700;font-size:14px;line-height:1.35;letter-spacing:.04em;color:#fff1d6;max-width:92vw}
+body.retro .szrev .sdesc{font-family:var(--px);font-weight:400;font-size:9px;line-height:1.6;letter-spacing:0}
+.szrev.sz-turkey{background:#0d0603}
+.szrev.sz-turkey .sfog{background:radial-gradient(40% 30% at 30% 60%,rgba(200,116,30,.7),transparent 70%),radial-gradient(45% 35% at 70% 45%,rgba(122,62,18,.8),transparent 70%),radial-gradient(60% 40% at 50% 90%,rgba(232,163,58,.5),transparent 70%)}
+.szrev.sz-turkey .sflash{background:#ffe9c0}
+.szrev.sz-turkey .sart .spr{filter:drop-shadow(0 0 24px rgba(232,163,58,.7))}
+.szrev.sz-turkey .sname{color:#ffe9c0} .szrev.sz-turkey .stitle{color:#e8a33a}
+body.retro .szrev.sz-turkey .sfog{background:radial-gradient(closest-side at 50% 55%,#7a3e12 0 45%,#3d1a08 45% 75%,transparent 75%)}
+body.retro .szrev.sz-turkey .sart .spr{filter:none}
+body.retro .szrev.sz-turkey .stitle{text-shadow:4px 4px 0 #3d1a08}
 /* the Legend (VDATA) walkout's odds line */
 .walkout .wodds{font-style:normal;font-family:var(--font-label);font-weight:800;font-size:16px;letter-spacing:.14em;color:#ffc93c}
 body.retro .walkout .wodds{font-family:var(--px);font-weight:400;font-size:10px;letter-spacing:.04em}
@@ -1254,20 +1276,61 @@ body.retro .nt-lad li{grid-template-columns:3em minmax(0,1fr) auto}   /* a tied 
 body.retro .nt-dots i{border-color:#000;background:var(--line)}
 body.retro .nt-pts{font-family:var(--px);font-weight:400;font-size:7px;letter-spacing:0}
 body.retro .nt-bar i{height:10px;border:2px solid #000}
+/* v10 RedZone: the tier pill, the clock bar (found n of N, a 10 px track draining over 60 s, the seconds; red for 300 ms on a miss, red
+   under 10 s), a found name in its rung (gold name, its value) or as a gold dot with the found names under the dots, the +pts pop */
+.nt-tier{display:inline-block;padding:1px 8px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase;line-height:1.5}
+.nt-clock{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-family:var(--font-label);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:13px;color:var(--muted)}
+.nt-found{flex:none;white-space:nowrap}
+.nt-found b{color:var(--fg)}
+.nt-track{flex:1;height:10px;box-sizing:border-box;overflow:hidden;border-radius:5px;background:var(--surface);border:1px solid var(--line)}
+.nt-track i{display:block;height:100%;background:var(--gold)}
+.nt-clock>.num{flex:none;min-width:2ch;text-align:right;font-size:18px;letter-spacing:0;color:var(--fg)}
+.nt-clock.low .nt-track i{background:var(--loss)} .nt-clock.low>.num{color:var(--loss)}
+.nt-clock.miss .nt-track{border-color:var(--loss);background:rgba(255,93,108,.4)} .nt-clock.miss>.num{color:var(--loss)}
+.nt-lad li.got{background:rgba(255,201,60,.1)}
+.nt-lad li.got .nm{border-top:0;color:var(--gold);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nt-lad li.got .v{letter-spacing:0;color:var(--fg)}
+.nt-dots i.got{background:var(--gold);border-color:var(--gold)}
+.nt-got{flex-basis:100%;display:flex;flex-wrap:wrap;justify-content:center;gap:2px 12px;margin:4px 0 0;font-family:var(--font-label);font-weight:700;font-size:14px;line-height:1.3;color:var(--gold)}
+.nt-head{position:relative}
+.nt-pop{position:absolute;right:0;bottom:100%;font-family:var(--font-display);font-weight:400;font-size:24px;line-height:1;color:var(--gold);opacity:0;pointer-events:none}
+@media (prefers-reduced-motion:no-preference){
+  .nt-track i{transition:width 1s linear}
+  .nt-clock.miss .nt-track{animation:ntMiss .3s ease-out both}
+  .nt-lad li.new,.nt-dots i.new,.nt-got span.new{animation:ntRung .45s ease-out both}
+  .nt-pop.on{animation:ntPop .9s ease-out both}
+  body.retro .nt-track i{transition-timing-function:steps(2)}
+  body.retro .nt-clock.miss .nt-track{animation-timing-function:steps(2)}
+  body.retro .nt-lad li.new,body.retro .nt-dots i.new,body.retro .nt-got span.new{animation-timing-function:steps(3)}
+  body.retro .nt-pop.on{animation-timing-function:steps(4)}
+}
+@keyframes ntMiss{from{background:var(--loss)}to{background:rgba(255,93,108,.4)}}
+@keyframes ntPop{0%{opacity:0;transform:translateY(6px)}20%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-12px)}}
+body.retro .nt-tier{font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:0;border-width:2px;border-radius:0;padding:2px 6px}
+body.retro .nt-clock{font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:0}
+body.retro .nt-clock>.num{font-size:12px}
+body.retro .nt-track{border:2px solid #000;border-radius:0;background:var(--line)}
+body.retro .nt-dots i.got{border-color:#000;background:var(--gold)}
+body.retro .nt-got{font-family:var(--px);font-weight:400;font-size:8px;line-height:1.8}
+body.retro .nt-pop{font-family:var(--px);font-size:12px}
 /* phones: the rungs take the height the screen has under Skip (22 to 38 px each), so the question screen ends near the bottom and never
    scrolls; the dots panel of a whole list stands as tall as ten rungs, its dots centred in it */
-@media (max-width:560px){ .tcol.fit>.nt2>.nt-lad,.tcol.fit>.nt2>.nt-dots{flex:0 1 auto;min-height:0} .tcol.fit .nt-lad li{flex:0 1 auto;min-height:18px;height:clamp(22px,calc((100dvh - 400px) / 11),38px)}
-  .tcol.fit .nt-dots{height:calc(10 * clamp(22px,calc((100dvh - 400px) / 11),38px));box-sizing:border-box;align-content:center;justify-content:center;gap:8px;overflow:hidden} .tcol.fit .nt-dots i{width:18px;height:18px} }
+@media (max-width:560px){ .tcol.fit>.nt2>.nt-lad,.tcol.fit>.nt2>.nt-dots{flex:0 1 auto;min-height:0} .tcol.fit .nt-lad li{flex:0 1 auto;min-height:18px;height:clamp(22px,calc((100dvh - 424px) / 11),38px)}
+  .tcol.fit .nt-dots{height:calc(10 * clamp(22px,calc((100dvh - 424px) / 11),38px));box-sizing:border-box;align-content:center;justify-content:center;gap:8px;overflow:hidden} .tcol.fit .nt-dots i{width:18px;height:18px} }
 /* a short phone: the ladder folds into two columns of five rungs (the dots panel as tall), so every rung keeps 18 px or more */
 @media (max-width:560px) and (max-height:620px){
-  .tcol.fit .nt-lad{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(var(--h),clamp(18px,calc((100dvh - 440px) / 5),28px));grid-auto-flow:column;align-content:start}
+  .tcol.fit .nt-lad{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(var(--h),clamp(18px,calc((100dvh - 464px) / 5),28px));grid-auto-flow:column;align-content:start}
   .tcol.fit .nt-lad li{min-height:0;height:auto;padding:0 8px;gap:4px;grid-template-columns:2.2em minmax(0,1fr) auto}
   .tcol.fit .nt-lad li.c2{border-left:1px solid var(--line)} .tcol.fit .nt-lad li.c2t{border-top:0}
   body.retro .tcol.fit .nt-lad li{grid-template-columns:3em minmax(0,1fr) auto}
-  .tcol.fit .nt-dots{height:calc(5 * clamp(18px,calc((100dvh - 440px) / 5),28px));gap:6px} .tcol.fit .nt-dots i{width:14px;height:14px} }   /* 14 px dots: the longest list (51) fits five rungs on a 320 px phone */
+  .tcol.fit .nt-dots{height:calc(5 * clamp(18px,calc((100dvh - 464px) / 5),28px));gap:4px 6px;padding:6px 10px} .tcol.fit .nt-dots i{width:14px;height:14px} .tcol.fit .nt-got{margin-top:2px;font-size:12px} body.retro .tcol.fit .nt-dots{padding:5px 10px} body.retro .tcol.fit .nt-got{line-height:1.4} }   /* 14 px dots: the longest list (51) fits five rungs on a 320 px phone, and (v10) one line of found names under them */
 /* the keyboard is up (see ntCap): the category header folds, and on a short phone the meta row too, so the open list has room above the keyboard */
 @media (max-width:560px){.nt2.kb .nt-head{display:none}}
-@media (max-width:560px) and (max-height:620px){.nt2.kb .dl-meta{display:none}}
+@media (max-width:560px) and (max-height:700px){.nt2.kb .dl-meta{display:none}}   /* v10: 700 (was 620), the clock row keeps its place while typing */
+/* v10 a short phone typing: the question and the clock row tighten (the clock row is the one thing v10 adds above the box), so the open list still ends above the keyboard */
+@media (max-width:560px) and (max-height:620px){.nt2 .nt-head{margin-top:4px} .nt2 .dl-q{margin:4px 0 6px} .nt2 .nt-clock{margin-bottom:6px} .nt2.kb .dl-q{font-size:17px;margin:2px 0 6px} .nt2.kb .nt-clock>.num{font-size:14px} body.retro .nt2.kb .nt-clock>.num{font-size:10px}}
+/* v10: Retro's meta row steps down a size under 400 px, so the day score of its max (three digits each) keeps the row on one line */
+@media (max-width:400px){body.retro .nt2 .dl-meta{font-size:8px}}
 /* a narrow phone: smaller lamps, and Retro's meta row steps its pixel type down (as play 7's line does), so the lamps and the streak stay on one line;
    Modern's category header steps down to 24 px so the longest title keeps to two lines */
 @media (max-width:360px){.nt-cat{font-size:24px} .nt-lamps{gap:4px} .nt-lamp{width:8px;height:8px} body.retro .nt-lamp{width:7px;height:7px} body.retro .nt2 .dl-meta{font-size:7px;gap:6px;line-height:2}}
@@ -2361,7 +2424,7 @@ function renderHome(){
     <div class="hometop">${lookBtn(true)}${acctOn()?`<button class="ghost acctbtn${signedIn()?" on":""}" id="acctbtn"><span>${signedIn()?"Account ●":"Account"}</span></button>`:""}</div>
     <h1>17–0</h1>
     <p class="tag">Draft a perfect season</p>
-    ${(z => z ? `<p class="szban" role="status">${esc(z.name)} packs through ${mdLabel(z.to)}</p>` : "")(seasonOpen())}
+    ${(z => z ? `<p class="szban sz-${z.fam}" role="status">${esc(z.name)} packs through ${mdLabel(z.to)}</p>` : "")(seasonOpen())}
     <div class="seg" role="tablist" aria-label="Game mode">${[...MODE_ORDER.map(k=>[k,MODES[k].label]),["daily","Daily"]].map(([k,l])=>`<button role="tab" aria-selected="${MODE===k}" data-mode="${k}">${l}</button>`).join("")}</div>
     <p class="modesub">${MODE==="daily" ? "A new game every day" : MODES[MODE].sub}</p>
     <div class="modes${MODE==="daily" ? " daily" : ""}">${MODE==="daily" ? dailyHomeHTML() : ""}${(MODE==="daily" ? [] : Object.entries(LEVELS)).map(([k,L])=>{
@@ -4013,14 +4076,21 @@ const inLaunchWindow = () => { const t0 = new Date(V3_LAUNCH.from+"T00:00:00").g
 // v6 seasonal sets. Each set opens every year from `from` to `to` (local month-day, both days included; a set may wrap the new year).
 // drawPack offers a set's cards only while its window is open; owned cards render everywhere forever through their Ring key and a title
 // "<name>: <player>" (famOfTitle). The list is data-build/v6/seasons/<k>.json with one reason per card; cards = Ring keys with a sprite row.
-// pal = the set's sprite palette (jersey c1, trim c2). #test-season=<k> forces that set open (testWin: -test stores only).
+// pal = the set's sprite palette (jersey c1, trim c2); tab = the Ring tab word (default: the name's last word); odds (optional) = the set's
+// swap chance per level in place of SEASON_ODDS (Turkey Day: an all Legend / Elite pool swaps far less often, so its odds are higher). #test-season=<k> forces that set open (testWin: -test stores only).
+// lines (optional) = {Ring key: card text}: seasonV passes it as desc, shown where a Moment's text shows (the reveal and the card back).
+// A key may sit in more than one set (Randy Moss is a Ghoul and a Turkey Day card): SEASON_BY_KEY holds every set a key is in.
 const SEASONS = [{k:"ghouls", name:"Gridiron Ghouls", from:"10-20", to:"11-03", fam:"ghouls", pal:{c1:"#ff7a1a", c2:"#2b0f3f"},
-  cards:["Calvin Johnson|WR|2007","Marshawn Lynch|RB|2007","Randy Moss|WR|1998","Rob Gronkowski|TE|2010","Jerome Bettis|RB|1993","Walter Payton|RB|1975","Dave Casper|TE|1974","Red Grange|RB|1925","Christian Okoye|RB|1987","Crazy Legs Hirsch|WR|1949","Ken Stabler|QB|1970","Daryle Lamonica|QB|1963","Kordell Stewart|QB|1995","Ben Roethlisberger|QB|2004","Matt Ryan|QB|2008","Terry McLaurin|WR|2019","LeSean McCoy|RB|2009","Andre Rison|WR|1989","Martellus Bennett|TE|2008","Cam Newton|QB|2011","Roger Staubach|QB|1969","Clinton Portis|RB|2002","Lamar Jackson|QB|2018","Fred Biletnikoff|WR|1965"]}];
+  cards:["Calvin Johnson|WR|2007","Marshawn Lynch|RB|2007","Randy Moss|WR|1998","Rob Gronkowski|TE|2010","Jerome Bettis|RB|1993","Walter Payton|RB|1975","Dave Casper|TE|1974","Red Grange|RB|1925","Christian Okoye|RB|1987","Crazy Legs Hirsch|WR|1949","Ken Stabler|QB|1970","Daryle Lamonica|QB|1963","Kordell Stewart|QB|1995","Ben Roethlisberger|QB|2004","Matt Ryan|QB|2008","Terry McLaurin|WR|2019","LeSean McCoy|RB|2009","Andre Rison|WR|1989","Martellus Bennett|TE|2008","Cam Newton|QB|2011","Roger Staubach|QB|1969","Clinton Portis|RB|2002","Lamar Jackson|QB|2018","Fred Biletnikoff|WR|1965"]},
+  {k:"turkey", name:"Turkey Day", from:"11-04", to:"11-29", fam:"turkey", tab:"Turkey", pal:{c1:"#e8a33a", c2:"#3d1a08"}, odds:{beginner:1/5, medium:1/4, hard:1/4},   // Thanksgiving Day games (data-build/v6/seasons/turkey.json)
+  cards:["Walter Payton|RB|1975","Earl Campbell|RB|1978","Emmitt Smith|RB|1990","Sterling Sharpe|WR|1988","Brett Favre|QB|1991","Warren Moon|QB|1984","Herman Moore|WR|1991","Barry Sanders|RB|1989","Randy Moss|WR|1998","Troy Aikman|QB|1989","Peyton Manning|QB|1998","Marvin Harrison|WR|1996","Drew Brees|QB|2001","Aaron Rodgers|QB|2005","Matthew Stafford|QB|2009","Calvin Johnson|WR|2007","Andre Johnson|WR|2003","Dez Bryant|WR|2010","Tom Brady|QB|2000","Kirk Cousins|QB|2012","Ezekiel Elliott|RB|2016","Justin Jefferson|WR|2020","Josh Allen|QB|2018","Amon-Ra St. Brown|WR|2021","Dak Prescott|QB|2016","Jared Goff|QB|2016","Patrick Mahomes|QB|2017","CeeDee Lamb|WR|2020"],
+  lines:{"Walter Payton|RB|1975":"Nov 24, 1977 at Detroit: 137 rush yds, 107 rec yds, 2 TD","Earl Campbell|RB|1978":"Nov 22, 1979 at Dallas: 33 carries, 195 yards, 2 TD","Emmitt Smith|RB|1990":"Nov 24, 1994 vs Green Bay: 32 carries, 133 yards, 2 TD","Sterling Sharpe|WR|1988":"Nov 24, 1994 at Dallas: 9 catches, 122 yards, 4 TD","Brett Favre|QB|1991":"Nov 24, 1994 at Dallas: 4 TD passes, 257 yards","Warren Moon|QB|1984":"Nov 23, 1995 at Detroit: 30 of 47, 384 yards, 3 TD","Herman Moore|WR|1991":"Nov 23, 1995 vs Minnesota: 8 catches, 127 yards, 1 TD","Barry Sanders|RB|1989":"Nov 27, 1997 vs Chicago: 19 carries, 167 yards, 3 TD","Randy Moss|WR|1998":"Nov 26, 1998 at Dallas: 3 catches, 163 yards, 3 TD","Troy Aikman|QB|1989":"Nov 26, 1998 vs Minnesota: 34 of 57, 455 yards, 1 TD","Peyton Manning|QB|1998":"Nov 25, 2004 at Detroit: 6 TD passes, 236 yards","Marvin Harrison|WR|1996":"Nov 25, 2004 at Detroit: 12 catches, 127 yards, 3 TD","Drew Brees|QB|2001":"Nov 25, 2010 at Dallas: 23 of 39, 352 yards, 1 TD","Aaron Rodgers|QB|2005":"Nov 24, 2011 at Detroit: 22 of 33, 307 yards, 2 TD","Matthew Stafford|QB|2009":"Nov 22, 2012 vs Houston: 31 of 61, 441 yards, 2 TD","Calvin Johnson|WR|2007":"Nov 22, 2012 vs Houston: 8 catches, 140 yards, 1 TD","Andre Johnson|WR|2003":"Nov 22, 2012 at Detroit: 9 catches, 188 yards","Dez Bryant|WR|2010":"Nov 22, 2012 vs Washington: 8 catches, 145 yards, 2 TD","Tom Brady|QB|2000":"Nov 22, 2012 at the Jets: 323 yards, 3 TD passes, 1 TD run","Kirk Cousins|QB|2012":"Nov 24, 2016 at Dallas: 41 of 53, 449 yards, 3 TD","Ezekiel Elliott|RB|2016":"Nov 24, 2016 vs Washington: 20 carries, 97 yards, 2 TD","Justin Jefferson|WR|2020":"Nov 24, 2022 vs New England: 9 catches, 139 yards, 1 TD","Josh Allen|QB|2018":"Nov 24, 2022 at Detroit: 253 pass yds, 2 TD; 78 rush, 1 TD","Amon-Ra St. Brown|WR|2021":"Nov 24, 2022 vs Buffalo: 9 catches, 122 yards, 1 TD","Dak Prescott|QB|2016":"Nov 23, 2023 vs Washington: 22 of 32, 331 yards, 4 TD","Jared Goff|QB|2016":"Nov 23, 2023 vs Green Bay: 29 of 44, 332 yards, 2 TD","Patrick Mahomes|QB|2017":"Nov 27, 2025 at Dallas: 23 of 34, 261 yards, 4 TD","CeeDee Lamb|WR|2020":"Nov 27, 2025 vs Kansas City: 7 catches, 112 yards, 1 TD"}}];
 // Per skill card drawn with no family (at most one per pack): the chance it becomes the set's card of the same position and tier.
-const SEASON_ODDS = {beginner:1/12, medium:1/11, hard:1/10};   // packs_bot: about 1.5 shown per draft, 4 drafts in 5 show one
+const SEASON_ODDS = {beginner:1/12, medium:1/11, hard:1/10};   // the default (Ghouls); packs_bot: about 1.5 shown per draft, 4 drafts in 5 show one
 let SEASON_NOW = null;   // ms; null = the device clock. smoke.mjs pins it so the suite does not depend on the day it runs
 const testSeason = () => (location.hash.match(/^#test-season=(\w+)$/) || [])[1] || "";
-const SEASON_BY_KEY = new Map(SEASONS.flatMap(z=>z.cards.map(k=>[k,z])));
+const SEASON_BY_KEY = SEASONS.reduce((m,z)=>(z.cards.forEach(k=>m.set(k, [...(m.get(k)||[]), z])), m), new Map());   // Ring key -> [sets]
+const seasonSet = (key, fam) => (SEASON_BY_KEY.get(key)||[]).find(z=>z.fam===fam) || null;
 const mdOf = ms => { const d = new Date(ms); return String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); };
 const inSeason = (z, md) => z.from <= z.to ? md >= z.from && md <= z.to : md >= z.from || md <= z.to;
 function seasonOpen(){ const t = testSeason(); if(t) return SEASONS.find(z=>z.k===t) || null; const md = mdOf(SEASON_NOW ?? Date.now()); return SEASONS.find(z=>inSeason(z, md)) || null; }
@@ -4029,7 +4099,7 @@ const seasonTitle = (z, name) => `${z.name}: ${name}`;
 // A set card wears the player's best base card label (highest team-decade OVR, first stint on a tie). In a pack it carries the OVR of the
 // card it replaced (drawPack), so the pull is cosmetic: the set player's best OVR sits above his tier's mean and would lift the 17-0 rate.
 function seasonBase(p){ let b = null; p.stints.forEach(st=>{ for(let d=Math.floor(st.from/10)*10; d<=st.to; d+=10){ const o = ovrFor(p, st.t, d); if(!b || o > b.ovr) b = {t:st.t, d, ovr:o}; } }); return b; }
-const seasonV = (z, p, b, odds) => ({fam:z.fam, title:seasonTitle(z, p.name), team:b.t, year:b.d, pose:"", odds});
+const seasonV = (z, p, b, odds) => ({fam:z.fam, title:seasonTitle(z, p.name), team:b.t, year:b.d, pose:"", odds, desc:z.lines?.[ringKey(p)] || ""});
 // ---------- v8 EVENTS (D14): cosmetic looks on the calendar, separate from SEASONS (a window here opens no card; seasonOpen never reads it) ----------
 // Fixed windows use from/to like SEASONS (both days included, may wrap the year). Moving ones carry per-year windows (dates:{2027:[from,to]},
 // a missing year means closed) or a rule (on(y) returns that year's window; Thanksgiving week is Monday to Sunday of the fourth Thursday).
@@ -4069,11 +4139,11 @@ let BY_KEY = null; const byKey = () => BY_KEY ||= new Map(ringPool().map(p=>[rin
 // Card-back fallback for players without a DDATA row.
 const descFor = p => p.unit ? (p.stats||"") : `${p.pos} · ${years(p)} · ${p.teams.length} team${p.teams.length===1?"":"s"} · ${p.stats}`;
 // Families. cls picks the color (--fam-*); rank orders the titles stored on one Ring entry: mythic > legend > moment > the alts.
-const FAM = {moment:{label:"MOMENT",cls:"moment"}, rookie:{label:"ROOKIE",cls:"alt"}, throwback:{label:"THROWBACK",cls:"alt"}, farewell:{label:"FAREWELL",cls:"alt"}, legend:{label:"VARIANT",cls:"legend"}, mythic:{label:"MYTHIC",cls:"mythic"}, ghouls:{label:"GHOULS",cls:"ghouls"}};
-const FAM_RANK = {mythic:4, legend:3, moment:2, ghouls:1.5, rookie:1, throwback:1, farewell:1};   // a seasonal card sits between the Moments and the alts
-const FAM_CH = {moment:"M", rookie:"R", throwback:"T", farewell:"F", mythic:"★", legend:"V", ghouls:"G"};   // field token plate letter
+const FAM = {moment:{label:"MOMENT",cls:"moment"}, rookie:{label:"ROOKIE",cls:"alt"}, throwback:{label:"THROWBACK",cls:"alt"}, farewell:{label:"FAREWELL",cls:"alt"}, legend:{label:"VARIANT",cls:"legend"}, mythic:{label:"MYTHIC",cls:"mythic"}, ghouls:{label:"GHOULS",cls:"ghouls"}, turkey:{label:"TURKEY DAY",cls:"turkey"}};
+const FAM_RANK = {mythic:4, legend:3, moment:2, ghouls:1.5, turkey:1.5, rookie:1, throwback:1, farewell:1};   // a seasonal card sits between the Moments and the alts
+const FAM_CH = {moment:"M", rookie:"R", throwback:"T", farewell:"F", mythic:"★", legend:"V", ghouls:"G", turkey:"D"};   // field token plate letter
 // A seasonal title resolves through SEASON_BY_KEY whether or not its window is open, so an owned card never turns into a plain Legend.
-const seasonFam = (key,t) => { const z = SEASON_BY_KEY.get(key); return z && t===seasonTitle(z, key.split("|")[0]) ? z.fam : ""; };
+const seasonFam = (key,t) => (SEASON_BY_KEY.get(key)||[]).find(z=>t===seasonTitle(z, key.split("|")[0]))?.fam || "";
 const famOfTitle = (key,t) => seasonFam(key,t) || (MYTHIC_BY_KEY.get(key)?.title===t ? "mythic" : MOMENT.get(key)?.title===t ? "moment" : VARIANT.get(key)?.title===t ? "legend" : /^Rookie ·/.test(t) ? "rookie" : /^Throwback ·/.test(t) ? "throwback" : /^Farewell ·/.test(t) ? "farewell" : "legend");
 const famTitles = (key, r, fams) => ((r && r.v) || []).filter(t=>fams.includes(famOfTitle(key,t)));
 const bestTitle = (key, r) => ((r && r.v) || []).slice().sort((a,b)=>FAM_RANK[famOfTitle(key,b)]-FAM_RANK[famOfTitle(key,a)])[0] || "";
@@ -4099,7 +4169,7 @@ function famCardV(p, title){
   const key = ringKey(p), fam = famOfTitle(key, title), st = p.stints;
   if(fam==="mythic") return {fam, ...MYTHIC_BY_KEY.get(key)};
   if(fam==="moment") return {fam, ...MOMENT.get(key)};
-  if(SEASON_BY_KEY.get(key)?.fam===fam) return seasonV(SEASON_BY_KEY.get(key), p, seasonBase(p), "");
+  if(seasonSet(key, fam)) return seasonV(seasonSet(key, fam), p, seasonBase(p), "");
   if(fam==="rookie") return altV(p, fam, st.find(s=>s.from===p.from) || st[0]);
   if(fam==="throwback"){ const nick = title.slice(12); return altV(p, fam, st.find(s=>(TEAMS[s.t]||[])[1]===nick) || st[0]); }
   if(fam==="farewell") return altV(p, fam, st.find(s=>s.from<=p.to && s.to>=p.to) || st[st.length-1]);
@@ -4121,15 +4191,15 @@ function mythURL(key, frame, scale){
 const mythArt = (p, scale) => { const k = ringKey(p), a = mythURL(k,0,scale), b = a && mythURL(k,1,scale), wh = `width="${32*scale}" height="${40*scale}"`;
   return a ? `<img class="spr m0" src="${a}" ${wh} alt=""><img class="spr m1" src="${b}" ${wh} alt="">` : ""; };
 // Seasonal art: the player in his set's palette (jersey and trim; skin and hair stay his), no team look, no HOF plate on any level.
-function seasonURL(key, scale){
-  const id = `~sz|${key}|${scale}`; let u = SPR_URL.get(id); if(u) return u;
-  const row = SPR.get(key), z = SEASON_BY_KEY.get(key); if(!row || !z) return "";
+function seasonURL(key, scale, fam){
+  const id = `~sz|${fam}|${key}|${scale}`; let u = SPR_URL.get(id); if(u) return u;
+  const row = SPR.get(key), z = seasonSet(key, fam); if(!row || !z) return "";
   const cv = SPR_CV ||= document.createElement("canvas");
   cv.width = SPRITE.size.w*scale; cv.height = SPRITE.size.h*scale;
   SPRITE.draw(cv.getContext("2d"), Object.assign(SPRITE.fromTraits(row, TEAMS), {team:null, ...z.pal, bg:false, hof:false}), scale);
   SPR_URL.set(id, u = cv.toDataURL()); return u;
 }
-const seasonArt = (p, scale) => { const u = seasonURL(ringKey(p), scale); return u ? `<img class="spr" src="${u}" width="${32*scale}" height="${40*scale}" alt="">` : ""; };
+const seasonArt = (p, scale, fam) => { const u = seasonURL(ringKey(p), scale, fam); return u ? `<img class="spr" src="${u}" width="${32*scale}" height="${40*scale}" alt="">` : ""; };
 const isSeasonFam = f => !!f && SEASONS.some(z=>z.fam===f);
 const markHTML = v => isSeasonFam(v?.fam) ? `<i class="pc-mark mk-${v.fam}" aria-hidden="true"></i>` : "";
 const PACK_NAMES = {QB:"Quarterback",RB:"Running Back",HB:"Running Back",FB:"Fullback",WR:"Receiver",TE:"Tight End",FLEX:"Flex","O-LINE":"O-Line",DEFENSE:"Defense",SLOT:"Slot",COACH:"Head Coach"};
@@ -4221,11 +4291,11 @@ function drawPack(slot){
     }
   }
   // v6 SEASONS: while a set's window is open, each skill card with no family (Moment / alt / Mythic took their rolls first) becomes the
-  // set's card of the same position and tier at SEASON_ODDS[level], at most one per pack, never a player already in the pack or the
+  // set's card of the same position and tier at (z.odds || SEASON_ODDS)[level], at most one per pack, never a player already in the pack or the
   // roster. The set card keeps the OVR of the card it replaced, so the pack keeps the strength it rolled (cosmetic: packs_bot measures it).
   // Outside every window nothing here draws a number.
   const sz = seasonOpen();
-  if(sz){ const sp = seasonPool(sz), so = SEASON_ODDS[S.level];
+  if(sz){ const sp = seasonPool(sz), so = (sz.odds || SEASON_ODDS)[S.level];
     for(let i=0; i<out.length; i++){ const c = out[i]; if(c.v || c.p.unit || c.gronk) continue;
       const list = ((sp[c.p.pos]||{})[tierOf(c.ovr).k]||[]).filter(g=>g.p.id===c.p.id || (!S.used.has(g.p.id) && !out.some(x=>x.p.id===g.p.id)));
       if(list.length && Math.random() < so){ const g = list[rnd(list.length)]; out[i] = {p:g.p, t:g.t, d:g.d, ovr:c.ovr, v:seasonV(sz, g.p, g, oddsStr(so))}; break; } }
@@ -4302,7 +4372,7 @@ function cardHTML(c, i){
   return `<button class="pcard t-${tier.k}${F?` vc vc-${F.cls}`:""} ${S.packSel===i?"sel":""}" data-i="${i}" style="--c1:${c1};--c2:${c2};--d:${i*0.14}s" aria-label="${esc(name)}${v?`, ${esc(F.label)}: ${esc(v.title)}`:""}">
     <div class="pfront">${tier.k==="legend"||v?.fam==="mythic"?`<i class="pc-ring"></i>`:""}
       <div class="pc-top"><div class="pc-ovr num">${show.ovr?c.ovr:"??"}</div><div class="pc-pos">${pos}</div></div>
-      <div class="pc-art${v?.fam==="mythic"?" mart":""}"><span class="pc-num">${c.t}</span>${F?`<span class="pc-stamp">${F.label}</span>`:""}${p.pos==="HC" ? coachSVG(c1,c2) : ((!p.unit && (v?.fam==="mythic" && mythArt(p, 2) || isSeasonFam(v?.fam) && seasonArt(p, 2) || (packSpr() || v) && sprImg(p, {team:c.t, hof:packHof(), scale:2, look:v ? {cue:POSE_CUE[v.pose]} : undefined}))) || helmetSVG(c1,c2))}${markHTML(v)}</div>
+      <div class="pc-art${v?.fam==="mythic"?" mart":""}"><span class="pc-num">${c.t}</span>${F?`<span class="pc-stamp">${F.label}</span>`:""}${p.pos==="HC" ? coachSVG(c1,c2) : ((!p.unit && (v?.fam==="mythic" && mythArt(p, 2) || isSeasonFam(v?.fam) && seasonArt(p, 2, v.fam) || (packSpr() || v) && sprImg(p, {team:c.t, hof:packHof(), scale:2, look:v ? {cue:POSE_CUE[v.pose]} : undefined}))) || helmetSVG(c1,c2))}${markHTML(v)}</div>
       <div class="pc-name">${esc(name)}</div>
       <div class="pc-meta num">${esc(c.t)} · ${dec(c.d)}</div>
       ${v?`<div class="pc-line vt">${esc(v.title)}</div>`:`<div class="pc-line num">${esc(line)}</div>`}
@@ -4454,7 +4524,7 @@ const SZ_REV = 2400;
 function szReveal(card, done){
   const v = card.v, name = card.p.name;
   document.body.insertAdjacentHTML("beforeend", `<div class="szrev sz-${v.fam}" role="status" aria-label="${esc(FAM[v.fam].label)} pulled"><i class="sfog"></i><i class="sflash"></i>
-    <div class="sart">${seasonArt(card.p, 4) || helmetSVG("#ff7a1a","#2b0f3f")}</div><p class="sname">${esc(name)}</p><p class="stitle">${esc(v.title)}</p><p class="sodds num">${esc(v.odds||"")}</p></div>`);
+    <div class="sart">${seasonArt(card.p, 4, v.fam) || helmetSVG("#ff7a1a","#2b0f3f")}</div><p class="sname">${esc(name)}</p><p class="stitle">${esc(v.title)}</p>${v.desc ? `<p class="sdesc">${esc(v.desc)}</p>` : ""}<p class="sodds num">${esc(v.odds||"")}</p></div>`);
   const el = document.querySelector(".szrev"), end = () => { if(!el.isConnected) return; el.remove(); done(); };
   haptic("heavy"); el.onclick = end; pkLater(end, SZ_REV);
 }
@@ -4462,7 +4532,7 @@ const pkWarm = pack => (pack||[]).forEach(c=>{
   if(c.gronk || c.p.unit) return;
   if(packSpr() || c.v) spriteURL(c.p, {team:c.t, hof:packHof(), scale:2, look:c.v ? {cue:POSE_CUE[c.v.pose]} : undefined});
   if(c.v?.fam==="mythic"){ const k = ringKey(c.p); [2,4].forEach(s=>{ mythURL(k,0,s); mythURL(k,1,s); }); }
-  if(isSeasonFam(c.v?.fam)) [2,4].forEach(s=>seasonURL(ringKey(c.p), s));
+  if(isSeasonFam(c.v?.fam)) [2,4].forEach(s=>seasonURL(ringKey(c.p), s, c.v.fam));
 });
 function openPack(slot){
   pkStop();
@@ -4698,7 +4768,7 @@ function openCard(card, ctx="ring"){
   const name = card.gronk ? "Baby GOAT" : p.unit ? `${p.season} ${nick}` : p.name, pos = card.gronk ? "ANY" : p.unit ? (p.pos==="OL"?"OL":"DEF") : p.pos;
   // A Mythic shows its two gold frames (mythURL scale 4) in a .mart box, toggled by this view's own interval (cleared in close()).
   const myth = v?.fam==="mythic" && !p.unit;
-  const spr = card.gronk ? gronkImg(4) : p.pos==="HC" ? coachSVG(c1,c2) : (!p.unit && (full || packSpr()) && (myth && mythArt(p, 4) || isSeasonFam(fam) && seasonArt(p, 4) || sprImg(p, {team:card.t, hof:full || packHof(), scale:4, look:v ? {cue:POSE_CUE[v.pose]} : undefined}))) || helmetSVG(c1,c2);
+  const spr = card.gronk ? gronkImg(4) : p.pos==="HC" ? coachSVG(c1,c2) : (!p.unit && (full || packSpr()) && (myth && mythArt(p, 4) || isSeasonFam(fam) && seasonArt(p, 4, fam) || sprImg(p, {team:card.t, hof:full || packHof(), scale:4, look:v ? {cue:POSE_CUE[v.pose]} : undefined}))) || helmetSVG(c1,c2);
   const le = !!(r && r.le && title && r.le.includes(title)), rec = r && r.rec;
   const D = key ? DESC.get(key) : null;
   const own = (v && v.desc) || (legend && D && D.vdesc) || (D && D.blurb), text = card.gronk ? p.stats : own || descFor(p);
@@ -4977,7 +5047,7 @@ function renderRing(){
   const have = pool.filter(got).length, legends = pool.filter(p=>p.ovr>=94), hofs = pool.filter(isHOF);
   const fgot = fams => Object.entries(ring).filter(([k,r])=>famTitles(k, r, fams).length).length;   // entries holding a title of these families
   const vgot = fgot(["legend"]), mgot = fgot(["moment"]), xgot = fgot(["mythic"]), dyn = mtDynasty();
-  const tabs = [["all","All"],["QB","QB"],["RB","RB"],["WR","WR"],["TE","TE"],["HOF","HOF"],["legend","Legends"],["variant","Variants"],["moment","Moments"],...(MYTHIC.length?[["mythic","Mythic"]]:[]),...SEASONS.map(z=>[z.fam, z.name.split(" ").pop()])];
+  const tabs = [["all","All"],["QB","QB"],["RB","RB"],["WR","WR"],["TE","TE"],["HOF","HOF"],["legend","Legends"],["variant","Variants"],["moment","Moments"],...(MYTHIC.length?[["mythic","Mythic"]]:[]),...SEASONS.map(z=>[z.fam, z.tab || z.name.split(" ").pop()])];
   $("#app").innerHTML = `${header(`${lookBtn()}<button class="ghost" id="back">Back</button>`)}
   <section class="lboard">
     <h2 class="packtitle ring-h${rm.hard?" ring-hard":""}${dyn?" ring-dyn":""}">Ring of Honor <span class="ring-troph num" title="Perfect title seasons (20-0)">🏆 ×${rm.titles||0}</span>${dyn?`<span class="ring-dync" title="My Team: all six slotted cards are variants">DYNASTY</span>`:""}</h2>
@@ -4995,7 +5065,7 @@ function renderRing(){
     <p class="hint" id="ringsync">${ringSyncLabel()}</p>
     ${have?"":`<p class="hint">Go 17-0 in Packs and every eligible player on your roster is banked here.</p>`}
     <div class="ring-tools">
-      <div class="seg" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${RING_F.tab===k}" data-rtab="${k}"${isSeasonFam(k)?` class="ring-tabsz"`:""}>${l}</button>`).join("")}</div>
+      <div class="seg" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${RING_F.tab===k}" data-rtab="${k}"${isSeasonFam(k)?` class="ring-tabsz ring-tab${k}"`:""}>${l}</button>`).join("")}</div>
       <input class="ring-q" id="ringq" type="search" autocomplete="off" spellcheck="false" placeholder="Search a name…" value="${esc(RING_F.q)}">
       <label class="ring-chk"><input type="checkbox" id="ringmine" ${RING_F.mine?"checked":""}> Collected only</label>
       <button class="ghost" id="ringmt">MY TEAM</button>
@@ -5010,7 +5080,7 @@ function renderRing(){
     const q = norm(RING_F.q.trim());
     // Family tabs: Variants = the VDATA legend titles only, Moments = MOMENT keys, Mythic = MYTHIC keys; uncollected show ???.
     const tab = RING_F.tab, FT = ringFT(tab);
-    const has = isSeasonFam(tab) ? p=>SEASON_BY_KEY.get(ringKey(p))?.fam===tab : {variant:p=>variantFor(p), moment:p=>MOMENT.has(ringKey(p)), mythic:p=>MYTHIC_BY_KEY.has(ringKey(p))}[tab];
+    const has = isSeasonFam(tab) ? p=>!!seasonSet(ringKey(p), tab) : {variant:p=>variantFor(p), moment:p=>MOMENT.has(ringKey(p)), mythic:p=>MYTHIC_BY_KEY.has(ringKey(p))}[tab];
     const vgotP = p => { const r = got(p); return r && famTitles(ringKey(p), r, FT).length ? r : null; };
     const list = pool.filter(p=>(tab==="all" || (tab==="HOF" ? isHOF(p) : tab==="legend" ? p.ovr>=94 : FT ? has(p) : p.pos===tab))
       && (!RING_F.mine || (FT ? vgotP(p) : got(p))) && (!q || p.n.includes(q)));
@@ -5974,16 +6044,21 @@ function dlEnd(){
 }
 
 // ---------- Daily: NFL Trivia (all-time leaders, LEAD6) ----------
-// Seven questions a day from LEAD6 (data-build/v6/trivia_v6.py, hand-checked all-time tables): name one player on the list, one guess
-// each. The ten stat categories count their top 10 by rank (ties at 10 included); Super Bowl wins, franchises and the Hall of Fame lists
-// count every row. A row's player is PDATA index i; a row with i null (no PDATA player) shows in the list but is never an answer.
+// v10 RedZone (docs/v10-plan.md D1 to D7): seven rounds a day from LEAD6 (data-build/v6/trivia_v6.py, hand-checked all-time tables). A round
+// is one list: name every player on it you can before the 60-second clock runs out (it starts on the first focus of the answer box), every
+// name is found (TOUCHDOWN) or the player takes a knee. A wrong name scores 0 and costs 5 seconds. The ten stat categories count their top
+// 10 by rank (ties at 10 included); Super Bowl wins, franchises and the Hall of Fame lists count every row. A row's player is PDATA index i;
+// a row with i null (no PDATA player) shows in the list but is never an answer.
 // Points: the pool in fame order (PDATA rating desc, then name) scores 1 + round(9 * fameIndex / (N - 1)), so the best-known name is 1
-// point and the deepest cut 10; a miss is 0 and 70 is a perfect day. The fame order stays internal (no rating is ever shown here), and
-// nothing of the 17-0 season (drives, yards, the field) touches it.
-const NT_N = 7, NT_TOP = 10, NT_CATS = Object.keys(LEAD6.categories);
+// point and the deepest cut 10; a round's max is its pool's sum, the day's max the sum of its seven. The fame order stays internal (no
+// rating is ever shown here), and nothing of the 17-0 season (drives, yards, the field) touches it.
+const NT_N = 7, NT_TOP = 10, NT_CATS = Object.keys(LEAD6.categories), NT_SECS = 60, NT_PEN = 5;
+// D3: a fixed tier per category; the day's seven play in tier order, Easy first
+const NT_TIERS = ["EASY", "MEDIUM", "HARD", "EXPERT"];
+const NT_TIER = {pass_yds:0, pass_td:0, rush_yds:0, rec:0, rec_yds:0, total_td:0, rush_td:1, rec_td:1, hof_qb:1, hof_wr:1, hof_te:1, sacks:2, int:2, hof_rb:2, sb_wins:3, franchises:3};
+const ntTiered = cats => [...cats].sort((a,b)=>(NT_TIER[a] ?? 0) - (NT_TIER[b] ?? 0));   // a copy (stable): the day's selection is never reordered in NT_DAY
 // #test-nt, #test-daily and every other test hash (testWin) play against a throwaway store, never the real save
-const ntStoreKey = () => testWin() ? "seventeen-nfltrivia-test" : "seventeen-nfltrivia-v2";
-const ntLoad = () => { const s = store.get(ntStoreKey(), null); return s && s.days ? s : {days:{}, streak:0, best:0}; };
+const ntStoreKey = () => testWin() ? "seventeen-nfltrivia-test" : "seventeen-nfltrivia-v3";
 const ntWhole = k => k==="sb_wins" || k==="franchises" || k.startsWith("hof_");
 // One player twice in PDATA (LEAD6 row index -> its twin): 22139 "Night Train Lane" (DB) is 8286 "Dick "Night Train" Lane" (CB), whom
 // NICK6 and the picker's first row name. Either one answers his row until a data build merges them (a Brief A follow-up).
@@ -5993,6 +6068,8 @@ const ntHit = (ck, pid) => ntPool(ck).find(x=>ntIs(x.i, pid));
 const NT_POOL = new Map();   // one pool per category: [{i, pts}] in fame order
 const ntPool = k => NT_POOL.get(k) || NT_POOL.set(k, (rows => rows.sort((a,b)=>PDATA[b.i][3]-PDATA[a.i][3] || (a.name<b.name ? -1 : a.name>b.name ? 1 : 0))
   .map((r,j)=>({i:r.i, pts:1 + Math.round(9*j/Math.max(1, rows.length-1))})))(LEAD6.categories[k].rows.filter(r=>r.i!=null && (ntWhole(k) || r.rank<=NT_TOP)))).get(k);
+const ntMax = k => ntPool(k).reduce((s,x)=>s + x.pts, 0);
+const ntDayMax = d => d.cats.reduce((s,k)=>s + ntMax(k), 0);
 // The day's seven categories: a shuffle seeded by the date key (as the daily drive seeds its defense) of the categories the day before
 // did not use, chained from the epoch, so a day never repeats a category and two days in a row share none (16 categories: 14 distinct
 // over any two days; a full seven-day gap would need 49)
@@ -6008,21 +6085,34 @@ function ntCats(key){
   }
   return prev;
 }
-const ntScore = d => d.picks.reduce((s,x)=>s + x.pts, 0);
-const ntSq = pts => pts>=7 ? "🟨" : pts>=4 ? "🟩" : pts>=1 ? "⬜" : "⬛";
-const ntDone = d => !!d && Array.isArray(d.picks) && d.picks.length>=NT_N;
-// Days in a row with all seven answered, counting back from today (or from yesterday while today is still open)
-const ntStreak = all => { const d = new Date(), ok = () => ntDone(all.days[dlKey(d)]);
+const ntScore = d => (d.rounds || []).reduce((s,x)=>s + x.pts, 0);
+// D2: a round's square and lamp by its share of the round's max: 0 black, under 25 percent white, under 60 percent green, 60 or more gold
+const ntTone = (pts, max) => !pts ? "m" : pts < .25*max ? "w" : pts < .6*max ? "t" : "g";
+const ntSq = (pts, max) => ({m:"⬛", w:"⬜", t:"🟩", g:"🟨"})[ntTone(pts, max)];
+const ntDone = d => !!d && Array.isArray(d.rounds) && d.rounds.length>=NT_N;
+// Days in a row with all seven rounds played, counting back from today (or from yesterday while today is still open); the v2 days of
+// the streak carried over at the first v3 load (all.old) count as played
+const ntStreak = all => { const d = new Date(), ok = () => ntDone(all.days[dlKey(d)]) || !!all.old?.includes(dlKey(d));
   if(!ok()) d.setDate(d.getDate()-1); let n = 0; while(ok()){ n++; d.setDate(d.getDate()-1); } return n; };
+// D5 store {v:3, days:{key:{cats, rounds:[{c, ids, pts, max, td, secs}], score, max}}, streak, best}. With no v3 store yet it is seeded
+// from v2 (under a test hash the v2 shape sits on the same -test key): v2's best, and the days of its streak while that streak is alive
+// (its last full day today or yesterday), so the streak carries; no v2 day is replayed. Nothing is written until the first round ends.
+function ntLoad(){
+  const s = store.get(ntStoreKey(), null); if(s && s.v===3 && s.days) return s;
+  const v2 = testWin() ? s : store.get("seventeen-nfltrivia-v2", null), old = [];
+  if(v2 && v2.days){ const d = new Date(), done = () => (x => !!x && Array.isArray(x.picks) && x.picks.length>=NT_N)(v2.days[dlKey(d)]);
+    if(!done()) d.setDate(d.getDate()-1); while(done()){ old.push(dlKey(d)); d.setDate(d.getDate()-1); } }
+  return {v:3, days:{}, streak:old.length, best:Math.max(0, Number(v2?.best) || 0), ...(old.length ? {old} : {})};
+}
 function ntHomeHTML(){
-  const all = ntLoad(), key = dlKey(), day = all.days[key], k = Array.isArray(day?.picks) ? day.picks.length : 0, st = ntStreak(all);
-  const status = !k ? "Today's 7 questions are ready" : k>=NT_N ? `Today: ${ntScore(day)} of 70` : `Question ${k+1} of ${NT_N} · ${ntScore(day)} pts`;
+  const all = ntLoad(), key = dlKey(), day = all.days[key], k = Array.isArray(day?.rounds) ? day.rounds.length : 0, st = ntStreak(all);
+  const status = !k ? "Today's 7 questions are ready" : k>=NT_N ? `Today: ${ntScore(day)} of ${day.max || ntDayMax(day)}` : `Question ${k+1} of ${NT_N} · ${ntScore(day)} pts`;
   return `<div class="mode" style="--c:var(--loss)">
     <button class="go" id="ntgo"><span><b>NFL Trivia</b><br><small>${status}</small></span><small class="num">#${dlNum(key)}${st?` · 🔥 ${st}`:""}</small></button>
     <button class="info" id="ntinfo" aria-label="NFL Trivia rules"><span>i</span></button></div>`;
 }
-const ntRulesHTML = () => `<p>Seven questions a day from the NFL's all-time lists: the top 10 in passing, rushing, receiving, touchdowns, sacks and interceptions, plus four-time Super Bowl winners, players with eight or more franchises and the Hall of Fame by position. Name one player on the list. You get one guess.</p>
-  <p>The better known the name, the fewer the points: the most famous answer on a list is worth 1 point, the deepest cut 10, a miss 0. After every guess the whole list shows. A perfect day is 70.</p>`;
+const ntRulesHTML = () => `<p>Seven rounds a day from the NFL's all-time lists, Easy first: the top 10 in passing, rushing, receiving, touchdowns, sacks and interceptions, four-time Super Bowl winners, players with eight or more franchises and the Hall of Fame by position. Name every player on the list you can. The 60 second clock starts when you tap the answer box, and a wrong name costs 5 seconds. Name them all for a TOUCHDOWN, or Take a knee to end the round.</p>
+  <p>The better known the name, the fewer the points: the most famous answer on a list is worth 1 point, the deepest cut 10. A round is worth the sum of its list, and the day's max is the sum of its seven rounds. After every round the whole list shows.</p>`;
 function wireNTHome(){
   $("#ntgo").onclick = () => renderNT();
   $("#ntinfo").onclick = () => {
@@ -6031,70 +6121,112 @@ function wireNTHome(){
     $("#closeov").onclick = close; $("#closeov").focus(); $("#ov").onclick = e => { if(e.target.id==="ov") close(); };
   };
 }
+// NT.round (D1): {c, found:Set of pool row ids, wrong:[player ids], pts, max, left, t0, pen, timer, td, done, why}; left is recomputed from
+// t0 (wall clock, so a throttled background tab cannot stretch it) minus 5 s a wrong name
 let NT = null;
+const ntRoundNew = ck => ({c:ck, found:new Set(), wrong:[], pts:0, max:ntMax(ck), left:NT_SECS, t0:0, pen:0, timer:null, td:false, done:false, why:""});
+function ntStop(){ if(NT?.round){ clearInterval(NT.round.timer); NT.round.timer = null; } }
+// Leaving mid-round (Home, another screen): a round whose clock has started ends as Take a knee and is saved, so a peek never buys a fresh
+// clock; one not started yet is dropped
+function ntLeave(){ const r = NT?.round; if(!r || r.done) return; if(r.t0) ntRoundEnd("knee", true); else ntStop(); }
 function renderNT(key=dlKey()){   // key: the day (the smoke test replays a past one)
-  pkStop(); dlStop(); applyLook(lookRetro()); clearTimeout(spinTimer); $("#confetti").hidden = true; S = null;
-  const all = ntLoad(), day = Array.isArray(all.days[key]?.picks) ? all.days[key] : (all.days[key] = {picks:[], score:0});
-  // the day keeps its categories (like Touchdown Trivia's day.rows), so a rebuilt LEAD6 never swaps a question under a started day
-  if(!(day.cats?.length===NT_N && day.cats.every(c=>LEAD6.categories[c]))) day.cats = ntCats(key);
-  NT = {key, all, day, shown:-1};
+  ntLeave(); pkStop(); dlStop(); applyLook(lookRetro()); clearTimeout(spinTimer); $("#confetti").hidden = true; S = null;
+  const all = ntLoad(), day = Array.isArray(all.days[key]?.rounds) ? all.days[key] : (all.days[key] = {cats:null, rounds:[], score:0, max:0});
+  // the day keeps its categories, sorted by tier once (like Touchdown Trivia's day.rows), so a rebuilt LEAD6 never swaps or reorders a question under a started day
+  if(!(day.cats?.length===NT_N && day.cats.every(c=>LEAD6.categories[c]))) day.cats = ntTiered(ntCats(key));
+  NT = {key, all, day, shown:-1, round:null};
   ntDraw();
 }
 function ntSave(){
-  const {all, day} = NT; day.score = ntScore(day);
+  const {all, day} = NT; day.score = ntScore(day); day.max = ntDayMax(day);
   if(ntDone(day)){ all.streak = ntStreak(all); all.best = Math.max(all.best||0, day.score); }
   store.set(ntStoreKey(), all);
 }
 const ntVal = (c, r) => c.unit==="year enshrined" ? `Class of ${r.value}` : `${r.value.toLocaleString("en-US")} ${c.unit}`;
-// The list after a guess: every row (ties marked T), the pick highlighted; rows that are not answers (outside the top 10, or no player) greyed
-function ntList(ck, pid){
+// The list after a round: every row (ties marked T), the found rows highlighted, a wrong name that is a listed row (outside the top 10)
+// marked bad; rows that are not answers (outside the top 10, or no player) greyed. found: a Set of pool row ids (or one player id, the v2 call)
+function ntList(ck, found, wrong=[]){
   const c = LEAD6.categories[ck], pool = new Set(ntPool(ck).map(x=>x.i)), tie = r => c.rows.filter(x=>x.rank===r.rank).length > 1;
-  return `<ol class="nt-rows">${c.rows.map(r=>`<li class="${r.i!=null && pool.has(r.i) ? "" : "out"}${r.i!=null && ntIs(r.i, pid) ? ` pick ${pool.has(r.i) ? "ok" : "bad"}` : ""}"><span class="r num">${tie(r) ? "T" : ""}${r.rank}</span><span class="nm">${esc(r.name)}</span><span class="v num">${esc(ntVal(c, r))}</span></li>`).join("")}</ol>
+  if(!(found instanceof Set)){ const pid = found; found = new Set(); wrong = []; if(pid!=null){ const h = ntHit(ck, pid); if(h) found.add(h.i); else wrong.push(pid); } }
+  const mark = r => r.i==null ? "" : found.has(r.i) ? " pick ok" : wrong.some(w=>ntIs(r.i, w)) ? " pick bad" : "";
+  return `<ol class="nt-rows">${c.rows.map(r=>`<li class="${r.i!=null && pool.has(r.i) ? "" : "out"}${mark(r)}"><span class="r num">${tie(r) ? "T" : ""}${r.rank}</span><span class="nm">${esc(r.name)}</span><span class="v num">${esc(ntVal(c, r))}</span></li>`).join("")}</ol>
     <p class="nt-note">${esc(c.note)}</p>`;
 }
 function ntDraw(){
-  const {day} = NT, k = day.picks.length, shown = NT.shown>=0, n = dlNum(NT.key);
+  const {day} = NT, k = day.rounds.length, shown = NT.shown>=0, n = dlNum(NT.key);
   const head = header(`<span class="pill" style="color:var(--loss);border-color:var(--loss)">NFL Trivia #${n}</span>${lookBtn(true)}<button class="ghost" id="quit">Home</button>`, true);
   if(k>=NT_N && !shown) return ntEnd(head);
   const j = shown ? NT.shown : k, ck = day.cats[j], c = LEAD6.categories[ck], N = ntPool(ck).length;
+  if(!shown && (!NT.round || NT.round.done || NT.round.c!==ck)) NT.round = ntRoundNew(ck);
+  const r = NT.round, x = shown ? day.rounds[j] : null, pts = shown ? x.pts : r.pts, max = ntMax(ck);
   let body;
-  if(!shown) body = `<div class="search"><input id="ntq" type="search" autocomplete="off" spellcheck="false" placeholder="Type a name…" aria-label="Your answer" aria-autocomplete="list" aria-controls="ntres"><div class="results" id="ntres" role="listbox"></div></div>
-    <div class="actions"><button class="btn alt" id="ntskip">Skip</button></div>${ntLadder(ck)}`;
+  if(!shown) body = `<div class="nt-clock" role="timer" aria-label="Seconds left"><span class="nt-found">found <b id="ntfound" class="num">${r.found.size}</b> of ${N}</span><span class="nt-track"><i style="width:${100*r.left/NT_SECS}%"></i></span><b class="num">${Math.ceil(r.left)}</b></div>
+    <div class="search"><input id="ntq" type="search" autocomplete="off" spellcheck="false" placeholder="Type a name…" aria-label="Your answer" aria-autocomplete="list" aria-controls="ntres"><div class="results" id="ntres" role="listbox"></div></div>
+    <div class="actions"><button class="btn alt" id="ntknee">Take a knee</button></div>${ntLadder(ck, r.found)}${ntMeter()}`;
   else {
-    const x = day.picks[j], p = x.id!=null ? PLAYERS[x.id] : null, row = p && c.rows.find(r=>r.i!=null && ntIs(r.i, p.id));
-    const why = !p ? "Skipped." : x.pts ? `No. ${row.rank}, ${ntVal(c, row)}. The better known the name, the fewer the points.` : row ? `No. ${row.rank}, ${ntVal(c, row)}: not one of the ${N} that count.` : "Not on this list.";
-    body = `<div class="dl-out"><b style="color:${x.pts ? "var(--gold)" : "var(--loss)"}">${x.pts ? `RIGHT · +${x.pts} ${x.pts===1 ? "POINT" : "POINTS"}` : "MISS · +0"}</b><p>${p ? `<b style="color:var(--fg)">${esc(p.name)}</b> · ` : ""}${esc(why)}</p></div>
-    <div class="nt-list" id="ntlist">${ntList(ck, x.id)}</div>
+    const wrong = NT.round?.c===ck ? NT.round.wrong : [], got = x.ids.length, why = NT.round?.c===ck ? NT.round.why : x.td ? "td" : "knee";
+    const line = x.td ? `TOUCHDOWN. All ${N} named.` : `${why==="clock" ? "Time" : "Take a knee"}. ${got} of ${N}, +${x.pts}`;
+    const miss = wrong.map(id => { const p = PLAYERS[id], row = c.rows.find(rw=>ntIs(rw.i, id)); return `${esc(p.name)}${row ? ` (No. ${row.rank}, not one of the ${N} that count)` : ""}`; });
+    body = `<div class="dl-out"><b style="color:${x.td || x.pts ? "var(--gold)" : "var(--loss)"}">${line}</b><p>${miss.length ? `Misses: ${miss.join(", ")}.` : "No misses."}</p></div>
+    <div class="nt-list" id="ntlist">${ntList(ck, new Set(x.ids), wrong)}</div>
     <div class="actions"><button class="btn" id="ntnext">${k>=NT_N ? "See the result" : "Next question"} ›</button></div>`;
   }
-  const st = ntStreak(NT.all), up = shown && day.picks[j].pts > 0;
+  const st = ntStreak(NT.all), tier = NT_TIERS[NT_TIER[ck] ?? 0];
   $("#app").innerHTML = `<div class="tcol fit">${head}<section class="nt2">
-    <p class="dl-meta"><span>Question ${j+1} of ${NT_N}</span><span class="nt-lamps" aria-hidden="true">${ntLamps(day, j)}${st ? `<b class="nt-fl num">🔥${st}</b>` : ""}</span><span>${ntScore(day)} of 70</span></p>
-    <div class="nt-head"><div class="nt-hl"><h3 class="nt-cat">${esc(c.title)}</h3><p class="nt-sub">${N} names count · one guess</p></div><b class="nt-score num${up ? " up" : ""}">${ntScore(day)}<small>/70</small></b></div>
-    <h2 class="dl-q">${esc(c.question)}</h2>
+    <p class="dl-meta"><span>Question ${j+1} of ${NT_N}</span><span class="nt-lamps" aria-hidden="true">${ntLamps(day, j)}${st ? `<b class="nt-fl num">🔥${st}</b>` : ""}</span><span id="ntday">${ntScore(day) + (shown ? 0 : r.pts)} of ${ntDayMax(day)}</span></p>
+    <div class="nt-head"><div class="nt-hl"><h3 class="nt-cat">${esc(c.title)}</h3><p class="nt-sub"><span class="nt-tier">${tier}</span></p></div><b class="nt-score num${shown && pts ? " up" : ""}" id="ntpts">${pts}<small>/${max}</small></b><b class="nt-pop num" id="ntpop" aria-hidden="true"></b></div>
+    <h2 class="dl-q">${esc(c.question.replace(/^Name an? /, "Name every "))}</h2>
     ${body}</section></div>`;
-  $("#quit").onclick = renderHome; $("#homebtn").onclick = renderHome; wireLook();
+  $("#quit").onclick = $("#homebtn").onclick = () => { ntLeave(); renderHome(); }; wireLook();
   if(shown){
     $("#ntnext").onclick = () => { NT.shown = -1; ntDraw(); };
-    const box = $("#ntlist"), pk = box.querySelector(".pick"); if(pk) box.scrollTop = Math.max(0, pk.offsetTop - box.clientHeight/2);   // the pick in view inside the list
+    const box = $("#ntlist"), pk = box.querySelector(".pick"); if(pk) box.scrollTop = Math.max(0, pk.offsetTop - box.clientHeight/2);   // the first found row in view inside the list
     return;
   }
-  $("#ntskip").onclick = () => ntAnswer(null);
-  const q = $("#ntq"); q.onfocus = ntCap; if(NT.typing || matchMedia("(hover:hover)").matches) q.focus();   // phones: the keyboard comes up once the player has chosen to type
-  q.oninput = () => ntSuggest(q.value); pickKeys(q, "#ntres");
+  $("#ntknee").onclick = () => ntRoundEnd("knee");
+  const q = $("#ntq"); q.onfocus = () => { ntStart(); ntCap(); }; if(NT.typing || matchMedia("(hover:hover)").matches) q.focus();   // phones: the keyboard (and the clock) come up once the player has chosen to type
+  q.oninput = () => { NT.typing = true; ntSuggest(q.value); }; pickKeys(q, "#ntres");
+  ntGotFit();
 }
-// v8 D13 question screen: seven day lamps in the meta row (each answered question lit in its share-square colour, the current one
-// pulsing), the category's top-10 ladder with every name and value hidden (a dot per name for the whole-list categories) and the
-// points meter from the most famous answer (1) to the deepest cut (10). The answer screen's list is the ladder revealed.
-const ntTone = pts => pts>=7 ? "g" : pts>=4 ? "t" : pts>=1 ? "w" : "m";
-const ntLamps = (day, j) => Array.from({length:NT_N}, (_, i) => `<i class="nt-lamp${i<day.picks.length ? " " + ntTone(day.picks[i].pts) : i===j ? " now" : ""}"></i>`).join("");
-function ntLadder(ck){
+// v8 D13 question screen: seven day lamps in the meta row (each played round lit in its share-square colour, the current one pulsing),
+// the category's top-10 ladder (a dot per name for the whole-list categories) and the points meter from the most famous answer (1) to
+// the deepest cut (10). v10: a found name fills its rung in place (name and value; the newest flips over), or turns a dot gold and joins
+// the found names under the dots (.nt-got, newest last). The reveal's list is the ladder turned over.
+const ntLamps = (day, j) => Array.from({length:NT_N}, (_, i) => { const x = day.rounds[i]; return `<i class="nt-lamp${x ? " " + ntTone(x.pts, x.max) : i===j ? " now" : ""}"></i>`; }).join("");
+function ntLadder(ck, found=new Set(), last=null){
   const c = LEAD6.categories[ck], N = ntPool(ck).length, tie = r => c.rows.filter(x=>x.rank===r.rank).length > 1, top = c.rows.filter(r=>r.rank<=NT_TOP), h = Math.ceil(top.length/2);
+  if(ntWhole(ck)){ const got = [...found].map(i=>c.rows.find(r=>r.i===i)).filter(Boolean);
+    return `<div class="nt-dots" aria-label="${found.size} of ${N} names found">${got.map(r=>`<i class="got${r.i===last ? " new" : ""}"></i>`).join("")}${"<i></i>".repeat(N - got.length)}${got.length ? `<p class="nt-got">${got.map(r=>`<span${r.i===last ? ` class="new"` : ""}>${esc(r.name)}</span>`).join("")}</p>` : ""}</div>`; }
   // a short phone folds the ladder into two columns (rank down the first, then the second): c2 marks the second column, c2t its first rung
-  const lad = ntWhole(ck) ? `<div class="nt-dots" aria-label="${N} names count">${"<i></i>".repeat(N)}</div>`
-    : `<ol class="nt-lad" style="--h:${h}" aria-label="The top ${NT_TOP}, hidden">${top.map((r,i)=>`<li${i>=h ? ` class="c2${i===h ? " c2t" : ""}"` : ""}><span class="r num">${tie(r) ? "T" : ""}${r.rank}</span><span class="nm"></span><span class="v num">???</span></li>`).join("")}</ol>`;
-  return `${lad}<div class="nt-pts" aria-label="Points: the most famous answer 1, the deepest cut 10"><span>Famous 1</span><span class="nt-bar">${Array.from({length:10}, (_, i) => `<i class="${ntTone(i+1)}"></i>`).join("")}</span><span>10 Deep cut</span></div>`;
+  return `<ol class="nt-lad" style="--h:${h}" aria-label="The top ${NT_TOP}: ${found.size} of ${N} found">${top.map((r,i)=>{ const g = r.i!=null && found.has(r.i), cl = [i>=h ? "c2" : "", i===h ? "c2t" : "", g ? "got" : "", g && r.i===last ? "new" : ""].filter(Boolean).join(" ");
+    return `<li${cl ? ` class="${cl}"` : ""}><span class="r num">${tie(r) ? "T" : ""}${r.rank}</span><span class="nm">${g ? esc(r.name) : ""}</span><span class="v num">${g ? r.value.toLocaleString("en-US") : "???"}</span></li>`; }).join("")}</ol>`;
 }
+const ntMeter = () => `<div class="nt-pts" aria-label="Points: the most famous answer 1, the deepest cut 10"><span>Famous 1</span><span class="nt-bar">${Array.from({length:10}, (_, i) => `<i class="${i>=6 ? "g" : i>=3 ? "t" : "w"}"></i>`).join("")}</span><span>10 Deep cut</span></div>`;
+// The found names under a whole list's dots keep the newest in view: the oldest drop off while the panel would overflow (a fixed height on phones)
+function ntGotFit(){ const p = $(".nt2 .nt-dots"), g = p && p.querySelector(".nt-got"); if(!g) return; while(g.childElementCount > 1 && p.scrollHeight > p.clientHeight + 1) g.firstElementChild.remove(); }
+// A right name, in place (never a redraw, so the box keeps focus and the keyboard stays up): the round score pops +pts, the meta row's day
+// score, the found count, and the ladder (or dots) swapped for one with the new name filled in
+function ntLive(gain, last){
+  const {day, round:r} = NT, sc = $("#ntpts"), pop = $("#ntpop"), dy = $("#ntday"), fd = $("#ntfound");
+  const bump = (e, cls) => { e.classList.remove(cls); void e.offsetWidth; e.classList.add(cls); };
+  if(sc){ sc.innerHTML = `${r.pts}<small>/${r.max}</small>`; bump(sc, "up"); }
+  if(pop){ pop.textContent = `+${gain}`; bump(pop, "on"); }
+  if(dy) dy.textContent = `${ntScore(day) + r.pts} of ${ntDayMax(day)}`;
+  if(fd) fd.textContent = r.found.size;
+  const old = [...document.querySelectorAll(".nt2 .nt-lad, .nt2 .nt-dots")]; if(old.length){ old[0].insertAdjacentHTML("beforebegin", ntLadder(r.c, r.found, last)); old.forEach(e=>e.remove()); ntGotFit(); }
+}
+// The clock: one interval from the first focus of the box (or the first answer); a tick repaints only the clock bar and its number (a full
+// redraw would close the picker under the player), and stops itself when the screen is gone (the round then ends as Take a knee)
+function ntStart(){ const r = NT?.round; if(!r || r.done || r.t0 || NT.shown>=0) return; r.t0 = Date.now(); r.timer = setInterval(ntTick, 1000); ntTick(); }
+function ntTick(){
+  const r = NT?.round; if(!r || r.done) return;
+  if(!document.querySelector(".nt2 .nt-clock")) return ntLeave();
+  r.left = Math.max(0, NT_SECS - (r.t0 ? (Date.now() - r.t0)/1000 : 0) - r.pen);
+  const s = Math.ceil(r.left);
+  document.querySelectorAll(".nt2 .nt-clock").forEach(e=>{ e.querySelector(".nt-track i").style.width = (100*r.left/NT_SECS) + "%"; e.querySelector(":scope>.num").textContent = s; e.classList.toggle("low", s<=10); });
+  if(r.left<=0) ntRoundEnd("clock");
+}
+function ntFlash(){ const e = $(".nt2 .nt-clock"); if(!e) return; e.classList.remove("miss"); void e.offsetWidth; e.classList.add("miss"); clearTimeout(ntFlash.t); ntFlash.t = setTimeout(()=>e.classList.remove("miss"), 300); }
 // Phones: the open list ends above the keyboard. The visual viewport is what the keyboard leaves, so while the box has focus the list is
 // capped to the room under it there (one row at least), on focus, on every keystroke and whenever the keyboard resizes or scrolls the view.
 // While the keyboard is up the category header folds away (the meta row keeps the score, the question names the list), so the list has room.
@@ -6108,31 +6240,51 @@ function ntCap(){
   if(room < cap) box.style.maxHeight = Math.max(58, room) + "px";
 }
 if(window.visualViewport) ["resize", "scroll"].forEach(e => visualViewport.addEventListener(e, () => NT && ntCap()));
-// One guess: right if the player is in the category's pool (a listed row outside the pool, or anyone else, is a miss)
+// D1 an answer while the round is open: a name in the pool and not found yet scores its points and fills its rung; every name found is a
+// TOUCHDOWN; anyone else (a real player off the list, or a listed row outside the top 10) is a miss: 0, 5 seconds off the clock, a red
+// flash. The box clears and keeps focus either way. ntAnswer(null) (v2's Skip) takes a knee.
 function ntAnswer(p){
-  if(NT.shown>=0 || ntDone(NT.day)) return;
-  const j = NT.day.picks.length, ck = NT.day.cats[j], hit = p && ntHit(ck, p.id);
-  NT.day.picks.push({c:ck, id:p ? p.id : null, pts:hit ? hit.pts : 0}); NT.shown = j; if(p) NT.typing = true;
-  ntSave(); if(NT.day.picks.length>=NT_N) track("trivia_day", {mode:"nfl", extra:{score:ntScore(NT.day)}}); ntDraw();
+  const r = NT?.round; if(!r || r.done || NT.shown>=0) return;
+  if(!p) return ntRoundEnd("knee");
+  ntStart(); if(r.done) return;
+  const hit = ntHit(r.c, p.id);
+  if(hit && r.found.has(hit.i)) return;   // the picker never offers a found name: a guard
+  if(hit){ r.found.add(hit.i); r.pts += hit.pts; ntLive(hit.pts, hit.i); if(r.found.size>=ntPool(r.c).length) return ntRoundEnd("td"); }
+  else { r.wrong.push(p.id); r.pen += NT_PEN; ntFlash(); }
+  ntTick(); if(r.done) return;
+  const q = $("#ntq"); if(q){ q.value = ""; if(document.activeElement!==q) q.focus({preventScroll:true}); } ntSuggest("");
+}
+// D1 the round ends (td, clock or knee): the clock stops, the round is saved, then the reveal (silent: leaving the screen, no redraw)
+function ntRoundEnd(why, silent=false){
+  const r = NT?.round; if(!r || r.done) return;
+  r.left = why==="clock" ? 0 : Math.max(0, NT_SECS - (r.t0 ? (Date.now() - r.t0)/1000 : 0) - r.pen);
+  ntStop(); r.done = true; r.td = why==="td"; r.why = why;
+  const j = NT.day.rounds.length;
+  NT.day.rounds.push({c:r.c, ids:[...r.found], pts:r.pts, max:r.max, td:r.td, secs:Math.round(NT_SECS - r.left)});
+  ntSave();
+  if(ntDone(NT.day)) track("trivia_day", {mode:"nfl", extra:{score:ntScore(NT.day), max:NT.day.max, td:NT.day.rounds.filter(x=>x.td).length}});
+  if(silent) return;
+  NT.shown = j; ntDraw();
 }
 function ntEnd(head){
-  const {day, all} = NT, n = dlNum(NT.key), score = ntScore(day), st = ntStreak(all), sq = day.picks.map(x=>ntSq(x.pts)).join("");
+  const {day, all} = NT, n = dlNum(NT.key), score = ntScore(day), max = day.max || ntDayMax(day), st = ntStreak(all), sq = day.rounds.map(x=>ntSq(x.pts, x.max)).join(""), tds = day.rounds.filter(x=>x.td).length;
   const mid = new Date(); mid.setHours(24,0,0,0); const h = Math.floor((mid - Date.now())/36e5), m = Math.floor((mid - Date.now())%36e5/6e4);
   $("#app").innerHTML = `<div class="tcol">${head}<section class="nt2">
-    <p class="dl-meta"><span>NFL Trivia · #${n}</span><span>${score} of 70</span></p>
-    <h2 class="dl-big" style="color:${score>=35 ? "var(--gold)" : score ? "var(--turf)" : "var(--muted)"}">${score} / 70</h2>
+    <p class="dl-meta"><span>NFL Trivia · #${n}</span><span>${score} of ${max}</span></p>
+    <h2 class="dl-big" style="color:${score>=max/2 ? "var(--gold)" : score ? "var(--turf)" : "var(--muted)"}">${score} / ${max}</h2>
     <p class="dl-sq">${sq}</p>
-    <div class="dl-stats num"><span>Score <b>${score} of 70</b></span><span>Streak <b>${st}</b></span><span>Best <b>${Math.max(all.best||0, score)}</b></span></div>
+    <div class="dl-stats num"><span>Score <b>${score} of ${max}</b></span><span>Touchdowns <b>${tds}</b></span><span>Streak <b>${st}</b></span><span>Best <b>${Math.max(all.best||0, score)}</b></span></div>
     <div class="actions"><button class="btn" id="ntshare">Copy result</button><button class="btn alt" id="nthome">Home</button></div>
     <p class="hint num">Next questions in ${h}h ${m}m.</p>
-    <ol class="dl-log">${day.picks.map((x,i)=>`<li><span class="n num">${i+1}</span><span class="a">${x.id!=null ? esc(PLAYERS[x.id].name) : "–"}<small>${esc(LEAD6.categories[x.c]?.title || "")}</small></span><span class="y num" style="color:${x.pts ? "var(--gold)" : "var(--muted)"}">${ntSq(x.pts)} +${x.pts}</span></li>`).join("")}</ol>
+    <ol class="dl-log">${day.rounds.map((x,i)=>`<li><span class="n num">${i+1}</span><span class="a">${esc(LEAD6.categories[x.c]?.title || "")}<small>${x.td ? "TOUCHDOWN · " : ""}${x.ids.length} of ${ntPool(x.c).length} named</small></span><span class="y num" style="color:${x.pts ? "var(--gold)" : "var(--muted)"}">${ntSq(x.pts, x.max)} +${x.pts}</span></li>`).join("")}</ol>
   </section></div>`;
   $("#quit").onclick = renderHome; $("#homebtn").onclick = renderHome; wireLook();
   $("#nthome").onclick = renderHome;
-  $("#ntshare").onclick = () => shareCard(`17–0 NFL Trivia #${n}\n${sq}\n${score}/70`);
+  $("#ntshare").onclick = () => shareCard(`17–0 NFL Trivia #${n}\n${sq}\n${score}/${max}`);
 }
-// skip nobody: the day's lists share answers (pass_yds and pass_td share all ten), and one guess per question already ends a question
-function ntSuggest(text){ pickList($("#ntres"), text, new Set(), ntAnswer, true); ntCap(); }
+// a round's found names (and its misses) are never offered again in that round; the next round starts clean (pass_yds and pass_td share all ten)
+function ntSuggest(text){ const r = NT?.round, skip = new Set(); if(r && !r.done){ for(const i of r.found){ skip.add(i); if(NT_TWIN[i]!=null) skip.add(NT_TWIN[i]); } r.wrong.forEach(id=>skip.add(id)); }
+  pickList($("#ntres"), text, skip, ntAnswer, true); ntCap(); }
 
 // ---------- Leaderboard ----------
 // Shared board: the Supabase scores table keeps one row per player, mode and level (his best run); the device board is the fallback.
@@ -6546,7 +6698,7 @@ function renderBoards(area){
     <div class="bcards">${MODE_ORDER.map(season).join("")}
     ${card("td", "TD Trivia", fmt(dlTDs(dl)), "Touchdowns", `Streak ${fmt(dlStreak(dl))} · Best drive ${fmt(yds)} yds`)}
     ${card("elo", "TD Trivia ELO", eloFmt(er), "Rating", `Best ${eloFmt(eb)} · ${fmt(en)} answer${en===1?"":"s"}`, {pill: en<ELO_PROV ? `<span class="pill">Provisional</span>` : ""})}
-    ${card("nt", "NFL Trivia", `${fmt(nt.best)} of 70`, "Best day", `Streak ${fmt(nt.streak)}`)}
+    ${card("nt", "NFL Trivia", fmt(nt.best), "Best day", `Streak ${fmt(nt.streak)}`)}
     ${card("ring", "Ring of Honor", `${fmt(got)} of ${fmt(pool.length)}`, "Collected", `Best 17-0 streak ${fmt(rm.bestStreak)} · ${fmt(rm.titles)} title${n(rm.titles)===1?"":"s"}`)}
     ${(all => { const key = dlKey(), day = all.days[key] || {tries:[]}, best = d17Best(day.tries), ever = d17AllBest(all), used = d17Used(day);
       const ranked = [...day.tries].sort((a,b)=>d17Better(a,b) ? -1 : 1).map(t=>`${n(t.w)}-${n(t.l)} in ${fmtTime(n(t.secs))}`).join(", ");   // this device's tries today, best first
@@ -6569,7 +6721,7 @@ function renderBoards(area){
 const SHARE_URL = "jtaylen.github.io/17-0-play";
 const winStrip = season => season.map(g=>g.win?"🟩":"🟥").join("");
 // Packs: the rarest card on the roster (the Baby GOAT, then Mythic, the season families, a Legend variant, then the top OVR); other modes: the best card.
-const RARE_RANK = {mythic:5, ghouls:4, moment:4, rookie:4, throwback:4, farewell:4, legend:3};
+const RARE_RANK = {mythic:5, ghouls:4, turkey:4, moment:4, rookie:4, throwback:4, farewell:4, legend:3};
 function rarestPick(){
   const rank = p => p.gronk ? 9 : p.v ? (RARE_RANK[p.v.fam]||2) : 0;
   const p = SLOTS.map(s=>S.roster[s.key]).filter(Boolean).reduce((a,b)=>!a || rank(b)>rank(a) || (rank(b)===rank(a) && b.ovr>a.ovr) ? b : a, null);
