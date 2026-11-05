@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>17-0 Control Hub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1424">
+<meta name="robots" content="noindex">
+<meta name="description" content="The 17-0 Draft control hub: players, time played, day by day, weeks, months, retention, modes, outcomes, trivia and quits, read as aggregates from Supabase.">
+<style>
+/* The game's own tokens (index.html :root), so the hub reads as its control room. Dark is the default; the system light scheme
+   swaps the tokens. No key, no URL, no CDN: everything in this one file. */
+:root{
+  --bg:#0a1424; --bg2:#0f1d33; --surface:#14243f; --surface2:#1b2f50; --line:#28406a;
+  --fg:#eef3fb; --muted:#93a6c4; --gold:#ffc93c; --gold-ink:#2a1d00; --turf:#2fd27a; --loss:#ff5d6c; --sky:#5cb2ff;
+  --glow:radial-gradient(1200px 600px at 50% -200px,#1d3a6b 0%,transparent 70%);
+  --font-display:"Anton","Impact","Arial Narrow Bold",sans-serif;
+  --font-label:"Barlow Condensed","Arial Narrow",sans-serif;
+  --font-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:14px;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#eef2f8; --bg2:#e3e9f3; --surface:#ffffff; --surface2:#f4f7fc; --line:#c9d4e6;
+    --fg:#0b1424; --muted:#4f6383; --gold:#a66f00; --gold-ink:#fff7dd; --turf:#178a4c; --loss:#c8303f; --sky:#1f6fc2;
+    --glow:radial-gradient(1200px 600px at 50% -200px,#d6e2f5 0%,transparent 70%);
+    color-scheme:light;
+  }
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:var(--bg);background-image:var(--glow);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;padding:16px 16px 48px}
+.label{font-family:var(--font-label);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand .logo{font-family:var(--font-display);font-size:34px;line-height:1;letter-spacing:.02em;color:var(--gold)}
+.brand .sub{font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:var(--muted);white-space:nowrap}
+.tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ghost{font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:14px;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);min-height:40px}
+.ghost:hover{background:var(--surface2)}
+.ghost:disabled{opacity:.5;cursor:default}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.seg button{font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:14px;padding:8px 12px;min-height:40px;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--gold);color:var(--gold-ink)}
+.gear{width:40px;min-width:40px;padding:0;font-size:18px;line-height:1;text-align:center}
+.status{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin:0 0 14px}
+.status .err{color:var(--loss);font-weight:600}
+
+/* settings */
+.setup{border-radius:var(--r);padding:16px;background:var(--surface);border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.28);margin-bottom:16px}
+.setup[hidden]{display:none}
+.setup h2{font-family:var(--font-display);font-weight:400;font-size:24px;line-height:1;margin:0 0 6px;color:var(--gold)}
+.setup p{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:70ch}
+.setup label{display:block;margin:0 0 10px}
+.setup label span{display:block;font-family:var(--font-label);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--muted);margin-bottom:4px}
+.setup input{width:100%;font:500 16px/1.3 var(--font-body);color:var(--fg);background:var(--bg2);border:2px solid var(--line);border-radius:10px;padding:10px 12px;outline:none}
+.setup input:focus{border-color:var(--gold)}
+.setup .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.gold{background:var(--gold);color:var(--gold-ink);border-color:var(--gold)}
+.gold:hover{background:var(--gold);filter:brightness(1.05)}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.tile{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.28);min-width:0}
+.tile .bt{font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--muted)}
+.tile .bh{font-family:var(--font-display);font-weight:400;font-size:30px;line-height:1.05;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile .bl{font-size:12px;color:var(--muted)}
+
+/* panels */
+.panel{border-radius:var(--r);padding:14px;background:var(--surface);border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.28);margin-bottom:16px;min-width:0}
+.panel h2{font-family:var(--font-display);font-weight:400;font-size:22px;line-height:1;margin:0 0 10px;color:var(--fg);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.panel h2 small{font-family:var(--font-label);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.grid2 .panel{margin-bottom:0}
+.grid2 + .panel{margin-top:16px}
+
+/* chart */
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.chart text{font-family:var(--font-label);font-size:12px;fill:var(--muted)}
+.chart .grid line{stroke:var(--line);stroke-width:1}
+.chart .ax{stroke:var(--line);stroke-width:1}
+.chart .s1{fill:none;stroke:var(--gold);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.chart .s2{fill:none;stroke:var(--sky);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.chart .a1{fill:var(--gold);opacity:.12}
+.chart .cur{stroke:var(--fg);stroke-width:1;stroke-dasharray:3 3;opacity:.7}
+.chart .dot1{fill:var(--gold)} .chart .dot2{fill:var(--sky)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--font-label);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:13px;color:var(--muted);margin:0 0 6px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.legend .k1 i{background:var(--gold)} .legend .k2 i{background:var(--sky)}
+.readout{min-height:22px;font-size:14px;color:var(--muted);margin-top:4px}
+.readout b{color:var(--fg)}
+
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-size:15px}
+.tbl th{text-align:left;font-family:var(--font-label);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .r{text-align:right}
+.tbl .k{font-family:var(--font-label);font-weight:700;letter-spacing:.02em}
+.tbl .k small{font-weight:600;color:var(--muted);margin-left:4px;letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.empty{text-align:center;color:var(--muted);padding:30px 12px;font-size:16px;max-width:48ch;margin:0 auto}
+.empty b{display:block;font-family:var(--font-display);font-weight:400;font-size:26px;color:var(--gold);margin-bottom:6px}
+.foot{color:var(--muted);font-size:13px;margin-top:22px;max-width:76ch}
+
+/* compare strip: three groups, five metrics each, a delta chip per metric */
+.cmp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.cg{padding:12px 14px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.28);min-width:0}
+.cg h3{margin:0 0 4px;font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--muted)}
+.cg h3 b{color:var(--fg);font-weight:700}
+.cm{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:0 10px;padding:6px 0;border-top:1px solid var(--line)}
+.cm .k{font-family:var(--font-label);font-weight:600;font-size:15px;letter-spacing:.02em}
+.cm .v{font-family:var(--font-display);font-weight:400;font-size:22px;line-height:1.1;color:var(--gold);text-align:right}
+.cm .s{grid-column:1 / -1;font-size:12px;color:var(--muted)}
+/* delta chips: the sign is a CSS triangle (up, down) or bar (flat), never a dash character */
+.dc{display:inline-flex;align-items:center;gap:4px;font:700 13px/1 var(--font-label);padding:4px 7px;border-radius:999px;white-space:nowrap;font-variant-numeric:tabular-nums;min-width:38px;justify-content:center}
+.dc::before{content:"";display:inline-block;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent}
+.dc.up{color:var(--turf);background:color-mix(in srgb,var(--turf) 16%,transparent)}
+.dc.up::before{border-bottom:6px solid currentColor}
+.dc.down{color:var(--loss);background:color-mix(in srgb,var(--loss) 16%,transparent)}
+.dc.down::before{border-top:6px solid currentColor}
+.dc.flat{color:var(--muted);background:color-mix(in srgb,var(--muted) 16%,transparent)}
+.dc.flat::before{width:8px;height:2px;border:0;background:currentColor;border-radius:1px}
+.dc.new{color:var(--sky);background:color-mix(in srgb,var(--sky) 16%,transparent);text-transform:uppercase;letter-spacing:.06em}
+.dc.new::before{display:none}
+.dc.sm{font-size:11px;padding:2px 5px;min-width:0;margin-left:6px;vertical-align:1px}
+.dc.sm::before{border-left-width:3px;border-right-width:3px}
+.dc.sm.up::before{border-bottom-width:5px} .dc.sm.down::before{border-top-width:5px}
+
+/* the day table: sticky header, sticky first column, the pinned 7-day average */
+.panel .seg{margin-bottom:10px}
+.scroll.tall{max-height:min(72vh,640px);overflow:auto;border:1px solid var(--line);border-radius:10px}
+.tbl.sticky thead th{position:sticky;top:0;z-index:2;background:var(--surface)}
+.tbl.sticky th:first-child,.tbl.sticky td:first-child{position:sticky;left:0;z-index:1;background:var(--surface);box-shadow:1px 0 0 var(--line)}
+.tbl.sticky thead th:first-child{z-index:4}
+.tbl.sticky tr.avg td{position:sticky;top:var(--hh,30px);z-index:2;background:var(--surface2);font-weight:600}
+.tbl.sticky tr.avg td:first-child{z-index:3;background:var(--surface2)}
+.tbl.sticky tr.dayrow{cursor:pointer}
+.tbl.sticky tr.dayrow:hover td,.tbl.sticky tr.dayrow.open td{background:var(--surface2)}
+.dayb{font-family:var(--font-label);font-weight:700;letter-spacing:.02em;padding:0;text-align:left;white-space:nowrap}
+.dayb::after{content:"";display:inline-block;margin-left:6px;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--muted);vertical-align:2px}
+.dayb[aria-expanded="true"]::after{border-top:0;border-bottom:5px solid var(--gold)}
+.tbl tr.det > td{background:var(--bg2);padding:8px;white-space:normal}
+.tbl tr.det > td:first-child{position:static;box-shadow:none}
+.detin{position:sticky;left:8px;max-width:calc(100vw - 72px);overflow-x:auto}
+.detin .tbl{font-size:13px;width:auto;min-width:280px}
+.detin .tbl td:first-child,.detin .tbl th:first-child{position:static;box-shadow:none;background:transparent}
+.tag{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:6px;border:1px solid var(--line);font:700 10px/1.4 var(--font-label);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);vertical-align:1px}
+.note{color:var(--muted);font-size:14px;margin:0 0 10px;max-width:80ch}
+
+/* retention: a gold heat scale, 0 percent clear to 60 percent or more full */
+.heat td.c{text-align:right;background:color-mix(in srgb,var(--gold) var(--h,0%),transparent);font-variant-numeric:tabular-nums}
+.heat td.c.hot,.heat td.c.max{color:var(--gold-ink);font-weight:700}
+@media (prefers-color-scheme: light){ .heat td.c.hot{color:var(--fg)} }   /* light: the pale middle takes dark text, only the deep end the light ink */
+.heat td.c.blank{background:transparent}
+
+/* small bar charts */
+.minis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.mini{min-width:0}
+.mini h3,.wkd h3{margin:0 0 8px;font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--muted)}
+.wkd{margin-top:18px;max-width:520px}
+.bars{display:flex;align-items:stretch;gap:4px;height:130px;border-bottom:1px solid var(--line)}
+.bars .b{flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+.bars .bar{display:block;width:100%;max-width:56px;background:var(--gold);border-radius:4px 4px 0 0;min-height:1px}
+.bars .bv{font:600 11px/1.2 var(--font-label);color:var(--muted);margin-bottom:2px;white-space:nowrap}
+.bars.dense{gap:2px} .bars.dense .bv{display:none} .bars.dense .bar{border-radius:2px 2px 0 0}
+.bxl{display:flex;gap:4px;margin-top:4px} .bxl.dense{gap:2px}
+.bxl span{flex:1 1 0;min-width:0;text-align:center;font:600 11px/1.2 var(--font-label);color:var(--muted);white-space:nowrap;overflow:visible}
+
+/* outcomes: the six-cell stage bar */
+.stg{display:inline-flex;width:132px;height:12px;border-radius:3px;overflow:hidden;background:var(--bg2);vertical-align:middle}
+.stg i{display:block;height:100%;background:color-mix(in srgb,var(--gold) var(--h),var(--bg2))}
+.stg i + i{box-shadow:inset 1px 0 0 var(--surface)}
+.split{margin-top:14px;padding-top:6px;border-top:1px solid var(--line)}
+.grid2.tq{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}
+
+@media (max-width:860px){ .tiles{grid-template-columns:repeat(2,minmax(0,1fr))} .grid2{grid-template-columns:minmax(0,1fr)} .grid2 .panel{margin-bottom:0} .grid2.tq{grid-template-columns:minmax(0,1fr)} .cmp{grid-template-columns:minmax(0,1fr)} .minis{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:440px){ .tbl{font-size:13px} .tbl th,.tbl td{padding:6px 4px} .tbl th{font-size:11px;letter-spacing:.02em} #modes th:nth-child(6),#modes td:nth-child(6){display:none} .tbl .k small{display:block;margin:0} .tiles{grid-template-columns:minmax(0,1fr)} .tile{flex-direction:row;align-items:baseline;justify-content:space-between;flex-wrap:wrap} .tile .bh{font-size:26px} .tile .bl{width:100%} .brand .logo{font-size:28px} .wrap{padding-top:12px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="logo">17-0</span><span class="sub">Control hub</span></div>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Range">
+        <button type="button" data-days="7" aria-pressed="false">7 days</button>
+        <button type="button" data-days="30" aria-pressed="true">30 days</button>
+        <button type="button" data-days="90" aria-pressed="false">90 days</button>
+      </div>
+      <button type="button" class="ghost" id="refresh">Refresh</button>
+      <button type="button" class="ghost gear" id="gear" aria-label="Settings" title="Settings">&#9881;</button>
+    </div>
+  </header>
+
+  <section class="setup" id="setup" hidden>
+    <h2>Connect once</h2>
+    <p>Paste the Supabase project URL and the anon (publishable) key. They stay in this browser only (localStorage), never in the page. Never paste the service_role key.</p>
+    <label><span>Project URL</span><input id="url" type="url" placeholder="https://xxxx.supabase.co" autocomplete="off" spellcheck="false"></label>
+    <label><span>Anon key</span><input id="key" type="password" placeholder="eyJ... or sb_publishable_..." autocomplete="off" spellcheck="false"></label>
+    <div class="row">
+      <button type="button" class="ghost gold" id="save">Save and load</button>
+      <button type="button" class="ghost" id="clear">Clear</button>
+      <button type="button" class="ghost" id="close">Close</button>
+    </div>
+  </section>
+
+  <p class="status"><span id="stamp">Not loaded yet.</span><span id="err" class="err"></span></p>
+
+  <div id="main" hidden>
+    <section class="tiles" id="tiles"></section>
+
+    <section class="cmp" id="cmp" aria-label="Compare"></section>
+
+    <section class="panel">
+      <h2>Daily trend <small id="chartsub"></small></h2>
+      <div class="legend"><span class="k1"><i></i>Active players</span><span class="k2"><i></i>Minutes played</span></div>
+      <div class="chart" id="chart"></div>
+      <div class="readout" id="readout">Hover or tap a day.</div>
+    </section>
+
+    <section class="panel" id="dayspanel">
+      <h2>Day by day <small id="dayssub">each change against the row below</small></h2>
+      <div class="seg" role="group" aria-label="Rows" id="unit">
+        <button type="button" data-unit="days" aria-pressed="true">Days</button>
+        <button type="button" data-unit="weeks" aria-pressed="false">Weeks</button>
+        <button type="button" data-unit="months" aria-pressed="false">Months</button>
+      </div>
+      <div class="scroll tall" id="days"></div>
+    </section>
+
+    <section class="panel" id="retpanel">
+      <h2>Who came back <small>retention by first-seen day</small></h2>
+      <p class="note">Of the players first seen on a day, the share back exactly N days later. Hover a cell for the count; blank means that day has not come yet.</p>
+      <div class="scroll tall" id="retention"></div>
+    </section>
+
+    <section class="panel" id="stickpanel">
+      <h2>Stickiness and time <small>in the range</small></h2>
+      <div class="minis">
+        <div class="mini"><h3>Active days per player</h3><div id="actdays"></div></div>
+        <div class="mini"><h3>Time played per player-day</h3><div id="sessb"></div></div>
+        <div class="mini"><h3>App opens by hour (Phoenix)</h3><div id="hours"></div></div>
+      </div>
+      <div class="wkd"><h3>Weekday pattern: mean active players</h3><div id="weekday"></div></div>
+    </section>
+
+    <section class="panel">
+      <h2>Modes <small>in the range</small></h2>
+      <div class="scroll" id="modes"></div>
+    </section>
+
+    <section class="panel" id="outpanel">
+      <h2>Outcomes <small>how far seasons get, in the range</small></h2>
+      <div class="scroll" id="outcomes"></div>
+      <div class="grid2 split">
+        <div class="scroll" id="looks"></div>
+        <div class="scroll" id="platforms"></div>
+      </div>
+    </section>
+
+    <div class="grid2 tq">
+      <section class="panel">
+        <h2>Trivia <small>in the range</small></h2>
+        <div class="scroll" id="trivia"></div>
+      </section>
+      <section class="panel">
+        <h2>Where people quit <small>in the range</small></h2>
+        <div class="scroll" id="quits"></div>
+      </section>
+    </div>
+  </div>
+
+  <div id="empty" class="panel" hidden><p class="empty"><b>No events yet.</b>Ship a build with CLOUD set and open the app.</p></div>
+
+  <p class="foot">Every number is an aggregate from <code>supabase/hub.sql</code> (counts and averages per day, week, month, hour, mode or trivia); the hub never reads a row or a device id. Days and hours are Phoenix time; weeks start Monday. See <code>docs/hub.md</code>.</p>
+</div>
+
+<script>
+(() => {
+"use strict";
+const $ = s => document.querySelector(s);
+const STORE = "hub-supabase";
+const DEMO = new URLSearchParams(location.search).get("demo") === "1";
+let days = 30, unit = "days", busy = false;
+
+// ---------- settings ----------
+function cfg(){ try{ const v = JSON.parse(localStorage.getItem(STORE) || "null"); return v && v.url && v.key ? v : null; }catch(e){ return null; } }
+function setCfg(v){ try{ v ? localStorage.setItem(STORE, JSON.stringify(v)) : localStorage.removeItem(STORE); }catch(e){} }
+function showSetup(on){ const c = cfg(); $("#setup").hidden = !on; $("#url").value = c ? c.url : ""; $("#key").value = c ? c.key : ""; if(on) $("#url").focus(); }
+
+// ---------- dates (Phoenix days) ----------
+const PHX = new Intl.DateTimeFormat("en-CA", {timeZone: "America/Phoenix", year: "numeric", month: "2-digit", day: "2-digit"});
+const today = () => PHX.format(new Date());                       // YYYY-MM-DD
+const addDays = (iso, n) => { const d = new Date(iso + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+const range = () => { const to = today(); return {p_from: addDays(to, -(days - 1)), p_to: to}; };
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const WD = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const dayLabel = iso => MON[+iso.slice(5, 7) - 1] + " " + (+iso.slice(8, 10));
+const dow = iso => new Date(iso + "T12:00:00Z").getUTCDay();          // 0 = Sunday
+const mondayOf = iso => addDays(iso, -((dow(iso) + 6) % 7));          // weeks start Monday, as Postgres date_trunc('week')
+const monthOf = iso => iso.slice(0, 8) + "01";
+const prevMonth = iso => { const y = +iso.slice(0, 4), m = +iso.slice(5, 7); return m === 1 ? `${y - 1}-12-01` : `${y}-${String(m - 1).padStart(2, "0")}-01`; };
+const monthLen = iso => new Date(Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7), 0)).getUTCDate();
+const daysBetween = (a, b) => Math.round((Date.parse(b + "T12:00:00Z") - Date.parse(a + "T12:00:00Z")) / 864e5);
+// The compare strip's pace windows: this week so far (Monday to today, N days) and the first N days of last week; this month so far
+// (the 1st to today) and the same first days of last month (cut at last month's length).
+function paceWindows(t){
+  const wn = daysBetween(mondayOf(t), t) + 1, lw0 = addDays(mondayOf(t), -7), mn = +t.slice(8, 10), lm0 = prevMonth(t), ln = Math.min(mn, monthLen(lm0));
+  return {wn, mn, ln, tw: {p_from: mondayOf(t), p_to: t}, lw: {p_from: lw0, p_to: addDays(lw0, wn - 1)}, tm: {p_from: monthOf(t), p_to: t}, lm: {p_from: lm0, p_to: addDays(lm0, ln - 1)}};
+}
+
+// ---------- formatting ----------
+const fmtN = n => n == null ? "0" : Math.round(+n).toLocaleString("en-US");
+const fmt1 = n => n == null ? "0" : (+n).toLocaleString("en-US", {maximumFractionDigits: 1, minimumFractionDigits: 1});
+function fmtSecs(s){
+  if(s == null || isNaN(+s)) return "0s";
+  s = Math.round(+s); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), r = s % 60;
+  return h ? `${h}h ${m}m` : m ? `${m}m ${r}s` : `${r}s`;
+}
+const fmtMSS = s => s == null || isNaN(+s) ? "" : `${Math.floor(Math.round(+s) / 60)}:${String(Math.round(+s) % 60).padStart(2, "0")}`;
+const fmtPct = (n, d) => !(+d > 0) || n == null ? "" : `${Math.round(+n / +d * 100)}%`;
+const fmtD = (n, dp) => dp ? fmt1(n) : fmtN(n);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+// A delta chip: the change from prev to cur as an absolute number (never a percent, so a zero day cannot make Infinity), the sign drawn
+// by CSS. "new" when there is no earlier value; nothing when there is no current one.
+function chip(cur, prev, dp = 0, vs = "", sm = false){
+  if(cur == null || !isFinite(+cur)) return "";
+  if(prev == null || !isFinite(+prev)) return `<span class="dc new${sm ? " sm" : ""}" title="nothing to compare with">new</span>`;
+  const f = Math.pow(10, dp), d = Math.round((+cur - +prev) * f) / f, k = d > 0 ? "up" : d < 0 ? "down" : "flat";
+  return `<span class="dc ${k}${sm ? " sm" : ""}" title="${k === "flat" ? "no change" : k + " " + fmtD(Math.abs(d), dp)}${vs ? " vs " + esc(vs) : ""}">${fmtD(Math.abs(d), dp)}</span>`;
+}
+const MODES = {packs: "Packs", classic: "Classic", full: "Full Roster", daily17: "Daily 17-0"};
+const TRIV = {td: "TD Trivia", elo: "Elo Trivia", nfl: "NFL Trivia", top25: "Top 25"};
+const LOOKS = {retro: "Retro", modern: "Modern", unknown: "Unknown"};
+const PLATS = {ios: "iOS app", android: "Android app", "ios-web": "iPhone browser", "android-web": "Android browser", web: "Other browser", unknown: "Unknown"};
+const STAGES = ["Missed the playoffs", "Out in the Wild Card", "Out in the Divisional", "Out in the Conference Title", "Lost the Super Bowl", "Won the title"];
+const name = (map, k) => map[k] || (k == null ? "(none)" : k);
+
+// ---------- fetch ----------
+class RpcError extends Error { constructor(fn, status, text){ super(`${fn}: HTTP ${status}${text ? " " + text : ""}`); this.fn = fn; this.status = status; } }
+async function rpc(fn, body){
+  if(DEMO) return demo(fn, body);
+  const c = cfg(); if(!c) throw new Error("not configured");
+  const base = c.url.replace(/\/+$/, "");
+  let r;
+  try{
+    r = await fetch(`${base}/rest/v1/rpc/${fn}`, {method: "POST", headers: {apikey: c.key, Authorization: "Bearer " + c.key, "Content-Type": "application/json", Accept: "application/json"}, body: JSON.stringify(body)});
+  }catch(e){ throw new RpcError(fn, 0, "no answer (network or URL)"); }
+  if(!r.ok){ let t = ""; try{ t = (await r.text()).slice(0, 160); }catch(e){} throw new RpcError(fn, r.status, t); }
+  return r.json();
+}
+
+// ---------- demo data (the contract shapes, no fetch) ----------
+// Every function's exact columns, null where the SQL would return null. A day's numbers depend on its date only, so every range,
+// the compare strip and the day table agree on the same day.
+const rnd = seed => () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };   // a small fixed PRNG, the same page every load
+const dayList = (a, b) => { const l = []; for(let d = a; d <= b; d = addDays(d, 1)) l.push(d); return l; };
+function demoDay(day){
+  const r = rnd(+day.replace(/-/g, "")), i = 90 + daysBetween(today(), day), wk = [1.25, .9, .85, .9, .95, 1.1, 1.3][dow(day)];
+  const devices = Math.round((18 + i * .35 + r() * 10) * wk), sessions = Math.round(devices * (1.6 + r() * .6));
+  const new_devices = Math.round(1 + r() * 4), session_secs = Math.round(sessions * (170 + r() * 150));
+  const drafts = Math.round(devices * (1.1 + r() * .5)), finishes = Math.round(drafts * (.55 + r() * .2)), wins17 = Math.round(finishes * r() * .08);
+  const quits = Math.round(drafts * (.15 + r() * .1)), trivia_devices = Math.round(devices * (.35 + r() * .2)), trivia_plays = Math.round(trivia_devices * (1.2 + r() * .5));
+  return {day, devices, new_devices, returning: devices - new_devices, sessions, session_secs, drafts, finishes, wins17, quits, trivia_plays, trivia_devices};
+}
+const DEMO_MODES = [["packs", "beginner", .5], ["classic", "medium", .2], ["daily17", "hard", .18], ["full", "hard", .07], ["classic", "beginner", .05]];
+function demo(fn, {p_from, p_to, p_unit}){
+  const list = p_to >= p_from && daysBetween(p_from, p_to) <= 92 ? dayList(p_from, p_to) : [];   // the 92-day guard
+  if(!list.length) return [];
+  const n = list.length, rows = list.map(demoDay);
+  const daily = rows.map(d => ({day: d.day, devices: d.devices, new_devices: d.new_devices, sessions: d.sessions, session_secs: d.session_secs, app_opens: d.sessions}));
+  const sum = (k, a = rows) => a.reduce((s, d) => s + d[k], 0);
+  const r2 = rnd(n * 7 + 3);
+  switch(fn){
+    case "hub_summary": return [{devices_total: 412 + n, active_today: daily[n - 1].devices, active_7d: Math.round(daily.slice(-7).reduce((a, d) => a + d.devices, 0) * .62), active_30d: 214, new_devices: sum("new_devices"), sessions: sum("sessions"), avg_session_secs: sum("session_secs") / Math.max(1, sum("sessions")), avg_secs_per_device_day: sum("session_secs") / Math.max(1, sum("devices"))}];
+    case "hub_daily": return daily;
+    case "hub_modes": return [
+      {mode: "packs",   level: "beginner", starts: Math.round(n * 14), finishes: Math.round(n * 8.5), quits: Math.round(n * 3.1), avg_w: 11.4, devices: Math.round(n * 5.2)},
+      {mode: "classic", level: "medium",   starts: Math.round(n * 6),  finishes: Math.round(n * 3.6), quits: Math.round(n * 1.4), avg_w: 9.8,  devices: Math.round(n * 2.6)},
+      {mode: "daily17", level: "hard",     starts: Math.round(n * 5),  finishes: Math.round(n * 4.4), quits: Math.round(n * .4),  avg_w: 12.1, devices: Math.round(n * 2.1)},
+      {mode: "full",    level: "hard",     starts: Math.round(n * 2),  finishes: Math.round(n * .9),  quits: Math.round(n * .8),  avg_w: 7.6,  devices: Math.round(n * .9)},
+      {mode: "classic", level: "beginner", starts: Math.round(n * 1.5), finishes: Math.round(n * 1),  quits: Math.round(n * .3),  avg_w: 13.2, devices: Math.round(n * .8)}];
+    case "hub_trivia": return [
+      {trivia: "td",  plays: Math.round(n * 9),   devices: Math.round(n * 3.4), avg_score: 4.2 + r2()},
+      {trivia: "elo", plays: Math.round(n * 4.5), devices: Math.round(n * 2.1), avg_score: 6.1 + r2()},
+      {trivia: "nfl", plays: Math.round(n * 3),   devices: Math.round(n * 1.6), avg_score: 7.3 + r2()}];
+    case "hub_trivia2": return [
+      {trivia: "td",  plays: Math.round(n * 9),   devices: Math.round(n * 3.4), avg_score: 4.2 + r2(), avg_max: null, avg_td: null},
+      {trivia: "elo", plays: Math.round(n * 4.5), devices: Math.round(n * 2.1), avg_score: 6.1 + r2(), avg_max: null, avg_td: null},
+      {trivia: "nfl", plays: Math.round(n * 3),   devices: Math.round(n * 1.6), avg_score: 7.3 + r2(), avg_max: 11 + r2(), avg_td: 1.4 + r2()}];
+    case "hub_quits": return [
+      {mode: "packs",   phase: "draft",  pick: 3,  n: Math.round(n * 1.2)},
+      {mode: "packs",   phase: "draft",  pick: 1,  n: Math.round(n * .9)},
+      {mode: "packs",   phase: "season", pick: null, n: Math.round(n * .7)},
+      {mode: "classic", phase: "draft",  pick: 5,  n: Math.round(n * .5)},
+      {mode: "full",    phase: "draft",  pick: 12, n: Math.round(n * .4)},
+      {mode: "daily17", phase: "draft",  pick: 2,  n: Math.round(n * .2)}];
+    case "hub_daily2": return rows;
+    case "hub_periods": {
+      if(p_unit !== "week" && p_unit !== "month") return [];
+      const by = new Map();
+      for(const d of rows){ const k = p_unit === "week" ? mondayOf(d.day) : monthOf(d.day); if(!by.has(k)) by.set(k, []); by.get(k).push(d); }
+      return [...by].map(([period_start, ds]) => {
+        const top = Math.max(...ds.map(d => d.devices)), s = k => sum(k, ds);
+        return {period_start, days_in_range: ds.length, devices: Math.round(top + (s("devices") - top) * .3), new_devices: s("new_devices"), sessions: s("sessions"),
+          session_secs: s("session_secs"), drafts: s("drafts"), finishes: s("finishes"), wins17: s("wins17"), quits: s("quits"), trivia_plays: s("trivia_plays")};
+      });
+    }
+    case "hub_window": {
+      const top = Math.max(...rows.map(d => d.devices)), devices = Math.round(top + (sum("devices") - top) * .3), nw = sum("new_devices");
+      return [{devices, new_devices: nw, returning: Math.max(0, devices - nw), sessions: sum("sessions"), session_secs: sum("session_secs"), drafts: sum("drafts"),
+        finishes: sum("finishes"), wins17: sum("wins17"), quits: sum("quits"), trivia_plays: sum("trivia_plays")}];
+    }
+    case "hub_modes_daily": return rows.flatMap(d => DEMO_MODES.map(([mode, level, sh]) => {
+      const starts = Math.round(d.drafts * sh), finishes = Math.round(d.finishes * sh), quits = Math.round(d.quits * sh);
+      return {day: d.day, mode, level, starts, finishes, quits, devices: Math.max(starts ? 1 : 0, Math.round((starts + finishes) * .45))};
+    }).filter(m => m.starts + m.finishes + m.quits > 0));
+    case "hub_retention": {
+      const t = today(), base = {d1: .42, d3: .28, d7: .2, d14: .14, d30: .09}, N = {d1: 1, d3: 3, d7: 7, d14: 14, d30: 30};
+      return rows.slice().reverse().filter(d => d.day <= t).map(d => {
+        const r = rnd(+d.day.replace(/-/g, "") + 11), o = {cohort_day: d.day, size: d.new_devices};
+        for(const k in base) o[k] = addDays(d.day, N[k]) > t ? null : Math.min(d.new_devices, Math.round(d.new_devices * base[k] * (.6 + r() * .9)));
+        return o;
+      });
+    }
+    case "hub_active_days": { const p = sum("devices") * .35; return [["1", .46], ["2-3", .27], ["4-6", .15], ["7+", .12]].map(([bucket, s]) => ({bucket, devices: Math.round(p * s)})); }
+    case "hub_session_buckets": { const p = sum("devices"); return [["<1m", .17], ["1-5m", .34], ["5-15m", .28], ["15-60m", .16], ["60m+", .05]].map(([bucket, s]) => ({bucket, player_days: Math.round(p * s)})); }
+    case "hub_hours": {
+      const w = [.6, .3, .2, .15, .15, .3, .8, 1.4, 1.6, 1.5, 1.6, 2, 2.6, 2.2, 1.9, 2.1, 2.6, 3.1, 3.8, 4.3, 4.6, 4, 2.8, 1.5], tw = w.reduce((a, b) => a + b, 0), s = sum("sessions");
+      return w.map((x, hour) => { const opens = Math.round(s * x / tw); return {hour, opens, devices: Math.round(opens * .62)}; });
+    }
+    case "hub_outcomes": return DEMO_MODES.map(([mode, level, sh], j) => {
+      const starts = Math.round(sum("drafts") * sh), finishes = Math.round(sum("finishes") * sh), quits = Math.round(sum("quits") * sh * [1, 1.3, .35, 1.8, .7][j]);
+      const st = (mode === "daily17" ? [.2, .18, .2, .18, .12, .12] : [.38, .2, .16, .12, .07, .07]).map(x => Math.round(finishes * x));
+      return {mode, level, starts, finishes, wins17: Math.round(sum("wins17") * sh), quit_rate: starts > 0 ? quits / starts : null, pick1_quits: Math.round(quits * (.22 + j * .03)),
+        stage0: st[0], stage1: st[1], stage2: st[2], stage3: st[3], stage4: st[4], stage5: st[5], avg_draft_secs: 140 + j * 37 + r2() * 20};
+    });
+    case "hub_split": { const p = sum("devices") * .35, s = sum("sessions"); return [
+      {kind: "look", value: "modern", devices: Math.round(p * .61), sessions: Math.round(s * .58)},
+      {kind: "look", value: "retro", devices: Math.round(p * .43), sessions: Math.round(s * .42)},
+      {kind: "platform", value: "ios", devices: Math.round(p * .52), sessions: Math.round(s * .57)},
+      {kind: "platform", value: "ios-web", devices: Math.round(p * .21), sessions: Math.round(s * .18)},
+      {kind: "platform", value: "web", devices: Math.round(p * .14), sessions: Math.round(s * .13)},
+      {kind: "platform", value: "android-web", devices: Math.round(p * .09), sessions: Math.round(s * .08)},
+      {kind: "platform", value: "unknown", devices: Math.round(p * .04), sessions: Math.round(s * .04)}]; }
+  }
+  return [];
+}
+if(DEMO) window.hubDemo = demo;   // the smoke test checks every shape against docs/hub.md
+
+// ---------- render ----------
+function tiles(s, rg){
+  const t = [
+    ["Players ever", fmtN(s.devices_total), "distinct devices, all time"],
+    ["Active today", fmtN(s.active_today), "devices with any event today"],
+    ["Active 7 days", fmtN(s.active_7d), "ending today"],
+    ["Active 30 days", fmtN(s.active_30d), "ending today"],
+    ["New players", fmtN(s.new_devices), `first seen ${rg}`],
+    ["Sessions", fmtN(s.sessions), `app opens ${rg}`],
+    ["Avg session", fmtSecs(s.avg_session_secs), "time played per app open"],
+    ["Per player per day", fmtSecs(s.avg_secs_per_device_day), "time played, per active day"]];
+  $("#tiles").innerHTML = t.map(([k, v, l]) => `<div class="tile"><span class="bt">${k}</span><span class="bh num">${v}</span><span class="bl">${l}</span></div>`).join("");
+}
+
+function chart(rows){
+  const host = $("#chart"), W = Math.max(320, Math.round(host.clientWidth || 1000)), H = W < 600 ? 230 : 300, L = 42, R = 52, T = 12, B = 32, iw = W - L - R, ih = H - T - B;
+  const n = rows.length; if(!n){ host.innerHTML = ""; return; }
+  host.dataset.w = W;
+  const a = rows.map(r => +r.devices || 0), b = rows.map(r => Math.round((+r.session_secs || 0) / 60));
+  const K = 5;   // grid segments; the top of each axis is K whole steps of 1, 2 or 5 times a power of ten
+  const nice = m => { const t = Math.max(m, 1) / K; const p = Math.pow(10, Math.floor(Math.log10(t))); const u = t / p; return (u <= 1 ? 1 : u <= 2 ? 2 : u <= 5 ? 5 : 10) * p * K; };
+  const ma = nice(Math.max(...a)), mb = nice(Math.max(...b));
+  const x = i => L + (n === 1 ? iw / 2 : i * iw / (n - 1));
+  const ya = v => T + ih - v / ma * ih, yb = v => T + ih - v / mb * ih;
+  const pa = a.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${ya(v).toFixed(1)}`).join(" ");
+  const pb = b.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${yb(v).toFixed(1)}`).join(" ");
+  const area = `${pa} L${x(n - 1).toFixed(1)},${(T + ih).toFixed(1)} L${x(0).toFixed(1)},${(T + ih).toFixed(1)} Z`;
+  let g = "";
+  for(let k = 0; k <= K; k++){
+    const y = T + ih - k * ih / K;
+    g += `<line x1="${L}" x2="${W - R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"/>`;
+    g += `<text x="${L - 6}" y="${(y + 4).toFixed(1)}" text-anchor="end">${fmtN(ma * k / K)}</text>`;
+    g += `<text x="${W - R + 6}" y="${(y + 4).toFixed(1)}" text-anchor="start">${fmtN(mb * k / K)}m</text>`;
+  }
+  const per = Math.max(1, Math.ceil(n * 48 / iw));   // days per label so labels sit at least 48 px apart
+  const step = [1, 2, 3, 5, 7, 14, 28].find(v => v >= per) || 28;
+  let xl = "";
+  for(let i = 0; i < n; i += step) if(x(n - 1) - x(i) >= 44) xl += `<text x="${x(i).toFixed(1)}" y="${H - 10}" text-anchor="${i === 0 ? "start" : "middle"}">${dayLabel(rows[i].day)}</text>`;
+  xl += `<text x="${x(n - 1).toFixed(1)}" y="${H - 10}" text-anchor="end">${dayLabel(rows[n - 1].day)}</text>`;
+  host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Active players and minutes played per day">
+    <g class="grid">${g}</g>
+    <path class="a1" d="${area}"/><path class="s1" d="${pa}"/><path class="s2" d="${pb}"/>
+    <line class="ax" x1="${L}" x2="${W - R}" y1="${T + ih}" y2="${T + ih}"/>
+    <g>${xl}</g>
+    <g id="cur" style="display:none"><line class="cur" y1="${T}" y2="${T + ih}"/><circle class="dot1" r="5"/><circle class="dot2" r="5"/></g>
+    <rect id="hit" x="${L}" y="${T}" width="${iw}" height="${ih}" fill="transparent"/>
+  </svg>`;
+  const svg = host.firstElementChild, cur = svg.querySelector("#cur"), [ln] = cur.getElementsByTagName("line"), [d1, d2] = cur.getElementsByTagName("circle");
+  const pick = ev => {
+    const bx = svg.getBoundingClientRect(); if(!(bx.width > 0)) return;   // not laid out (hidden, or mid-navigation)
+    const px = (ev.clientX - bx.left) / bx.width * W;
+    const i = Math.max(0, Math.min(n - 1, Math.round((px - L) / (n === 1 ? 1 : iw / (n - 1)))));
+    const cx = x(i).toFixed(1); ln.setAttribute("x1", cx); ln.setAttribute("x2", cx);
+    d1.setAttribute("cx", cx); d1.setAttribute("cy", ya(a[i]).toFixed(1)); d2.setAttribute("cx", cx); d2.setAttribute("cy", yb(b[i]).toFixed(1));
+    cur.style.display = "";
+    const r = rows[i];
+    $("#readout").innerHTML = `<b>${dayLabel(r.day)}</b>: <b>${fmtN(r.devices)}</b> active, <b>${fmtN(b[i])} min</b> played, ${fmtN(r.sessions)} sessions, ${fmtN(r.new_devices)} new`;
+  };
+  svg.addEventListener("pointermove", pick); svg.addEventListener("pointerdown", pick);
+  svg.addEventListener("pointerleave", () => { cur.style.display = "none"; });
+  pick({clientX: svg.getBoundingClientRect().right - R * svg.getBoundingClientRect().width / W});   // the latest day shows until the pointer moves
+  cur.style.display = "none";
+}
+
+const table = (cols, rows, empty) => rows.length
+  ? `<table class="tbl"><thead><tr>${cols.map(c => `<th class="${c.r ? "r" : ""}">${c.h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${cols.map(c => `<td class="${c.r ? "r num" : ""}">${c.f(r)}</td>`).join("")}</tr>`).join("")}</tbody></table>`
+  : `<p class="empty">${empty}</p>`;
+
+function modes(rows){
+  $("#modes").innerHTML = table([
+    {h: "Mode", f: r => `<span class="k">${esc(name(MODES, r.mode))}<small>${esc(r.level || "")}</small></span>`},
+    {h: "Starts", r: 1, f: r => fmtN(r.starts)},
+    {h: "Finishes", r: 1, f: r => fmtN(r.finishes)},
+    {h: "Quits", r: 1, f: r => fmtN(r.quits)},
+    {h: "Record", r: 1, f: r => r.avg_w == null ? "" : `${fmt1(r.avg_w)}-${fmt1(17 - r.avg_w)}`},
+    {h: "Players", r: 1, f: r => fmtN(r.devices)}], rows, "No drafts in the range.");
+}
+function trivia(rows){   // hub_trivia2: Avg max and TD rounds show only when some row carries them (NFL Trivia from 1.6.2)
+  const has = k => rows.some(r => r[k] != null);
+  $("#trivia").innerHTML = table([
+    {h: "Trivia", f: r => `<span class="k">${esc(name(TRIV, r.trivia))}</span>`},
+    {h: "Plays", r: 1, f: r => fmtN(r.plays)},
+    {h: "Players", r: 1, f: r => fmtN(r.devices)},
+    {h: "Avg score", r: 1, f: r => r.avg_score == null ? "" : fmt1(r.avg_score)},
+    ...(has("avg_max") ? [{h: "Avg max", r: 1, f: r => r.avg_max == null ? "" : fmt1(r.avg_max)}] : []),
+    ...(has("avg_td") ? [{h: "TD rounds", r: 1, f: r => r.avg_td == null ? "" : fmt1(r.avg_td)}] : [])], rows, "No trivia in the range.");
+}
+
+// ---------- the compare strip (D3) ----------
+const CMP = [
+  ["Active", r => +r.devices || 0, 0],
+  ["New", r => +r.new_devices || 0, 0],
+  ["Returning", r => r.returning != null ? +r.returning : Math.max(0, (+r.devices || 0) - (+r.new_devices || 0)), 0],
+  ["Sessions", r => +r.sessions || 0, 0],
+  ["Minutes", r => Math.round((+r.session_secs || 0) / 60), 0]];
+function compare(d8, tw, lw, tm, lm, t){
+  const byDay = new Map(d8.map(r => [r.day, r])), cur = byDay.get(t), yday = byDay.get(addDays(t, -1));
+  const prev7 = [1, 2, 3, 4, 5, 6, 7].map(i => byDay.get(addDays(t, -i))).filter(Boolean);
+  const avg = f => prev7.length ? prev7.reduce((a, r) => a + f(r), 0) / prev7.length : null;
+  const W = paceWindows(t);
+  const val = (r, f) => r ? f(r) : null;
+  const group = (title, sub, a, b, vs, extra) => `<div class="cg"><h3><b>${title}</b> ${sub}</h3>${CMP.map(([k, f, dp]) => {
+    const x = val(a, f), y = val(b, f);
+    return `<div class="cm"><span class="k">${k}</span><span class="v num">${x == null ? "" : fmtD(x, dp)}</span>${chip(x, y, dp, vs)}<span class="s">${vs}: ${y == null ? "none" : fmtD(y, dp)}${extra ? extra(f) : ""}</span></div>`;
+  }).join("")}</div>`;
+  const plural = n => n === 1 ? "1 day" : n + " days", span = w => w.p_from === w.p_to ? dayLabel(w.p_from) : `${dayLabel(w.p_from)} to ${w.p_to.slice(0, 7) === w.p_from.slice(0, 7) ? +w.p_to.slice(8, 10) : dayLabel(w.p_to)}`;
+  $("#cmp").innerHTML =
+    group("Today", "vs yesterday", cur, yday, "yesterday", f => { const a = avg(f); return a == null ? "" : `, 7-day avg ${fmt1(a)}`; }) +
+    group(`This week (${plural(W.wn)})`, `vs first ${plural(W.wn)} of last week`, tw, lw, span(W.lw)) +
+    group(`This month (${plural(W.mn)})`, `vs ${span(W.lm)}`, tm, lm, span(W.lm));
+  return prev7;
+}
+
+// ---------- the day table (D1, D2, D7) ----------
+const DCOLS = [
+  {h: "Active", f: r => +r.devices || 0},
+  {h: "New", f: r => +r.new_devices || 0},
+  {h: "Returning", f: r => r.returning != null ? +r.returning : Math.max(0, (+r.devices || 0) - (+r.new_devices || 0))},
+  {h: "Sessions", f: r => +r.sessions || 0},
+  {h: "Minutes", f: r => Math.round((+r.session_secs || 0) / 60)},
+  {h: "Min per player", f: r => +r.devices > 0 ? (+r.session_secs || 0) / 60 / +r.devices : null, dp: 1},
+  {h: "Drafts", f: r => +r.drafts || 0},
+  {h: "Finishes", f: r => +r.finishes || 0},
+  {h: "17-0s", f: r => +r.wins17 || 0},
+  {h: "Quits", f: r => +r.quits || 0},
+  {h: "Trivia plays", f: r => +r.trivia_plays || 0},
+  {h: "Trivia players", f: r => r.trivia_devices == null ? null : +r.trivia_devices}];
+let DT = {daily: [], weeks: [], months: [], md: new Map(), avg: []};
+function daysTable(){
+  const host = $("#days"), dayMode = unit === "days";
+  const rows = (dayMode ? DT.daily : unit === "weeks" ? DT.weeks : DT.months).slice().reverse();   // newest first
+  const label = r => dayMode ? `<button type="button" class="dayb" aria-expanded="false" data-day="${esc(r.day)}">${WD[dow(r.day)]} ${dayLabel(r.day)}</button>`
+    : unit === "weeks" ? `<span class="k">Week of ${dayLabel(r.period_start)}</span>${r.days_in_range < 7 ? `<span class="tag" title="${r.days_in_range} of 7 days in the range">partial</span>` : ""}`
+    : `<span class="k">${MON[+r.period_start.slice(5, 7) - 1]} ${r.period_start.slice(0, 4)}</span>${r.days_in_range < monthLen(r.period_start) ? `<span class="tag" title="${r.days_in_range} of ${monthLen(r.period_start)} days in the range">partial</span>` : ""}`;
+  const vs = dayMode ? "the day before" : unit === "weeks" ? "the week before" : "the month before";
+  const cell = (c, r, p) => { const v = c.f(r); return `<td class="r num">${v == null ? "" : fmtD(v, c.dp)}${p ? chip(v, c.f(p), c.dp || 0, vs, true) : ""}</td>`; };
+  let avgRow = "";
+  if(dayMode && DT.avg.length){
+    const a = DCOLS.map(c => { const xs = DT.avg.map(c.f).filter(v => v != null); return xs.length ? xs.reduce((s, v) => s + v, 0) / xs.length : null; });
+    avgRow = `<tr class="avg"><td title="the mean of the ${DT.avg.length} days before today"><span class="k">7-day avg</span></td>${a.map(v => `<td class="r num">${v == null ? "" : fmt1(v)}</td>`).join("")}</tr>`;
+  }
+  if(!rows.length){ host.innerHTML = `<p class="empty">No days in the range.</p>`; return; }
+  host.innerHTML = `<table class="tbl sticky"><thead><tr><th>${dayMode ? "Day" : unit === "weeks" ? "Week" : "Month"}</th>${DCOLS.map(c => `<th class="r">${c.h}</th>`).join("")}</tr></thead><tbody>${avgRow}${
+    rows.map((r, i) => `<tr${dayMode ? ` class="dayrow" data-day="${esc(r.day)}"` : ""}><td>${label(r)}</td>${DCOLS.map(c => cell(c, r, rows[i + 1])).join("")}</tr>`).join("")}</tbody></table>`;
+  const tb = host.querySelector("table"); tb.style.setProperty("--hh", tb.tHead.offsetHeight + "px");
+}
+function toggleDay(tr){
+  const btn = tr.querySelector(".dayb"), open = btn.getAttribute("aria-expanded") === "true", next = tr.nextElementSibling;
+  if(next && next.classList.contains("det")) next.remove();
+  btn.setAttribute("aria-expanded", String(!open)); tr.classList.toggle("open", !open);
+  if(open) return;
+  const md = DT.md.get(tr.dataset.day) || [];
+  const inner = table([
+    {h: "Mode", f: r => `<span class="k">${esc(name(MODES, r.mode))}<small>${esc(r.level || "")}</small></span>`},
+    {h: "Starts", r: 1, f: r => fmtN(r.starts)},
+    {h: "Finishes", r: 1, f: r => fmtN(r.finishes)},
+    {h: "Quits", r: 1, f: r => fmtN(r.quits)},
+    {h: "Players", r: 1, f: r => fmtN(r.devices)}], md, "No drafts that day.");
+  tr.insertAdjacentHTML("afterend", `<tr class="det"><td colspan="${DCOLS.length + 1}"><div class="detin">${inner}</div></td></tr>`);
+}
+
+// ---------- retention (D4) ----------
+const RET = [["d1", "Day 1"], ["d3", "Day 3"], ["d7", "Day 7"], ["d14", "Day 14"], ["d30", "Day 30"]];
+function retention(rows){
+  $("#retention").innerHTML = rows.length ? `<table class="tbl sticky heat"><thead><tr><th>First seen</th><th class="r">Players</th>${RET.map(([, h]) => `<th class="r">${h}</th>`).join("")}</tr></thead><tbody>${
+    rows.map(r => `<tr data-day="${esc(r.cohort_day)}"><td><span class="k">${WD[dow(r.cohort_day)]} ${dayLabel(r.cohort_day)}</span></td><td class="r num">${fmtN(r.size)}</td>${RET.map(([k, h]) => {
+      const v = r[k]; if(v == null) return `<td class="c blank" title="${h} has not come yet"></td>`;
+      const p = +r.size > 0 ? +v / +r.size * 100 : 0, s = Math.min(1, p / 60);
+      return `<td class="c${s >= .8 ? " max" : s >= .55 ? " hot" : ""}" style="--h:${Math.round(s * 100)}%" title="${fmtN(v)} of ${fmtN(r.size)} back on ${h.toLowerCase()}">${Math.round(p)}%</td>`;
+    }).join("")}</tr>`).join("")}</tbody></table>` : `<p class="empty">No new players in the range.</p>`;
+}
+
+// ---------- stickiness and time (D5) ----------
+function bars(id, items, dense = false){
+  const max = Math.max(1, ...items.map(i => +i.v || 0));
+  $(id).innerHTML = `<div class="bars${dense ? " dense" : ""}">${items.map(i => `<div class="b" title="${esc(i.t)}"><span class="bv num">${esc(i.f != null ? i.f : fmtN(i.v))}</span><span class="bar" style="height:calc((100% - 16px) * ${((+i.v || 0) / max).toFixed(4)})"></span></div>`).join("")}</div>`
+    + `<div class="bxl${dense ? " dense" : ""}">${items.map(i => `<span>${esc(i.l)}</span>`).join("")}</div>`;
+}
+const HOUR = h => h === 0 ? "12a" : h === 12 ? "12p" : h < 12 ? h + "a" : (h - 12) + "p";
+function stickiness(act, sb, hrs, daily){
+  bars("#actdays", act.map(r => ({v: r.devices, l: r.bucket === "1" ? "1 day" : r.bucket + " days", t: `${fmtN(r.devices)} players active on ${r.bucket} ${r.bucket === "1" ? "day" : "days"}`})));
+  bars("#sessb", sb.map(r => ({v: r.player_days, l: r.bucket, t: `${fmtN(r.player_days)} player-days played ${r.bucket}`})));
+  bars("#hours", hrs.map(r => ({v: r.opens, l: r.hour % 6 === 0 ? HOUR(+r.hour) : "", t: `${HOUR(+r.hour)}: ${fmtN(r.opens)} opens, ${fmtN(r.devices)} players`})), true);
+  const wk = [1, 2, 3, 4, 5, 6, 0].map(d => { const xs = daily.filter(r => dow(r.day) === d); return {d, n: xs.length, v: xs.length ? xs.reduce((a, r) => a + (+r.devices || 0), 0) / xs.length : 0}; });
+  bars("#weekday", wk.map(w => ({v: w.v, f: fmt1(w.v), l: WD[w.d], t: `${WD[w.d]}: ${fmt1(w.v)} active on average over ${w.n} ${w.n === 1 ? "day" : "days"}`})));
+}
+
+// ---------- outcomes, look and platform (D6) ----------
+function stageBar(r){
+  const st = [0, 1, 2, 3, 4, 5].map(i => +r["stage" + i] || 0), tot = st.reduce((a, b) => a + b, 0);
+  if(!tot) return "";
+  return `<span class="stg" title="${st.map((n, i) => `${STAGES[i]}: ${fmtN(n)}`).join(", ")}">${st.map((n, i) => n ? `<i style="flex:${n} 1 0;--h:${25 + i * 15}%"></i>` : "").join("")}</span>`;
+}
+function outcomes(rows){
+  $("#outcomes").innerHTML = table([
+    {h: "Mode", f: r => `<span class="k">${esc(name(MODES, r.mode))}<small>${esc(r.level || "")}</small></span>`},
+    {h: "Starts", r: 1, f: r => fmtN(r.starts)},
+    {h: "Finishes", r: 1, f: r => fmtN(r.finishes)},
+    {h: "Quit rate", r: 1, f: r => r.quit_rate == null ? "" : `${Math.round(+r.quit_rate * 100)}%`},
+    {h: "Pick 1 quits", r: 1, f: r => fmtN(r.pick1_quits)},
+    {h: "17-0s", r: 1, f: r => fmtN(r.wins17)},
+    {h: "How far", f: stageBar},
+    {h: "Avg draft", r: 1, f: r => fmtMSS(r.avg_draft_secs)}], rows, "No drafts in the range.");
+}
+function split(rows){
+  for(const [kind, id, map] of [["look", "#looks", LOOKS], ["platform", "#platforms", PLATS]]){
+    const rs = rows.filter(r => r.kind === kind), pd = rs.reduce((a, r) => a + (+r.devices || 0), 0), ps = rs.reduce((a, r) => a + (+r.sessions || 0), 0);
+    $(id).innerHTML = table([
+      {h: kind === "look" ? "Look" : "Platform", f: r => `<span class="k">${esc(name(map, r.value))}</span>`},
+      {h: "Players", r: 1, f: r => fmtN(r.devices)},
+      {h: "Share", r: 1, f: r => fmtPct(r.devices, pd)},
+      {h: "Sessions", r: 1, f: r => fmtN(r.sessions)},
+      {h: "Share", r: 1, f: r => fmtPct(r.sessions, ps)}], rs, "Nothing in the range.");
+  }
+}
+function quits(rows){
+  $("#quits").innerHTML = table([
+    {h: "Mode", f: r => `<span class="k">${esc(name(MODES, r.mode))}</span>`},
+    {h: "Phase", f: r => esc(r.phase || "")},
+    {h: "Pick", r: 1, f: r => r.pick == null ? "" : fmtN(r.pick)},
+    {h: "Quits", r: 1, f: r => fmtN(r.n)}], rows, "No quits in the range.");
+}
+
+// ---------- load ----------
+async function load(){
+  if(busy) return; if(!DEMO && !cfg()){ showSetup(true); return; }
+  busy = true; $("#refresh").disabled = true; $("#err").textContent = ""; $("#stamp").textContent = "Loading...";
+  const body = range(), rg = `${dayLabel(body.p_from)} to ${dayLabel(body.p_to)}`, t = body.p_to;
+  const W = paceWindows(t);
+  // The range's calls, then the compare strip's own five (fixed windows, whatever the range): the 7 days before today and today, then
+  // hub_window over this week so far, the first as many days of last week, this month so far and the same first days of last month.
+  const calls = [["hub_summary", body], ["hub_daily", body], ["hub_modes", body], ["hub_trivia2", body], ["hub_quits", body],
+    ["hub_daily2", body], ["hub_periods", {...body, p_unit: "week"}], ["hub_periods", {...body, p_unit: "month"}], ["hub_modes_daily", body],
+    ["hub_retention", body], ["hub_active_days", body], ["hub_session_buckets", body], ["hub_hours", body], ["hub_outcomes", body], ["hub_split", body],
+    ["hub_daily2", {p_from: addDays(t, -7), p_to: t}], ["hub_window", W.tw], ["hub_window", W.lw], ["hub_window", W.tm], ["hub_window", W.lm]];
+  try{
+    const res = (await Promise.all(calls.map(([f, b]) => rpc(f, b)))).map(r => Array.isArray(r) ? r : []);
+    const [sum, daily, md, tr, qt, d2, wk, mo, mdd, ret, act, sb, hrs, out, spl, c8, ctw, clw, ctm, clm] = res;
+    const s = sum[0] || {};
+    const none = !(+s.devices_total > 0);
+    $("#empty").hidden = !none; $("#main").hidden = none;
+    if(!none){
+      tiles(s, rg); DT.avg = compare(c8, ctw[0] || null, clw[0] || null, ctm[0] || null, clm[0] || null, t);
+      $("#chartsub").textContent = rg; lastDaily = daily; chart(lastDaily);
+      DT.daily = d2; DT.weeks = wk; DT.months = mo; DT.md = new Map();
+      for(const r of mdd){ if(!DT.md.has(r.day)) DT.md.set(r.day, []); DT.md.get(r.day).push(r); }
+      daysTable(); retention(ret); stickiness(act, sb, hrs, d2);
+      modes(md); outcomes(out); split(spl); trivia(tr); quits(qt);
+    }
+    $("#stamp").textContent = `Last refreshed ${new Date().toLocaleTimeString("en-US", {hour: "numeric", minute: "2-digit"})}${DEMO ? " (demo data)" : ""}, ${days} days ending today.`;
+  }catch(e){
+    $("#stamp").textContent = "Could not load.";
+    $("#err").textContent = e instanceof RpcError ? `${e.fn} failed: HTTP ${e.status}${e.status === 0 ? " (no answer: check the URL)" : e.status === 401 || e.status === 403 ? " (the key was refused)" : e.status === 404 ? " (function missing: run supabase/hub.sql)" : ""}` : String(e.message || e);
+  }
+  busy = false; $("#refresh").disabled = false;
+}
+
+let lastDaily = [];
+addEventListener("resize", () => { const h = $("#chart"); if(lastDaily.length && !$("#main").hidden && Math.abs((h.clientWidth || 0) - (+h.dataset.w || 0)) > 8) chart(lastDaily); });
+
+// ---------- wiring ----------
+for(const b of document.querySelectorAll(".seg [data-days]")) b.addEventListener("click", () => {
+  days = +b.dataset.days; for(const o of document.querySelectorAll(".seg [data-days]")) o.setAttribute("aria-pressed", String(o === b)); load();
+});
+for(const b of document.querySelectorAll("#unit [data-unit]")) b.addEventListener("click", () => {
+  unit = b.dataset.unit; for(const o of document.querySelectorAll("#unit [data-unit]")) o.setAttribute("aria-pressed", String(o === b)); daysTable();
+});
+$("#days").addEventListener("click", e => { const tr = e.target.closest("tr.dayrow"); if(tr) toggleDay(tr); });   // the whole row is the tap target; its button carries the state
+$("#refresh").addEventListener("click", load);
+$("#gear").addEventListener("click", () => showSetup($("#setup").hidden));
+$("#close").addEventListener("click", () => showSetup(false));
+$("#save").addEventListener("click", () => {
+  const url = $("#url").value.trim().replace(/\/rest\/v1\/?$/i, "").replace(/\/+$/, ""), key = $("#key").value.trim();   // the Data API page shows .../rest/v1/; only the project URL is wanted
+  if(!/^https:\/\/[a-z0-9.-]+(\.supabase\.co|\.supabase\.in|[a-z]{2,})(:[0-9]+)?$/i.test(url)){ $("#err").textContent = "The URL should look like https://xxxx.supabase.co (Project Settings > Data API > Project URL)"; $("#url").focus(); return; }
+  if(key.length < 20){ $("#err").textContent = "That key looks too short."; $("#key").focus(); return; }
+  setCfg({url, key}); showSetup(false); load();
+});
+$("#clear").addEventListener("click", () => { setCfg(null); $("#url").value = ""; $("#key").value = ""; $("#main").hidden = true; $("#empty").hidden = true; $("#stamp").textContent = "Forgotten. Paste the URL and key to load again."; $("#err").textContent = ""; });
+
+if(DEMO || cfg()) load(); else showSetup(true);
+})();
+</script>
+</body>
+</html>

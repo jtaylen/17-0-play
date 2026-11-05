@@ -3,7 +3,7 @@
 // same-origin assets are served from cache first and refreshed in the background, except art/ (fonts, images: immutable, cached
 // on first use, never refetched, never in SHELL). Range requests (video) skip the cache. Bump VERSION
 // whenever index.html changes so players get the new build on their next visit.
-const VERSION = "17-0-v17";
+const VERSION = "17-0-v18";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-180.png", "./icons/icon-192.png", "./icons/icon-512.png", "./faq.html", "./how-to-play.html", "./games-like-17-0.html"];
 
 self.addEventListener("install", e => {
