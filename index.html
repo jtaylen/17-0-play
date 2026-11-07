@@ -745,6 +745,10 @@ body.retro .pc-art .spr,body.retro .wv .spr{filter:none}
 .fchip{min-height:44px;padding:8px 14px;border-radius:999px;background:var(--surface);border:2px solid var(--line);color:var(--muted);font-family:var(--font-label);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase}
 .fchip.sel{border-color:var(--gold);color:var(--gold);background:var(--surface2)}
 .verdict .vfilter{color:var(--muted)}
+/* the Daily 17-0 result card on the end screen: what Share posts, shown first (growth plan 2026-11-07) */
+.shcard{margin:12px 0 2px;padding:10px 12px;border-radius:10px;background:rgba(0,0,0,.22);border:1px dashed var(--line);font-size:14px;line-height:1.5}
+.shcard .shc-s{font-size:17px;letter-spacing:1px;line-height:1.3}
+body.retro .shcard{border-radius:0;border:2px dashed var(--line);font-family:var(--px);font-size:8px;line-height:1.6}
 .d17rows{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:4px;max-width:560px}
 .d17rows li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;padding:6px 10px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-size:14px}
 .d17rows li.me{border-color:var(--gold)}
@@ -1916,7 +1920,8 @@ body.retro .rk-badge,body.retro .rw-h,body.retro .rw-open small,body.retro .pcar
   .home .rk-top{display:none}
   .home .rk-under{display:inline-flex;margin:-4px 0 -2px;padding:1px 9px;gap:6px;font-size:11px;line-height:14px}   /* one thin row: a 375 by 667 Home keeps its fit */
   .rk-bar{width:56px}
-  .home:has(.szban) .rk-under{margin:-6px 0 -7px}   /* a set banner shares the space: the chip tucks closer (375 by 667 still fits) */
+  .home:has(.szban) .rk-under{margin:-10px 0 1px;padding:0 9px}   /* a set banner follows the chip with a hairline gap: the chip rides the tagline's line slack (375 by 667 still fits) */
+  .home .rk-under + .szban{margin-bottom:-2px}
   .home .rk-under .rk-badge{height:14px;min-width:16px;line-height:14px;font-size:11px}
   body.retro .home .rk-under{font-size:8px;line-height:12px;padding:2px 8px;margin:0}
   .hbtns .rwshelf,.hbtns:has(.rwshelf) .lbbtn{flex:1 1 calc(50% - 4px)}   /* the shelf shares the Leaderboards row: no new row on a phone Home */
@@ -1939,7 +1944,7 @@ body.retro .rk-badge,body.retro .rw-h,body.retro .rw-open small,body.retro .pcar
 <li>Daily 17-0: one Classic draft a day on Hard, three tries, ranked by record and then the clock.</li>
 <li>TD Trivia: a seven-play drive of real touchdown questions every day, with a rating that climbs as you prove your football knowledge.</li>
 </ul>
-<p>Free, no ads, no in-app purchases, plays offline. <a href="https://apps.apple.com/us/app/17-0-draft-a-perfect-season/id6820769527">Get it on the App Store</a> or play right here in the browser.</p>
+<p>Free, no ads, no in-app purchases, plays offline. <a href="https://apps.apple.com/app/apple-store/id6820769527?pt=129583968&amp;ct=playsite&amp;mt=8">Get it on the App Store</a> or play right here in the browser.</p>
 <p><a href="how-to-play.html">How to play</a> · <a href="faq.html">FAQ</a> · <a href="games-like-17-0.html">Games like 17-0</a> · <a href="support.html">Support</a> · <a href="privacy.html">Privacy</a></p>
 <p class="disc">Unofficial fan game. Not affiliated with the NFL, NFLPA, any team or player.</p>
 </div>
@@ -3590,7 +3595,8 @@ function finish(w,l,po0,quiet){   // po0: the playoffs the animated season alrea
     </tr>`;}).join("");
   $("#after").innerHTML = `
     <div class="verdict ${perfect?"perfect":""}"><h2>${msg[0]}</h2><p>${msg[1]} ${d17 ? `Daily 17-0 #${dlNum(S.daily)}, try ${d17.n} of ${D17_TRIES}: ${w}-${l} in ${fmtTime(S.draftSecs)}. Best today ${d17.best.w}-${d17.best.l} in ${fmtTime(d17.best.secs)}.` : dp ? `Daily Packs ${dpDate(S.dp)}, run ${dp.n} of ${DP_RUNS}: ${w}-${l}, ${Math.round(teamOvr())} OVR, drafted in ${fmtTime(S.draftSecs)}. Best today ${dpRec(dp.best)}.` : `Perfect seasons in ${MODES[S.mode].label} · ${LEVELS[S.level].label}: ${r.perfect} of ${r.played}. Titles: ${r.titles||0}.`}${S.filter ? ` <span class="vfilter">Filter: ${esc(filterLabel(S.filter))}.${S.filterOut ? " One spin found nothing left in it and drew from every team." : ""}</span>` : ""}</p>${nearMissHTML(w,l)}
-    <div class="actions"><button class="btn ${perfect?"alt":""}" id="again">Draft again</button><button class="btn alt" id="share">Share</button><button class="btn alt" id="home">Change mode</button><button class="btn alt" id="board">🏆 Leaderboard</button>${lookBtn()}</div>
+    ${d17 ? (L => `<div class="shcard" aria-label="Your result card"><div class="shc-t num">${L[0]}</div><div class="shc-s">${L[1]}</div></div>`)(d17ShareLines(w, l, d17)) : ""}
+    <div class="actions">${d17 ? `<button class="btn" id="share">Share your result</button><button class="btn alt" id="again">Draft again</button>` : `<button class="btn ${perfect?"alt":""}" id="again">Draft again</button><button class="btn alt" id="share">Share</button>`}<button class="btn alt" id="home">Change mode</button><button class="btn alt" id="board">🏆 Leaderboard</button>${lookBtn()}</div>
     <p class="hint num">Drafted in ${fmtTime(S.draftSecs)}.</p></div>
     ${poHTML}${banked?ringStripHTML(banked):""}
     ${boostsHTML()}
@@ -5251,7 +5257,7 @@ function mythicReveal(card, done){
   $("#app").inert = true; el.focus();   // keyboard focus stays in the dialog; pkStop and cont clear inert
   const cont = () => { if(gone) return; gone = true; $("#app").inert = false; el.remove(); done(); };
   q("#mcont").onclick = cont;
-  q("#mshare").onclick = () => shareCard(`I pulled ${v.title} (${name}) in 17-0 Draft. ${odds}. https://jtaylen.github.io/17-0-play/`);
+  q("#mshare").onclick = () => shareCard(`I pulled ${v.title} (${name}) in 17-0 Draft. ${odds}. ${shareLink("share-card")}`, "card");
   pkFrames();
   [0, 1000, 2000].forEach(ms=>pkLater(()=>haptic("heavy"), ms));
   pkLater(()=>el.classList.add("up"), 3000);
@@ -5554,7 +5560,7 @@ function openCard(card, ctx="ring"){
   ov.onclick = e => { if(e.target===ov) close(); };
   $("#cvclose").onclick = close; $("#cvclose").focus();
   $("#cvflip").onclick = flip; big.onclick = flip;
-  const sh = $("#cvshare"); if(sh) sh.onclick = () => shareCard(`I pulled ${title} (${name}) in 17-0 Draft.${rare ? ` ${rare}.` : ""} https://jtaylen.github.io/17-0-play/`);
+  const sh = $("#cvshare"); if(sh) sh.onclick = () => shareCard(`I pulled ${title} (${name}) in 17-0 Draft.${rare ? ` ${rare}.` : ""} ${shareLink("share-card")}`, "card");
   document.addEventListener("keydown", onKey);
   if(F) tiltStart();
 }
@@ -5584,8 +5590,10 @@ function haptic(kind){
     navigator.vibrate?.(kind==="long" ? [200,80,200] : 30);
   }catch(e){}
 }
-// Share a card line: the share sheet where it exists, else the clipboard. Called only from onclick.
-function shareCard(text){
+// Share a card line: the share sheet where it exists, else the clipboard. Called only from onclick. kind (d17, season, td, nt, card) goes
+// up as a share event so the hub can count what gets shared.
+function shareCard(text, kind){
+  try{ track("share", {extra:{kind:kind || "other"}}); }catch(e){}
   try{
     const CS = window.Capacitor?.Plugins?.Share; if(CS) return CS.share({text}).catch(()=>{});
     if(navigator.share) return navigator.share({text}).catch(()=>{});
@@ -6965,7 +6973,7 @@ function dlFinish(before, after){
 function dlShareText(n, dr, st, a){
   const head = dr.end.pts===7 ? "Touchdown! 🏈" : dr.end.pts===3 ? "Field goal" : "Punt";
   return [`17-0 TD Trivia #${n}`, `${head} · ${dr.yds>0?"+":""}${dr.yds} yds in ${a.length} ${a.length===1?"play":"plays"}`, a.map(x=>DL_TIER[x.k].sq).join(""),
-    ...(st>1 ? [`🔥 ${st}-day streak`] : []), SHARE_URL].join("\n");
+    ...(st>1 ? [`🔥 ${st}-day streak`] : []), shareLink("share-td")].join("\n");
 }
 function dlEnd(){
   const dr = dlDrive(DL.day), all = DL.all, n = dlNum(DL.key);
@@ -6996,7 +7004,7 @@ function dlEnd(){
     <p class="hint num">Next drive in ${h}h ${m}m.</p>
     ${dlLog()}`;
   $("#dlhome").onclick = renderHome; $("#dlprac").onclick = renderPractice;
-  $("#dlshare").onclick = () => shareCard(dlShareText(n, dr, st, DL.day.a));
+  $("#dlshare").onclick = () => shareCard(dlShareText(n, dr, st, DL.day.a), "td");
   maybeReview("trivia");
 }
 
@@ -7130,7 +7138,7 @@ function ntWireEnd(){
   const {st, id} = NT;
   if(NT.daily){
     $("#nthome").onclick = renderHome; $("#ntprac").onclick = () => renderNTSets();
-    $("#ntshare").onclick = () => shareCard(ntShareText(dlNum(NT.daily), id, st, ntStreak(NT.all)));
+    $("#ntshare").onclick = () => shareCard(ntShareText(dlNum(NT.daily), id, st, ntStreak(NT.all)), "nt");
     return;
   }
   const s = ntSetOf(id); $("#ntsets").onclick = () => renderNTSets(s?.k);
@@ -7141,7 +7149,7 @@ function ntWireEnd(){
 function ntShareText(n, id, st, streak){
   const q = ntQ(id), N = q.rows.length;
   return [`17-0 NFL Trivia #${n}`, q.q, `${st.f.length >= N ? "Perfect! " : ""}${st.f.length} of ${N}${st.w.length ? " · " + "❌".repeat(st.w.length) : ""}${st.h ? ` · 💡${st.h}` : ""}`,
-    ntGrid(id, st), ...(streak > 1 ? [`🔥 ${streak}-day streak`] : []), SHARE_URL].join("\n");
+    ntGrid(id, st), ...(streak > 1 ? [`🔥 ${streak}-day streak`] : []), shareLink("share-nt")].join("\n");
 }
 // Collections: every set as a card with its progress; a set lists its questions numbered, Play or View
 function renderNTSets(open=null){
@@ -7403,7 +7411,7 @@ function cloudBoot(){
 // go with the next event, the next app start or the 'online' event; a batch the server refuses is dropped, never retried forever.
 // A row: device_id (seventeen-device, the daily board's id), event, mode, level, look, platform, w, l, secs, extra (a small object
 // of numbers and codes). No name, no email, no free text.
-const EV_EVENTS = ["app_open", "mode_start", "season_end", "trivia_day", "daily17_try", "quit", "session", "rank_up"];   // rank_up: v12 lane X
+const EV_EVENTS = ["app_open", "mode_start", "season_end", "trivia_day", "daily17_try", "quit", "session", "rank_up", "share"];   // rank_up: v12 lane X; share: 2026-11-07
 const evOn = () => cloudOn() && !testWin();
 const evStoreKey = () => testWin() ? "seventeen-events-test" : "seventeen-events-pending";   // the twin is a guard: evOn() keeps a test hash out of track() and evFlush()
 const evPending = () => store.get(evStoreKey(), null) || [];
@@ -7742,6 +7750,12 @@ const lbNum = v => Number.isFinite(+v) ? Math.max(0, Math.round(+v)) : 0;
 // with the play page, never the App Store URL (the page carries the Smart App Banner). The season card's strip is the 17 regular-season
 // games in order plus the playoff result in the game's own round names; the Daily 17-0 try shares its day, record, clock and try number.
 const SHARE_URL = "https://jtaylen.github.io/17-0-play/";   // with https: email apps and some messengers link only a full URL
+// Share links point at the App Store as campaign links (growth plan 2026-11-07): pt is the App Store Connect provider token (public, it is
+// in every campaign URL), ct names the share kind, and ASC Analytics > Acquisition > Campaigns then counts installs per kind.
+const SHARE_PT = "129583968";
+const shareLink = ct => `https://apps.apple.com/app/apple-store/id6820769527?pt=${SHARE_PT}&ct=${ct}&mt=8`;
+// The Daily 17-0 result as lines: the end screen previews them (Wordle-style) and share() posts them with the link under them.
+const d17ShareLines = (w, l, d17) => [`Daily 17-0 #${dlNum(S.daily)} · ${w}-${l} in ${fmtTime(S.draftSecs)} · try ${d17.n} of ${D17_TRIES}`, winStrip(S.season)];
 const winStrip = season => season.map(g=>g.win?"🟩":"🟥").join("");
 // Packs: the rarest card on the roster (the Baby GOAT, then Mythic, the season families, a Legend variant, then the top OVR); other modes: the best card.
 const RARE_RANK = {mythic:5, winner:4.5, ghouls:4, turkey:4, moment:4, rookie:4, throwback:4, farewell:4, legend:3};
@@ -7754,10 +7768,10 @@ function rarestPick(){
 }
 function share(w,l,d17){
   const strip = winStrip(S.season), po = S.playoffs;
-  if(d17) return shareCard(`Daily 17-0 #${dlNum(S.daily)} · ${w}-${l} in ${fmtTime(S.draftSecs)} · try ${d17.n} of ${D17_TRIES}\n${strip}\n${SHARE_URL}`);
+  if(d17) return shareCard([...d17ShareLines(w, l, d17), shareLink("share-d17")].join("\n"), "d17");
   const last = po.games[po.games.length-1], tail = po.champ ? " + Super Bowl" : last ? ` out in the ${last.round}` : "";
   const qb = S.roster[SLOTS.find(s=>s.acc.includes("QB")).key];
-  shareCard(`17-0: Draft a Perfect Season\n${strip}${tail}\n${dec(qb.decade)} ${TEAMS[qb.draftedFor][1]} · ${MODES[S.mode].label} ${LEVELS[S.level].label} · ${w}-${l}\n${rarestPick()}\n${SHARE_URL}`);
+  shareCard(`17-0: Draft a Perfect Season\n${strip}${tail}\n${dec(qb.decade)} ${TEAMS[qb.draftedFor][1]} · ${MODES[S.mode].label} ${LEVELS[S.level].label} · ${w}-${l}\n${rarestPick()}\n${shareLink("share-season")}`, "season");
 }
 // ---------- v12 lane F: the Ideas inbox (D6) ----------
 // The envelope in the Home corner opens #ideasov (an .overlay with its own .sheet.ideas). Reading is open to everyone; posting, voting and
