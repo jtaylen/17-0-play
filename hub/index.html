@@ -163,6 +163,15 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-of
 @media (prefers-color-scheme: light){ .heat td.c.hot{color:var(--fg)} }   /* light: the pale middle takes dark text, only the deep end the light ink */
 .heat td.c.blank{background:transparent}
 
+/* v12 lane H3: moderation */
+.tbl td.body{white-space:normal;min-width:200px;max-width:420px;overflow-wrap:anywhere}
+.tbl tr.hid td{background:color-mix(in srgb,var(--loss) 14%,transparent)}
+.tbl tr.hot3 td.rep{color:var(--loss);font-weight:700}
+.modnote{color:var(--muted);font-size:14px;margin:8px 0 0;max-width:80ch}
+.modnote code{font-size:13px;background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:1px 5px;overflow-wrap:anywhere}
+.modh{margin:14px 0 6px;font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--muted)}
+.modh:first-of-type{margin-top:0}
+
 /* small bar charts */
 .minis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .mini{min-width:0}
@@ -278,6 +287,16 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-of
         <div class="scroll" id="quits"></div>
       </section>
     </div>
+
+    <section class="panel" id="modpanel">
+      <h2>Moderation <small>ideas and reported chat</small></h2>
+      <h3 class="modh">Ideas</h3>
+      <div class="scroll" id="modideas"></div>
+      <p class="modnote">To bring a hidden idea back, run in the SQL editor: <code>update public.ideas set hidden = false where id = N;</code></p>
+      <h3 class="modh">Chat reports</h3>
+      <div class="scroll" id="modchat"></div>
+      <p class="modnote">To remove a message, run: <code>delete from public.chat_messages where id = N;</code> To mute its author, run: <code>select public.chat_mute(N, 'reason');</code> for good, or <code>select public.chat_mute(N, 'reason', now() + interval '7 days');</code> for a week (N is the message id).</p>
+    </section>
   </div>
 
   <div id="empty" class="panel" hidden><p class="empty"><b>No events yet.</b>Ship a build with CLOUD set and open the app.</p></div>
@@ -398,6 +417,15 @@ function demo(fn, {p_from, p_to, p_unit}){
       {trivia: "td",  plays: Math.round(n * 9),   devices: Math.round(n * 3.4), avg_score: 4.2 + r2(), avg_max: null, avg_td: null},
       {trivia: "elo", plays: Math.round(n * 4.5), devices: Math.round(n * 2.1), avg_score: 6.1 + r2(), avg_max: null, avg_td: null},
       {trivia: "nfl", plays: Math.round(n * 3),   devices: Math.round(n * 1.6), avg_score: 7.3 + r2(), avg_max: 11 + r2(), avg_td: 1.4 + r2()}];
+    case "hub_ideas": { const ago = h => new Date(Date.now() - h * 36e5).toISOString();
+      return [{id: 14, body: "Let me pick my own team colors", up: 31, down: 2, reports: 0, hidden: false, created_at: ago(5)},
+        {id: 13, body: "A spam link nobody should see", up: 0, down: 9, reports: 4, hidden: true, created_at: ago(30)},
+        {id: 12, body: "Add a rival mode against a friend", up: 22, down: 1, reports: 0, hidden: false, created_at: ago(70)},
+        {id: 11, body: "Rude idea that got one report", up: 2, down: 5, reports: 1, hidden: false, created_at: ago(120)}]; }
+    case "hub_chat_reports": { const ago = h => new Date(Date.now() - h * 36e5).toISOString();
+      return [{id: 905, body: "Someone is posting the same ad over and over", reports: 3, hidden: false, created_at: ago(3)},
+        {id: 902, body: "A rude message that is already hidden", reports: 5, hidden: true, created_at: ago(26)},
+        {id: 898, body: "One report, probably nothing", reports: 1, hidden: false, created_at: ago(60)}]; }
     case "hub_quits": return [
       {mode: "packs",   phase: "draft",  pick: 3,  n: Math.round(n * 1.2)},
       {mode: "packs",   phase: "draft",  pick: 1,  n: Math.round(n * .9)},
@@ -522,8 +550,8 @@ function chart(rows){
   cur.style.display = "none";
 }
 
-const table = (cols, rows, empty) => rows.length
-  ? `<table class="tbl"><thead><tr>${cols.map(c => `<th class="${c.r ? "r" : ""}">${c.h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${cols.map(c => `<td class="${c.r ? "r num" : ""}">${c.f(r)}</td>`).join("")}</tr>`).join("")}</tbody></table>`
+const table = (cols, rows, empty, rowCls) => rows.length
+  ? `<table class="tbl"><thead><tr>${cols.map(c => `<th class="${c.r ? "r" : ""}">${c.h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr${rowCls && rowCls(r) ? ` class="${rowCls(r)}"` : ""}>${cols.map(c => `<td class="${(c.r ? "r num " : "") + (c.c || "")}">${c.f(r)}</td>`).join("")}</tr>`).join("")}</tbody></table>`
   : `<p class="empty">${empty}</p>`;
 
 function modes(rows){
@@ -681,6 +709,24 @@ function quits(rows){
     {h: "Quits", r: 1, f: r => fmtN(r.n)}], rows, "No quits in the range.");
 }
 
+// ---------- v12 lane H3: moderation (ideas and reported chat; read through hub_ideas and hub_chat_reports, apart from the main calls) ----------
+const ago = iso => { const m = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 6e4)); return m < 60 ? m + "m" : m < 1440 ? Math.round(m / 60) + "h" : Math.round(m / 1440) + "d"; };
+const MOD_SETUP = "Not set up yet: run supabase/v12-ideas.sql and v12-chat.sql";
+const modSafe = fn => rpc(fn, DEMO ? range() : {}).then(r => ({rows: Array.isArray(r) ? r : []}), e => ({err: e instanceof RpcError ? e : null}));
+function modTable(sel, res, cols, empty, fn){
+  const el = $(sel);
+  if(res.err !== undefined){ const e = res.err; el.innerHTML = `<p class="empty">${e && e.status === 404 ? MOD_SETUP : `Could not load ${fn}${e ? ": HTTP " + e.status : ""}`}</p>`; return; }
+  el.innerHTML = table(cols, res.rows, empty, r => (r.hidden ? "hid " : "") + (+r.reports >= 3 ? "hot3" : "")  );
+}
+const modBody = {h: "Message", c: "body", f: r => esc(r.body)};
+const modCols = (extra) => [{h: "Id", r: 1, f: r => fmtN(r.id)}, modBody, ...extra,
+  {h: "Reports", r: 1, c: "rep", f: r => fmtN(r.reports)}, {h: "Hidden", f: r => r.hidden ? "yes" : "no"}, {h: "Age", r: 1, f: r => ago(r.created_at)}];
+function moderation(ideas, chat){
+  if(ideas.rows) ideas = {rows: ideas.rows.slice().sort((a, b) => (+b.reports || 0) - (+a.reports || 0) || Date.parse(b.created_at) - Date.parse(a.created_at))};
+  modTable("#modideas", ideas, modCols([{h: "Likes", r: 1, f: r => fmtN(r.up)}, {h: "Downvotes", r: 1, f: r => fmtN(r.down)}]).map(c => c.h === "Message" ? {...c, h: "Idea"} : c), "No ideas yet.", "hub_ideas");
+  modTable("#modchat", chat, modCols([]), "No reported messages.", "hub_chat_reports");
+}
+
 // ---------- load ----------
 async function load(){
   if(busy) return; if(!DEMO && !cfg()){ showSetup(true); return; }
@@ -693,6 +739,7 @@ async function load(){
     ["hub_daily2", body], ["hub_periods", {...body, p_unit: "week"}], ["hub_periods", {...body, p_unit: "month"}], ["hub_modes_daily", body],
     ["hub_retention", body], ["hub_active_days", body], ["hub_session_buckets", body], ["hub_hours", body], ["hub_outcomes", body], ["hub_split", body],
     ["hub_daily2", {p_from: addDays(t, -7), p_to: t}], ["hub_window", W.tw], ["hub_window", W.lw], ["hub_window", W.tm], ["hub_window", W.lm]];
+  const mod = Promise.all([modSafe("hub_ideas"), modSafe("hub_chat_reports")]);   // apart from the main calls: a missing function marks only its own table
   try{
     const res = (await Promise.all(calls.map(([f, b]) => rpc(f, b)))).map(r => Array.isArray(r) ? r : []);
     const [sum, daily, md, tr, qt, d2, wk, mo, mdd, ret, act, sb, hrs, out, spl, c8, ctw, clw, ctm, clm] = res;
@@ -706,6 +753,7 @@ async function load(){
       for(const r of mdd){ if(!DT.md.has(r.day)) DT.md.set(r.day, []); DT.md.get(r.day).push(r); }
       daysTable(); retention(ret); stickiness(act, sb, hrs, d2);
       modes(md); outcomes(out); split(spl); trivia(tr); quits(qt);
+      const [mi, mc] = await mod; moderation(mi, mc);
     }
     $("#stamp").textContent = `Last refreshed ${new Date().toLocaleTimeString("en-US", {hour: "numeric", minute: "2-digit"})}${DEMO ? " (demo data)" : ""}, ${days} days ending today.`;
   }catch(e){

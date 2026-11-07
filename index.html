@@ -488,6 +488,19 @@ body.retro :is(.pcard,.bigcard).vc-turkey .pfront{background:#140a04}
 .pc-mark.mk-turkey{box-shadow:-2px -6px 0 #b0602a,0 -6px 0 #b0602a,2px -6px 0 #b0602a,-4px -4px 0 #b0602a,-2px -4px 0 #f0a04a,0 -4px 0 #f0a04a,2px -4px 0 #b0602a,4px -4px 0 #b0602a,-4px -2px 0 #b0602a,-2px -2px 0 #f0a04a,0 -2px 0 #b0602a,2px -2px 0 #b0602a,4px -2px 0 #b0602a,6px -2px 0 #b0602a,-4px 0 0 #b0602a,-2px 0 0 #b0602a,0 0 0 #b0602a,2px 0 0 #b0602a,4px 0 0 #b0602a,6px 0 0 #b0602a,-2px 2px 0 #b0602a,0 2px 0 #b0602a,2px 2px 0 #b0602a,4px 2px 0 #b0602a,6px 2px 0 #fff1d6,0 4px 0 #b0602a,2px 4px 0 #b0602a,4px 4px 0 #b0602a,6px 4px 0 #fff1d6,8px 4px 0 #fff1d6,12px 4px 0 #fff1d6,8px 6px 0 #fff1d6,10px 6px 0 #fff1d6,12px 6px 0 #fff1d6,6px 8px 0 #fff1d6,8px 8px 0 #fff1d6,10px 8px 0 #fff1d6,6px 10px 0 #fff1d6}
 .vplate.vp-turkey{background:var(--fam-turkey);color:#140a04}
 .seg button.ring-tabturkey{color:var(--fam-turkey)} .seg button.ring-tabturkey[aria-selected="true"]{background:#3d1a08;color:var(--fam-turkey)}
+/* ---------- v12 lane P: Winner cards (family winner, the Daily Packs podium prize): hot gold on black, a pixel trophy (box-shadow pixels,
+   9 by 9 at 2 px, drawn up and left of the anchor like the drumstick) in the art corner, the W plate, the Ring tab, the pack glow ---------- */
+:root{--fam-winner:#ffd23f}
+.vc-winner{--fam:var(--fam-winner);--bg1:#2a2100;--bg2:#000;--ink:#fff6d0}
+:is(.pcard,.bigcard).vc-winner .pfront{background:radial-gradient(120% 70% at 50% 30%,rgba(255,210,63,.32),transparent 70%),linear-gradient(170deg,#2a2100,#000)}
+body.retro :is(.pcard,.bigcard).vc-winner .pfront{background:#000}
+:is(.pcard,.bigcard).vc-winner .pc-ring::before{background:conic-gradient(#ffd23f,#fff3b0,#8a6a00,#ffd23f,#fff,#ffd23f)}   /* gold, not the Legend rainbow (a Winner is 100, so Legend tier) */
+body.retro :is(.pcard,.bigcard).vc-winner .pc-ring::before{background:conic-gradient(#ffd23f 0 25%,#fff3b0 0 50%,#8a6a00 0 75%,#ffe28a 0);animation-timing-function:steps(8)}
+.pc-mark.mk-winner{box-shadow:-2px -8px 0 #fff3b0,0 -8px 0 #fff3b0,2px -8px 0 #fff3b0,4px -8px 0 #fff3b0,6px -8px 0 #fff3b0,8px -8px 0 #fff3b0,10px -8px 0 #fff3b0,-4px -6px 0 #ffd23f,-2px -6px 0 #fff3b0,0 -6px 0 #fff3b0,2px -6px 0 #ffd23f,4px -6px 0 #ffd23f,6px -6px 0 #ffd23f,8px -6px 0 #ffd23f,10px -6px 0 #c89400,12px -6px 0 #ffd23f,-4px -4px 0 #ffd23f,0 -4px 0 #fff3b0,2px -4px 0 #ffd23f,4px -4px 0 #ffd23f,6px -4px 0 #ffd23f,8px -4px 0 #c89400,12px -4px 0 #ffd23f,-2px -2px 0 #ffd23f,0 -2px 0 #ffd23f,2px -2px 0 #ffd23f,4px -2px 0 #ffd23f,6px -2px 0 #ffd23f,8px -2px 0 #c89400,10px -2px 0 #ffd23f,2px 0 0 #ffd23f,4px 0 0 #ffd23f,6px 0 0 #c89400,4px 2px 0 #c89400,4px 4px 0 #c89400,0 6px 0 #ffd23f,2px 6px 0 #ffd23f,4px 6px 0 #ffd23f,6px 6px 0 #ffd23f,8px 6px 0 #ffd23f,0 8px 0 #6b4e00,2px 8px 0 #6b4e00,4px 8px 0 #6b4e00,6px 8px 0 #6b4e00,8px 8px 0 #6b4e00}
+.vplate.vp-winner{background:var(--fam-winner);color:#000}
+.seg button.ring-tabwinner{color:var(--fam-winner)} .seg button.ring-tabwinner[aria-selected="true"]{background:#2a2100;color:var(--fam-winner)}
+.pack.glow-winner{box-shadow:0 0 0 3px #ffd23f,0 0 60px 18px rgba(255,210,63,.85)}
+body.retro .pack.glow-winner{box-shadow:0 0 0 4px #000,0 0 0 10px #ffd23f,10px 10px 0 #000}
 .bigcard.vc{--fr:var(--fam)}
 .bigcard.vc .pfront::after,.pcard.vc .pfront::after{display:none}   /* no double sheen on Legends: the foil carries it */
 .pc-stamp{position:relative;z-index:2;align-self:center;margin-top:2px;font-family:var(--font-label);font-weight:800;font-size:11px;letter-spacing:.22em;padding:2px 10px;border-radius:4px;background:var(--fam,#b78bff);color:#120a24}
@@ -937,9 +950,66 @@ body{-webkit-tap-highlight-color:transparent;overflow-x:hidden}
 .acct .fine{margin-top:16px}
 .acct .fine a{color:var(--sky)}
 @media (max-width:640px){ .acct .btn{flex:1;min-height:44px} .sheet.acct{padding:18px 16px 16px} }
+/* ---------- v12 lane A: Sign in with Apple, the board-name sheet, the Leaderboards tabs ---------- */
+/* Apple's button (HIG): white on a dark screen, the logo glyph, "Sign in with Apple", 44 px tall, full width, the system font in both looks */
+.applebtn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:44px;min-height:44px;margin-top:14px;padding:0 16px;border:0;border-radius:8px;background:#fff;color:#000;cursor:pointer;
+  font:600 17px/1 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;letter-spacing:0;text-transform:none}
+.applebtn svg{width:17px;height:17px;flex:none;margin-top:-3px}
+.applebtn:disabled{opacity:.6;cursor:default}
+body.retro .applebtn{font:600 17px/1 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;letter-spacing:0;border-radius:8px;box-shadow:none}
+.acmail{display:block;margin:8px auto 0;min-height:44px;padding:8px 14px;color:var(--sky);font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:14px}
+body.retro .acmail{font-family:var(--px);font-weight:400;font-size:10px;letter-spacing:0}
+/* the tabs row with the Global / Me toggle right-aligned (its own row on phones); the Global season chips; the scrolling list */
+.lbbar{display:flex;align-items:center;justify-content:space-between;gap:8px 12px;flex-wrap:wrap;max-width:560px;margin:0 0 10px}
+.lboard .lbbar .seg,.lboard .lbchips .seg{margin:0}
+.lbchips{display:flex;flex-wrap:wrap;gap:8px;max-width:560px;margin:0 0 8px}
+.lbsign{max-width:560px;margin-top:14px}
+.lbsign p{margin:0 0 10px}
+.gbrows{overflow:auto;overscroll-behavior:contain;margin-top:6px}
+.gbpin{margin-top:6px}
+.gbpin li{border-style:dashed}
+@media (max-width:640px){
+  .lboard h2{margin:2px 0 8px}
+  .lbbar{flex-direction:column;align-items:stretch}
+  .lbbar .seg{display:flex}
+  .lbbar .seg button{flex:1;padding-inline:8px}
+}
+@media (max-width:399px){   /* one row of six small chips under 400 px */
+  .lbchips{flex-wrap:nowrap;gap:4px}
+  .lbchips .seg{padding:3px;gap:2px}
+  .lbchips .seg button{padding:6px 7px;font-size:12px;letter-spacing:.02em}
+  .lbxl{display:none}
+  body.retro .lbchips .seg button{padding:6px 5px;font-size:8px}
+}
 /* ---------- v3 looks: the MODERN/RETRO switch on every screen ---------- */
 .hometop{align-self:stretch;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 16px}
 .hometop .acctbtn{position:static}
+.hometop .hright{display:flex;align-items:center;gap:10px}
+/* ---------- v12 lane F: the Ideas inbox (#ideasov on the overlay; its own sheet class so the rules sheets keep their size) ---------- */
+.ideasbtn::before{content:"\2709\FE0F";margin-right:6px}
+#ideasov{place-items:stretch center;grid-template-rows:minmax(0,1fr)}
+.sheet.ideas{max-height:none;height:100%;max-width:520px;display:flex;flex-direction:column;overflow:hidden;padding:18px 18px 14px}
+.ideas .actop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.ideas .actop h2{color:var(--gold)}
+.ideas .ipost{flex:none}
+.ideas .ipost p{margin:6px 0 0}
+.ideas textarea{font:600 16px/1.3 var(--font-body);color:var(--fg);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;height:68px;resize:none;outline:none;box-sizing:border-box}
+.ideas textarea:focus{border-color:var(--sky)}
+.ideas .irow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:6px}
+.ideas .icount{color:var(--muted);font-size:14px}
+.ideas .ipost .btn{min-height:44px;padding:8px 18px}
+.ideas .ipost .msg{margin:4px 0 0;min-height:1.2em}
+#ideaslist{list-style:none;margin:10px 0 0;padding:0 8px 0 0;flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.idea{padding:10px 0;border-top:1px solid var(--line)}
+.idea .ibody{margin:0;font-weight:600;overflow-wrap:anywhere}
+.idea .imeta{display:flex;align-items:center;gap:6px;margin-top:6px;color:var(--muted);font-size:14px}
+.idea .imeta .who{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.idea .iv,.idea .irep{min-height:44px;min-width:44px;padding:4px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font-family:var(--font-label);font-weight:700;font-size:14px}
+.idea .iv[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold)}
+.idea .irep{border-color:transparent;background:none;color:var(--muted);text-decoration:underline;font-weight:600}
+.ideas .ifoot{flex:none;margin:8px 0 0;padding-top:8px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.ideas .ifoot a{color:var(--sky)}
+body.retro .idea .iv,body.retro .idea .irep{border-width:2px}
 /* ---------- Broadcast season (Modern look): bcDraw() paints the canvas; CSS sizes the TV panel and the end cards ---------- */
 .bc-tv{max-width:760px;margin:0 auto 16px;border-radius:14px;overflow:hidden;background:#070d18;border:1px solid var(--line);box-shadow:0 22px 50px -18px rgba(0,0,0,.75)}
 #stad.bc-cv{display:block;width:100%;height:auto;aspect-ratio:16/9;image-rendering:auto;background:#1d5229}
@@ -1184,6 +1254,8 @@ body.retro .elo-r{font-family:var(--px);font-size:20px}
 body.retro .elo-d{font-size:11px}
 body.retro .elo-chip{font-size:7px;border-width:2px}
 body.retro .elo-line{font-family:var(--px);font-weight:400;font-size:9px;letter-spacing:0;line-height:1.6}
+.elo-card{display:block;margin-top:2px;color:var(--sky)}
+.elo-line b{color:var(--fg)}
 .dl.elo .rs-stad{width:min(384px, calc((100vh - 290px) * .8))}
 @media (max-width:820px){ .dl.elo .rs-stad{width:min(300px, 42vw, calc((100vh - 260px) * .8))} }
 /* desktop: six full suggestion rows at most (the phone measure: a row and its rule 57.3 px, 58.3 in Retro), so the list does not run far below the fold */
@@ -1562,6 +1634,12 @@ body.retro .nt-pop{font-family:var(--px);font-size:12px}
   .hometop .acctbtn{position:relative;display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:0;flex:none}
   .hometop .acctbtn>span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
   .hometop .acctbtn::before{content:"👤";font-size:20px;line-height:1}
+  .hometop .hright{gap:4px;margin-right:-8px;flex-wrap:wrap;justify-content:flex-end;width:92px}   /* three 44 px icons do not fit beside the logo at 375 px: two per row
+     (Ideas and Chat on top, Account under them), the group hugging the edge so nothing touches the logo's 0 */
+  .hometop{align-items:flex-start}
+  .hometop .ideasbtn{position:relative;display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:0;flex:none}
+  .hometop .ideasbtn>span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .hometop .ideasbtn::before{margin:0;font-size:20px;line-height:1}
   .hometop .acctbtn.on::after{content:"";position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--gold)}
   body.retro .hometop .lookone{padding:0}
   .home .tag,.home .modesub,.home .free,.home .disc{margin:0}
@@ -1734,7 +1812,119 @@ body.retro .ntg-t{border-radius:0}
 .modes.daily .mode:last-child:nth-child(odd){grid-column:1/-1}
 .mode .prac{position:absolute;right:8px;bottom:8px;padding:5px 10px;border-radius:999px;border:1px solid var(--c);color:var(--c);background:var(--surface);font-family:var(--font-label);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;line-height:1}
 .mode .prac:hover{background:var(--surface2)}
+/* ---------- v12 lane P: the Daily Packs card (yesterday's podium line, the Board button), the Winner Pack shelf and the day board ---------- */
+.modes.daily .mode .go small.dppod{margin-top:3px;opacity:.85}
+.dppod span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dppod span:last-child{padding-right:58px}   /* the Board button sits in the corner */
+@media (max-height:700px){.modes.daily:has(.dpshelf:not([hidden])) .dppod{display:none}}   /* a short phone shows the waiting pack, not yesterday's three */
+.modes.daily .dpshelf:not([hidden]){grid-column:1/-1;display:grid;gap:6px}
+.dpaw{display:block;width:100%;min-height:48px;padding:8px 14px;border-radius:12px;border:2px solid var(--fam-winner);background:#140f00;color:#fff6d0;text-align:left;box-shadow:0 0 18px rgba(255,210,63,.35);font:inherit;cursor:pointer}
+.dpaw b{font-family:var(--font-label);font-weight:800;font-size:15px;letter-spacing:.04em;color:var(--fam-winner)}
+.dpaw span{font-size:14px}
+body.retro .dpaw{border-radius:0;box-shadow:6px 6px 0 #000}
+body.retro .dpaw b{font-family:var(--px);font-weight:400;font-size:9px;line-height:1.6;letter-spacing:0}
+.dprows li{grid-template-columns:minmax(0,1fr) auto auto auto} .sheet .dprows{padding:0;max-width:none}
+.dpb{max-height:min(52vh,420px);overflow-y:auto}
+.wpk .god-sub{color:#fff3b0}
 body.retro .mode .prac{font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:0;border-width:2px;border-radius:0;padding:6px 8px}   /* "17-0" never breaks at its hyphen in the half-width card (the Retro pixel font) */
+/* ---------- v12 lane C: the global chat (the Home corner button, the sheet on #ov: list, picker, send row) ---------- */
+.hometop .chatbtn{margin-left:auto}
+.hometop #ideasbtn~.chatbtn{margin-left:0}   /* beside the Ideas envelope when it is there: the pair sits right, by Account */
+.chatbtn{position:relative;display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:0;flex:none}
+.chatbtn>span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.chatbtn::before{content:"💬";font-size:20px;line-height:1}
+.chatov{grid-template-rows:minmax(0,1fr)}
+.chatov .sheet.chat{align-self:stretch;height:auto;max-height:none;max-width:520px;display:flex;flex-direction:column;overflow:hidden;padding:12px 16px 10px;animation:none}
+.chtop{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.chtop h2{margin:0;color:var(--sky)}
+.chmain{flex:1;min-height:0;display:flex;flex-direction:column}
+.chgate{margin:auto 0}
+.chgate p{margin:0 0 10px}
+.chlist{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin-top:6px;padding-right:4px}
+.chmsg{padding:7px 0;border-bottom:1px solid var(--line)}
+.chhd{display:flex;align-items:center;gap:8px;font-family:var(--font-label);font-weight:700;font-size:14px;min-height:22px}
+.chhd b{color:var(--sky);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chmsg.mine .chhd b{color:var(--gold)}
+.chage{color:var(--muted);font-size:12px}
+.chmore{margin-left:auto;min-width:44px;min-height:28px;padding:0 8px;border-radius:8px;color:var(--muted);font-weight:700;letter-spacing:.1em}
+.chmore:hover{color:var(--fg);background:var(--surface2)}
+.chbody{margin:2px 0 0;font-size:15px;line-height:1.35;overflow-wrap:anywhere;white-space:pre-wrap}
+.chacts{display:flex;justify-content:flex-end;gap:8px;margin-top:4px}
+.chacts button{min-height:36px;padding:0 12px;border:1px solid var(--loss);border-radius:8px;color:var(--loss);font-family:var(--font-label);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.chchip{display:block;margin-top:6px;max-width:280px;text-align:left}
+.chacts[hidden]{display:none}
+.chchip .ring-tile,.chpk .ring-tile{grid-template-columns:auto minmax(0,1fr);justify-items:start;text-align:left;padding:5px 8px}   /* one row on phones too (the Ring grid stacks its tiles there) */
+.chchip .ring-sub,.chpk .ring-sub{justify-content:flex-start}
+.chchip .ring-tx,.chpk .ring-tx{justify-self:stretch;min-width:0}
+.chchip .spr,.chpk .spr{width:32px;height:40px}
+.chcap{display:block;margin-top:3px;font-family:var(--font-label);font-weight:700;font-size:12px;color:var(--muted)}
+.chchip.chtriv{display:inline-block;padding:4px 10px;border:1px solid var(--gold);border-radius:999px;font-family:var(--font-label);font-weight:700;font-size:13px;color:var(--gold)}
+.chpick{flex:none;max-height:46%;overflow-y:auto;margin-top:6px;padding:8px 0 0;border-top:1px solid var(--line)}
+.chpick h3{margin:0 0 6px;font-family:var(--font-label);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.chpick .hint{margin:0 0 10px}
+.chcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-bottom:10px}
+.chpk{display:block;text-align:left;min-width:0}
+.chpk .chchip{margin:0}
+.chtrivs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.chpick .actions{justify-content:flex-end;margin-top:0}
+.chsend{flex:none;margin-top:6px;padding-top:8px;border-top:1px solid var(--line)}
+.chsend.out{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.chsend.out p{margin:0;font-weight:600}
+.chatt{display:flex;align-items:center;gap:8px}
+.chatt:not(:empty){margin-bottom:6px}
+.chatt .chchip{margin:0}
+.chsend textarea{display:block;width:100%;resize:none;font:500 16px/1.3 var(--font-body);color:var(--fg);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-height:44px;outline:none}
+.chsend textarea:focus{border-color:var(--sky)}
+.chrow{display:flex;align-items:center;gap:8px;margin-top:6px}
+.chrow .ghost,.chrow .btn{min-height:44px}
+.chcount{margin-left:auto;color:var(--muted);font-size:12px}
+.chsend .msg{margin:4px 0 0;min-height:0;font-size:13px}
+.chsend .msg:empty{display:none}
+.chfoot{flex:none;margin:6px 0 0;font-size:11px;line-height:1.35;color:var(--muted)}
+.chfoot a{color:var(--sky)}
+body.retro .chchip.chtriv{border-width:2px;border-radius:0;font-family:var(--px);font-weight:400;font-size:8px;line-height:1.6}
+body.retro .chsend textarea{border-width:2px;border-radius:0}
+body.retro .chacts button,body.retro .chmore{border-radius:0}
+body.retro .chhd,body.retro .chcap,body.retro .chpick h3{font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:0;line-height:1.6}
+@media (max-width:640px){.chatov .sheet.chat{padding:10px 12px 8px}.chatov .sheet.chat .chtop h2{font-size:30px}}
+/* ---------- /v12 lane C ---------- */
+/* v12 lane X: the Home rank chip (corner row on desktop, under the tagline on phones), the Rewards shelf, the reward pack screen, the Ranks board */
+.rkchip{position:relative;display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-family:var(--font-label);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;line-height:1.2;color:var(--fg);white-space:nowrap}
+.rk-bar{display:block;width:72px;height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.rk-bar>i{display:block;height:100%;background:var(--gold)}
+.rk-x{color:var(--muted);font-weight:600}
+.rk-badge{min-width:18px;height:18px;margin-right:-6px;padding:0 5px;border-radius:9px;background:var(--loss);color:#fff;font-size:11px;line-height:18px;text-align:center}
+.hometop .rk-top{margin-left:auto}
+.home .rk-under{display:none}
+.rkchip.pulse{animation:rkpulse .9s ease-out 1}
+@keyframes rkpulse{0%{box-shadow:0 0 0 0 rgba(255,201,60,.75);transform:scale(1)}35%{transform:scale(1.08)}100%{box-shadow:0 0 0 16px rgba(255,201,60,0);transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.rkchip.pulse{animation:none}}
+.rwshelf{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:420px;margin:4px 0 0}
+.rw-h{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-label);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.rw-h b{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--loss);color:#fff;font-size:12px;line-height:20px}
+.rw-open{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;min-height:44px;padding:8px 14px;line-height:1.15;background:var(--rc);color:#1b1200}
+.rw-open small{font-size:12px;letter-spacing:.06em;opacity:.8}
+.rwside .pgrid.rw-one{grid-template-columns:minmax(0,190px);justify-content:center}
+.pcard .rw-own{position:absolute;left:50%;top:40%;z-index:3;transform:translateX(-50%) rotate(-8deg);padding:2px 6px;border-radius:4px;background:rgba(10,20,36,.88);border:1px solid var(--gold);color:#fff;font-family:var(--font-label);font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.rwacts{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px}
+.rkrows li{grid-template-columns:minmax(0,1fr) auto auto}
+.rkrows .rk-bl{font-family:var(--font-label);font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+body.retro .rkchip{border-radius:0;border-width:2px;box-shadow:3px 3px 0 #000;font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:0;line-height:1.5}
+body.retro .rk-bar,body.retro .rk-badge,body.retro .rw-h b,body.retro .pcard .rw-own{border-radius:0}
+body.retro .rk-badge,body.retro .rw-h,body.retro .rw-open small,body.retro .pcard .rw-own,body.retro .rkrows .rk-bl{font-family:var(--px);font-weight:400;font-size:8px;letter-spacing:0}
+@media (max-width:640px){
+  .home .rk-top{display:none}
+  .home .rk-under{display:inline-flex;margin:-4px 0 -2px;padding:1px 9px;gap:6px;font-size:11px;line-height:14px}   /* one thin row: a 375 by 667 Home keeps its fit */
+  .rk-bar{width:56px}
+  .home:has(.szban) .rk-under{margin:-6px 0 -7px}   /* a set banner shares the space: the chip tucks closer (375 by 667 still fits) */
+  .home .rk-under .rk-badge{height:14px;min-width:16px;line-height:14px;font-size:11px}
+  body.retro .home .rk-under{font-size:8px;line-height:12px;padding:2px 8px;margin:0}
+  .hbtns .rwshelf,.hbtns:has(.rwshelf) .lbbtn{flex:1 1 calc(50% - 4px)}   /* the shelf shares the Leaderboards row: no new row on a phone Home */
+  .hbtns .rwshelf{width:auto;max-width:none;margin:0;min-width:0}
+  .rwshelf .rw-h,.rw-open small{display:none}   /* the chip carries the count and the rank */
+  .rw-open{justify-content:center;padding:8px 10px;line-height:1.2}
+  .rwside .pgrid{gap:7px}
+}
 </style>
 </head>
 <body>
@@ -1758,7 +1948,7 @@ body.retro .mode .prac{font-family:var(--px);font-weight:400;font-size:8px;lette
 
 <script>
 // ---------- Cloud config: Supabase project URL + anon (public) key. Empty = device-only. Never put the service_role key here. ----------
-const CLOUD = {url:"https://xqedvizvitfwswamjave.supabase.co", anon:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxZWR2aXp2aXRmd3N3YW1qYXZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NzQyODQsImV4cCI6MjEwNzA1MDI4NH0.TbNy-iMGFZ69Nr1Hei-iorqqNDxxXBIXjepf83PwgCs", accounts:false}; // url + anon: events and the global Daily 17-0 board (docs/telemetry.md); accounts stays false until sign-in ships (docs/go-live-plan.md)
+const CLOUD = {url:"https://xqedvizvitfwswamjave.supabase.co", anon:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxZWR2aXp2aXRmd3N3YW1qYXZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0NzQyODQsImV4cCI6MjEwNzA1MDI4NH0.TbNy-iMGFZ69Nr1Hei-iorqqNDxxXBIXjepf83PwgCs", accounts:true}; // url + anon: events and the global Daily 17-0 board (docs/telemetry.md); accounts stays false until sign-in ships (docs/go-live-plan.md)
 
 // ---------- Teams ----------
 const TEAMS = {
@@ -2289,13 +2479,13 @@ if(MODE!=="daily" && !MODES[MODE]) MODE = "packs";
 
 // filter (v8 D9): {decades:[...], teams:"all" | "AFC" | "NFC" | a CONF key}, kept only when it narrows something (null = everything, as every
 // older call has it). daily (v8 D10): the day key of a Daily 17-0 try (fresh random spins and season on every try, no records of its own mode).
-function newDraft(level, mode, off, def, filter=null, daily=null){
+function newDraft(level, mode, off, def, filter=null, daily=null, dp=null){   // dp (v12 lane P): the Phoenix day key of a Daily Packs run
   ANIM.load(["kickoff", "perfect"]);   // the season's cut-ins, a whole draft ahead of startSeason (its 300 ms launch beat is too short for a cold download)
   SLOTS = buildSlots(mode, off, def);
   const posSet = new Set(SLOTS.flatMap(s=>s.acc));
   S = { started:Date.now(), draftSecs:0, level, mode, off, def, roster:{}, round:1, respins:LEVELS[level].respins, team:null, decade:null, spinning:false, used:new Set(), pending:null, season:null, picks:[], view:"O", posSet,
-    tSpins:LEVELS[level].spins.team, dSpins:LEVELS[level].spins.decade, filter:filterNarrow(filter) ? filter : null, filterOut:false, daily:daily || null, d17Try:0, spinMs:0, spinAt:0 };
-  track("mode_start", {mode:daily ? "daily17" : mode, level});
+    tSpins:LEVELS[level].spins.team, dSpins:LEVELS[level].spins.decade, filter:filterNarrow(filter) ? filter : null, filterOut:false, daily:daily || null, d17Try:0, spinMs:0, spinAt:0, dp:dp || null };
+  track("mode_start", {mode:dp ? "dailypacks" : daily ? "daily17" : mode, level});
   if(mode==="packs"){ recentStart(); renderPackDraft(); return; }
   renderDraft();
   spin();
@@ -2473,13 +2663,14 @@ function rulesHTML(k){
 }
 
 function renderHome(){
+  chatClose();   // v12 lane C: a Home re-render takes the chat sheet and its poll with it
   if(S && !S.playoffs) track("quit", {mode:S.daily ? "daily17" : S.mode, level:S.level, extra:{pick:Object.keys(S.roster).length + 1, phase:S.season ? "season" : "draft"}});   // a settled season has S.playoffs
   pkStop(); dlStop(); CARD_CLOSE?.(); MT_CLOSE?.(); LB_DROP?.(); CER.t.forEach(clearTimeout); CER.t = []; document.querySelectorAll(".walkout.variant").forEach(e=>e.remove()); applyLook(lookRetro()); clearTimeout(spinTimer); S = null; $("#confetti").hidden = true;
   const rec = loadRecords(), R = MODE==="packs" ? loadRing() : null, mto = R ? mtOvr(loadMyTeam(R), R) : null;
   $("#app").innerHTML = `<section class="home">
-    <div class="hometop">${lookBtn(true)}${acctOn()?`<button class="ghost acctbtn${signedIn()?" on":""}" id="acctbtn"><span>${signedIn()?"Account ●":"Account"}</span></button>`:""}</div>
+    <div class="hometop">${lookBtn(true)}${rankChipHTML("top")}${acctOn()?`<div class="hright"><button class="ghost ideasbtn" id="ideasbtn"><span>Ideas</span></button>${chatBtnHTML()}<button class="ghost acctbtn${signedIn()?" on":""}" id="acctbtn"><span>${signedIn()?"Account ●":"Account"}</span></button></div>`:""}</div>
     <h1>17–0</h1>
-    <p class="tag">Draft a perfect season</p>
+    <p class="tag">Draft a perfect season</p>${rankChipHTML("under")}
     ${(z => z ? `<p class="szban sz-${z.fam}" role="status">${esc(z.name)} packs through ${mdLabel(z.to)}</p>` : "")(seasonOpen())}
     <div class="seg" role="tablist" aria-label="Game mode">${[...MODE_ORDER.map(k=>[k,MODES[k].label]),["daily","Daily"]].map(([k,l])=>`<button role="tab" aria-selected="${MODE===k}" data-mode="${k}">${l}</button>`).join("")}</div>
     <p class="modesub">${MODE==="daily" ? "A new game every day" : MODES[MODE].sub}</p>
@@ -2489,15 +2680,17 @@ function renderHome(){
         <button class="go" data-level="${k}"><span><b>${L.label}</b><br><small>${subFor(k,MODE)}</small></span><small class="num">${r?`Best ${r.best} · ${r.perfect}× 17–0`:""}</small></button>
         <button class="info" data-info="${k}" aria-label="${L.label} rules"><span>i</span></button>
       </div>`;}).join("")}</div>
-    <div class="hbtns"><button class="btn alt lbbtn" id="lbbtn">🏆 Leaderboards</button>${MODE==="packs"?`
+    <div class="hbtns">${rewardShelfHTML()}<button class="btn alt lbbtn" id="lbbtn">🏆 Leaderboards</button>${MODE==="packs"?`
     <button class="btn alt" id="ringhome">🏅 Ring of Honor</button>
     <button class="btn alt" id="mthome">⭐ My Team${mto!=null?` · ${mto} OVR`:""}</button>`:""}</div>
     <p class="free">Free · unlimited plays</p>
     <p class="disc">${DISCLAIMER}</p>
   </section>`;
-  $("#lbbtn").onclick = () => renderBoards(MODE); wireLook();
+  $("#lbbtn").onclick = () => renderBoards(MODE); wireLook(); wireRank();   // wireRank: v12 lane X (the shelf; a queued rank-up's toast and pulse)
   if(MODE==="daily") wireDailyHome();
-  if(acctOn()) $("#acctbtn").onclick = openAcct;
+  dpPoll();   // v12 lane P: finalize yesterday's podium, fetch this player's unclaimed Winner Packs
+  if(acctOn()){ $("#acctbtn").onclick = openAcct; $("#ideasbtn").onclick = openIdeas; }
+  $("#chatbtn")?.addEventListener("click", openChat);   // v12 lane C
   if(MODE==="packs"){ $("#ringhome").onclick = renderRing; $("#mthome").onclick = renderMyTeam; }
   document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{ MODE=b.dataset.mode; store.set("seventeen-mode",MODE); renderHome(); });
   document.querySelectorAll(".go[data-level]").forEach(b=>b.onclick=()=>renderFormations(b.dataset.level));
@@ -3000,7 +3193,7 @@ const d17RulesHTML = () => `<div class="overlay" id="ov"><div class="sheet" role
       <li>Three tries a day, and a try is spent the moment it starts: quitting keeps nothing. Each pick gives you one team re-spin and one decade re-spin; a re-spin keeps the other reel.</li>
       <li>The clock runs while you search and place, never while the reels spin.</li>
       <li>Every try is a new draw: new spins, a new season.</li>
-      <li>Your best try counts: the record first, then the clock. ${d17Global() ? "Your tries go to the global board under your board name." : "Global leaderboards come in the next update."}</li>
+      <li>Your best try counts: the record first, then the clock. ${d17Global() ? "Your tries go to the global board under your board name." : "Sign in and your tries go to the global board under your board name."}</li>
     </ol>
     <div class="actions"><button class="btn" id="closeov">Got it</button></div>
   </div></div>`;
@@ -3022,7 +3215,7 @@ function d17Start(){
 // Saves a finished try on its day (never more than three), sends it to the board when the cloud is on. Returns {n, best} for the verdict.
 function d17Save(t){
   const all = d17Load(), day = all.days[S.daily] || (all.days[S.daily] = {tries:[]}), n = S.d17Try || d17Used(day) || 1;
-  if(day.tries.length<D17_TRIES){ day.tries.push({...t, n}); day.started = Math.max(day.started||0, n); store.set(d17StoreKey(), all); d17Submit(S.daily, n, t); track("daily17_try", {mode:"daily17", level:"hard", w:t.w, l:t.l, secs:t.secs, extra:{try:n, stage:t.stage}}); }
+  if(day.tries.length<D17_TRIES){ day.tries.push({...t, n}); day.started = Math.max(day.started||0, n); store.set(d17StoreKey(), all); d17Submit(S.daily, n, t); track("daily17_try", {mode:"daily17", level:"hard", w:t.w, l:t.l, secs:t.secs, extra:{try:n, stage:t.stage}}); xpAdd("d17_try", t); }
   return {n, best:d17Best(day.tries)};
 }
 // ---------- The daily board (v8 D11): this device's tries until CLOUD is set; then each try goes to daily_runs and the day's top 100 is read ----------
@@ -3053,11 +3246,224 @@ async function d17TopFill(key){
   box.innerHTML = `<h3 class="cmp-h">Global today</h3>${rows.length ? `<ol class="d17rows">${rows.slice(0,100).map(x=>`<li${x.me?' class="me"':""}><span class="cn"></span><span class="num">${+x.w}-${+x.l}</span><span class="num">${fmtTime(+x.secs||0)}</span></li>`).join("")}</ol>` : `<p class="hint">No runs yet today.</p>`}`;
   box.querySelectorAll(".d17rows li").forEach((li,i)=>{ li.querySelector(".cn").textContent = `${i+1}. ${cleanName(rows[i].name) || "Player"}`; });
 }
+// ---------- v12 lane P: Daily Packs (D5): three Easy Packs runs a day, tilted odds, signed in only, a day board and a podium of three ----------
+// A run is a Packs season on Easy (ratings, stats and years shown, three new packs) with S.dp = the Phoenix day key: it saves a run here
+// instead of a record (no records, no device board, no scores row), and a 17-0 still banks the roster in the Ring (that is the point).
+// A run is spent when it starts (day.started), three a day. Store {days:{key:{runs:[{w,l,stage,ovr,secs,n}], started}}, awards:[{day,place,pack,keys,at}]}
+// in seventeen-dp-v1, seventeen-dp-test under any test hash. The board ranks each player's best run of the day: the record, then team OVR,
+// then the draft clock (a full tie keeps the earlier run). Cloud: supabase/v12-dailypacks.sql (dp_runs, dp_board, dp_finalize, dp_my_awards,
+// dp_claim), every call through api() on the cloud queue; #test-dp answers each call from window.DP_FAKE[fn] and never fetches.
+const DP_RUNS = 3, DP_POLL = 10*60e3, DP_ORD = ["1st","2nd","3rd"];
+const DP_PACK = {   // the podium's packs: a Winner card at p_win, then Elite-or-better (Champion), Elite (Elite) or Gold-or-better (Gold) skill cards to PACK_N
+  champion:{name:"Champion Winner Pack", win:1, tiers:["elite","legend"]},
+  elite:{name:"Elite Winner Pack", win:.5, tiers:["elite"]},
+  gold:{name:"Gold Winner Pack", win:.1, tiers:["gold","elite","legend"]},
+};
+const dpStoreKey = () => testWin() ? "seventeen-dp-test" : "seventeen-dp-v1";
+const dpLoad = () => { const s = store.get(dpStoreKey(), null); return s && s.days ? {...s, awards:Array.isArray(s.awards) ? s.awards : []} : {days:{}, awards:[]}; };
+const dpKey = (ms = Date.now()) => new Date(ms - 7*36e5).toISOString().slice(0, 10);   // the Phoenix day (UTC-7 all year, no daylight time): the board's and the podium's day
+const dpYesterday = () => dpKey(Date.now() - 864e5);
+const dpDate = key => d17Date(key);
+const dpBetter = (a,b) => !b || (a.w!==b.w ? a.w>b.w : a.ovr!==b.ovr ? a.ovr>b.ovr : a.secs!==b.secs ? a.secs<b.secs : (a.n||0)<(b.n||0));
+const dpBest = runs => (runs||[]).reduce((a,t)=>dpBetter(t,a)?t:a, null);
+const dpUsed = day => Math.max(day.started||0, (day.runs||[]).length);
+const dpRec = t => `${+t.w}-${+t.l}, ${+t.ovr} OVR, ${fmtTime(+t.secs||0)}`;
+// The tilted table: Easy's weights with Legend and Elite halved, the difference split between Gold and Silver (sums to 1). RARE stays Easy's.
+function dpW(){ const b = packW("beginner", true), lg = b.legend/2, el = b.elite/2, g = (b.legend - lg + b.elite - el)/2;
+  return {legend:lg, elite:el, gold:b.gold + g, silver:b.silver + g, bronze:b.bronze}; }
+const DP = {at:0, busy:false, awards:[], pod:null, told:false, opening:false};
+const dpCloud = () => cloudOn() && !testWin();
+const dpSigned = () => testDp() ? !(window.DP_FAKE||{}).out : dpCloud() && signedIn();
+// One cloud call: "dp_runs" is the table insert, every other name a function. Never throws: {ok, status, data, net}.
+function dpRpc(fn, body={}){
+  if(testDp()){ const f = (window.DP_FAKE||{})[fn]; return Promise.resolve(typeof f==="function" ? f(body) : undefined).then(d => typeof f==="function" ? {ok:true, status:200, data:d} : {ok:false, status:404, data:null}); }
+  if(!dpCloud() || !signedIn()) return Promise.resolve({ok:false, status:0, data:null});
+  return clQueue(() => fn==="dp_runs" ? api("/rest/v1/dp_runs", {method:"POST", body, prefer:"return=minimal"}) : api("/rest/v1/rpc/"+fn, {method:"POST", body}));
+}
+// A finished run goes up under the board name; offline it waits in seventeen-dp-pending (never under a test hash) for the next poll.
+const DP_PEND = "seventeen-dp-pending";
+async function dpPost(row){
+  if(testDp()) return dpRpc("dp_runs", row);
+  if(!dpCloud()) return;
+  store.set(DP_PEND, [...(store.get(DP_PEND, null)||[]).filter(x=>x && !(x.day===row.day && x.n===row.n)), row]);
+  return dpFlush();
+}
+async function dpFlush(){
+  if(!dpCloud() || !signedIn()) return;
+  for(const row of store.get(DP_PEND, null)||[]){
+    const r = await dpRpc("dp_runs", row); if(r.net || r.status===0) return;   // offline: try again later
+    if(!r.ok && r.status!==409) console.warn("[cloud] dp_runs refused", r.status, r.data);   // 409 = already up; a refused row (a stale day) is dropped
+    store.set(DP_PEND, (store.get(DP_PEND, null)||[]).filter(x=>!(x.day===row.day && x.n===row.n)));
+  }
+}
+function dpStart(){
+  if(!dpSigned()){ dpRules(true); return false; }
+  const key = dpKey(), all = dpLoad(), day = all.days[key] || (all.days[key] = {runs:[]}), best = dpBest(day.runs);
+  if(dpUsed(day)>=DP_RUNS){ toast(`Three runs today. ${best ? `Your best: ${dpRec(best)}. ` : ""}Back tomorrow.`); return false; }
+  day.started = dpUsed(day) + 1;
+  Object.keys(all.days).sort().slice(0, -14).forEach(k=>delete all.days[k]);   // two weeks of days is plenty
+  store.set(dpStoreKey(), all);
+  newDraft("beginner", "packs", "shotgun", "43", null, null, key); S.dpRun = day.started; return true;
+}
+function dpSave(t){
+  const all = dpLoad(), day = all.days[S.dp] || (all.days[S.dp] = {runs:[]}), n = S.dpRun || dpUsed(day) || 1;
+  if(day.runs.length<DP_RUNS && !day.runs.some(x=>x.n===n)){
+    day.runs.push({w:t.w, l:t.l, stage:t.stage, ovr:t.ovr, secs:t.secs, n}); day.started = Math.max(day.started||0, n); store.set(dpStoreKey(), all);
+    dpPost({day:S.dp, n, w:t.w, l:t.l, stage:t.stage, ovr:t.ovr, secs:t.secs, name:cleanName(getName()) || null});
+    if(typeof xpAdd==="function") xpAdd("dp_run", 1);   // lane X's XP (a Daily Packs run)
+  }
+  return {n, best:dpBest(day.runs)};
+}
+// ---- Home: the card, its rules, the board sheet and the shelf ----
+function dpHomeHTML(){
+  const key = dpKey(), day = dpLoad().days[key] || {runs:[]}, n = dpUsed(day), best = dpBest(day.runs), on = dpSigned();
+  const status = !on ? "Sign in to play" : !n ? `${DP_RUNS} runs` : n<DP_RUNS ? `Run ${n+1} of ${DP_RUNS}${best ? ` · best ${best.w}-${best.l}` : ""}` : best ? `Done · best ${best.w}-${best.l}, ${best.ovr} OVR` : "Done · no run finished";
+  const pod = on && DP.pod && DP.pod.length ? `<small class="dppod" aria-label="Yesterday's podium">${DP.pod.slice(0,3).map((x,i)=>`<span>${i ? "" : "Yesterday: "}${i+1}. ${esc(cleanName(x.name) || "Player")} ${+x.w}-${+x.l}</span>`).join("")}</small>` : "";
+  return `<div class="mode dp" id="dpcard" style="--c:var(--fam-winner)">
+    <button class="go" id="dpgo"><span><b>Daily Packs</b><br><small>${dpDate(key)} · Easy · ${status}</small>${pod}</span></button>
+    <button class="info" id="dpinfo" aria-label="Daily Packs rules"><span>i</span></button>${on ? `<button class="prac" id="dpboard">Board</button>` : ""}</div>${on ? dpShelfHTML() : ""}`;
+}
+function dpShelfHTML(){
+  const a = DP.awards.filter(x=>x && DP_PACK[x.pack] && /^\d{4}-\d\d-\d\d$/.test(x.day) && x.place>=1 && x.place<=3);
+  return `<div class="dpshelf" id="dpshelf"${a.length ? "" : " hidden"}>${a.map(x=>`<button class="dpaw" data-day="${x.day}" data-place="${+x.place}"><b>You placed ${DP_ORD[x.place-1]} on ${dpDate(x.day)}:</b> <span>open your ${DP_PACK[x.pack].name}</span></button>`).join("")}</div>`;
+}
+const dpRulesHTML = signin => `<div class="overlay" id="ov"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rt" style="--c:var(--fam-winner)">
+    <h2 id="rt">Daily Packs</h2>
+    ${signin ? `<p class="hint">Sign in to play: the podium needs a name, so every run goes up under your board name.</p>` : ""}
+    <ol>
+      <li>Three Packs runs a day on Easy: ratings, stats and years shown, three new packs a draft.</li>
+      <li>A run is spent the moment it starts: quitting keeps nothing.</li>
+      <li>High cards are rarer: Legend and Elite pulls come half as often as in Easy Packs. Every pack still holds a Gold.</li>
+      <li>Your best run counts: the record, then team OVR, then the draft clock. A full tie goes to the earlier run.</li>
+      <li>At midnight Phoenix time the top three win a Winner Pack: 1st a Champion pack (a Winner card guaranteed), 2nd an Elite pack (1 in 2), 3rd a Gold pack (1 in 10).</li>
+      <li>Winner cards are the only 100 OVR cards. Once you own one it can turn up in your own regular Packs draws, and nobody else's.</li>
+    </ol>
+    <div class="actions">${signin ? (acctOn() ? `<button class="btn" id="dpacct">Account</button>` : `<p class="hint">Accounts arrive in the next update.</p>`) : ""}<button class="${signin ? "ghost" : "btn"}" id="closeov">Got it</button></div>
+  </div></div>`;
+function dpSheet(html){
+  document.body.insertAdjacentHTML("beforeend", html); const close = () => { $("#ov")?.remove(); document.removeEventListener("keydown", k); };
+  const k = e => { if(e.key==="Escape") close(); };
+  $("#closeov").onclick = close; $("#closeov").focus(); $("#ov").onclick = e => { if(e.target.id==="ov") close(); }; document.addEventListener("keydown", k);
+  return close;
+}
+function dpRules(signin){ const close = dpSheet(dpRulesHTML(signin)); $("#dpacct") && ($("#dpacct").onclick = () => { close(); openAcct(); }); }
+const dpBoardSheet = () => dpSheet(`<div class="overlay" id="ov"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rt" style="--c:var(--fam-winner)">
+    <h2 id="rt">Daily Packs board</h2><p class="hint">${dpDate(dpKey())} · each player's best run: the record, then team OVR, then the clock</p>${dpBoardHTML(dpKey())}
+    <div class="actions"><button class="btn" id="closeov">Close</button></div></div></div>`);
+function wireDPHome(){
+  const go = $("#dpgo"); if(!go) return;
+  go.onclick = dpStart; $("#dpinfo").onclick = () => dpRules(!dpSigned());
+  $("#dpboard") && ($("#dpboard").onclick = dpBoardSheet);
+  document.querySelectorAll(".dpaw").forEach(b=>b.onclick = () => dpOpenAward(b.dataset.day, +b.dataset.place));
+}
+function dpRefresh(){   // redraw the card and the shelf in place (a poll came back)
+  const c = $("#dpcard"); if(!c) return;
+  $("#dpshelf")?.remove(); c.insertAdjacentHTML("afterend", dpHomeHTML()); c.remove(); wireDPHome();
+}
+// On each Home render while signed in, at most once per DP_POLL: send any waiting run, finalize yesterday's podium (idempotent on the
+// server), then read this player's unclaimed awards and yesterday's top three for the card.
+async function dpPoll(force){
+  if(!dpSigned() || DP.busy || (!force && Date.now() - DP.at < DP_POLL)) return;
+  DP.busy = true; DP.at = Date.now();
+  try{
+    await dpFlush();
+    const y = dpYesterday();
+    await dpRpc("dp_finalize", {p_day:y});
+    const a = await dpRpc("dp_my_awards", {}), b = await dpRpc("dp_board", {p_day:y, p_limit:3});
+    const opened = new Set(dpLoad().awards.map(x=>x.day+"|"+x.place));   // opened here already (a claim that reached the server but not the screen)
+    if(a.ok && Array.isArray(a.data)) DP.awards = a.data.filter(x=>x && !opened.has(x.day+"|"+x.place));
+    if(b.ok && Array.isArray(b.data)) DP.pod = b.data.filter(Boolean).map((x,i)=>({...x, w:+x.w||0, l:+x.l||0, ovr:+x.ovr||0, secs:+x.secs||0, n:i})).sort((a,b)=>dpBetter(a,b) ? -1 : 1).slice(0, 3);
+  } finally { DP.busy = false; }
+  if(DP.awards.length && !DP.told){ DP.told = true; if(MODE!=="daily" && $(".home")) toast("You made the Daily Packs podium: your Winner Pack is on the Daily tab."); }
+  dpRefresh();
+}
+// ---- The day board: dpBoardHTML(day) for a Global view (lane A's Leaderboards screen calls it if present), dpBoardCard() for the Me card ----
+function dpBoardHTML(day){
+  if(!dpSigned()) return `<p class="hint">Sign in to see the Daily Packs board.</p>`;
+  setTimeout(() => dpBoardFill(day), 0);
+  return `<div class="dpb" data-dpb="${esc(day)}"><p class="hint">Loading the board…</p></div>`;
+}
+async function dpBoardFill(day){
+  const r = await dpRpc("dp_board", {p_day:day, p_limit:100}), boxes = document.querySelectorAll(`[data-dpb="${day}"]`); if(!boxes.length) return;
+  const rows = r.ok && Array.isArray(r.data) ? r.data.filter(Boolean).map((x,i)=>({...x, w:+x.w||0, l:+x.l||0, ovr:+x.ovr||0, secs:+x.secs||0, n:i})).sort((a,b)=>dpBetter(a,b) ? -1 : 1) : null;
+  const html = !rows ? `<p class="hint">The board can't load right now.</p>` : !rows.length ? `<p class="hint">No runs yet today.</p>`
+    : `<ol class="d17rows dprows">${rows.slice(0,100).map((x,i)=>`<li${x.me ? ' class="me"' : ""}><span class="cn">${i+1}. ${esc(cleanName(x.name) || "Player")}</span><span class="num">${x.w}-${x.l}</span><span class="num">${x.ovr} OVR</span><span class="num">${fmtTime(x.secs)}</span></li>`).join("")}</ol>`;
+  boxes.forEach(b=>b.innerHTML = html);
+}
+function dpBoardCard(){
+  const all = dpLoad(), day = all.days[dpKey()] || {runs:[]}, best = dpBest(day.runs), used = dpUsed(day), nm = cleanName(getName());
+  const ever = Object.values(all.days).map(d=>dpBest(d.runs)).filter(Boolean).reduce((a,t)=>dpBetter(t,a)?t:a, null);
+  const pl = [1,2,3].map(p=>all.awards.filter(x=>x.place===p).length), sub = [ever ? `Best ever ${ever.w}-${ever.l}, ${ever.ovr} OVR` : "", `Podiums ${pl.map((c,i)=>`${DP_ORD[i]} ×${c}`).join(" · ")}`].filter(Boolean).join(" · ");
+  return `<article class="bcard" data-area="dp"><span class="bk">#1</span><div class="bm"><b class="bt">Daily Packs</b><span class="bn">${nm ? esc(nm)+" (you)" : "You"}</span></div>
+    <div class="bv"><b class="bh${best ? "" : " nil"}">${best ? `${best.w}-${best.l}` : "No runs yet"}</b><small class="bl">${best ? `Best today · ${best.ovr} OVR` : `${DP_RUNS - Math.min(used, DP_RUNS)} of ${DP_RUNS} runs left`}</small></div>
+    <p class="bs${ever ? "" : " nil"}">${sub}</p></article>`;
+}
+// ---- The podium prize: claim on the server first (only the caller's own award), then draw, bank every card into the Ring, and reveal ----
+function drawWinnerPack(kind){
+  const P = DP_PACK[kind], pool = cardPool(), list = ["QB","RB","WR","TE"].flatMap(k=>P.tiers.flatMap(t=>(pool[k]||{})[t]||[])), out = [], ids = new Set();
+  if(Math.random() < P.win){   // an unowned Winner first; a Ring that holds every one draws any
+    const own = new Set(winnersOwned(loadRing()).map(w=>w.key)), ok = WINNERS.filter(w=>byKey().has(w.key)), fresh = ok.filter(w=>!own.has(w.key)), from = fresh.length ? fresh : ok;
+    const c = winnerCard(from[rnd(from.length)], P.win<1 ? oddsStr(P.win) : ""); if(c){ out.push(c); ids.add(c.p.id); }
+  }
+  for(let t=0; out.length<PACK_N && t<400; t++){ const c = list[rnd(list.length)]; if(c && !ids.has(c.p.id)){ ids.add(c.p.id); out.push(c); } }
+  return shuffle(out);
+}
+function winnerBank(cards){   // every Ring-eligible card of the pack goes into the Ring (level pip Easy, no season record); the Winner keeps its title
+  const ring = loadRing(), now = Date.now();
+  cards.forEach(c=>{ if(c.p.unit || !ringEligible(PLAYERS[c.p.id])) return;
+    const k = ringKey(c.p), r = ring.p[k] || (ring.p[k] = {n:0, f:now, lv:0, o:c.ovr});
+    r.n++; r.o = Math.max(r.o, c.ovr); r.d = now;
+    if(c.v) r.v = [...new Set([...(r.v||[]), c.v.title])]; });
+  saveRing(ring);
+}
+async function dpOpenAward(day, place){
+  const aw = DP.awards.find(x=>x.day===day && +x.place===place); if(!aw || DP.opening) return;
+  DP.opening = true; const r = await dpRpc("dp_claim", {p_day:day, p_place:place}); DP.opening = false;
+  if(!r.ok){ toast(r.status===404 ? "Winner Packs open in the next update." : "Couldn't open the pack: try again in a moment."); return; }
+  DP.awards = DP.awards.filter(x=>x!==aw);
+  if(r.data===false){ toast("That pack was already opened."); dpRefresh(); return; }
+  const cards = drawWinnerPack(aw.pack); winnerBank(cards);
+  const all = dpLoad(); all.awards.push({day, place, pack:aw.pack, keys:cards.map(c=>ringKey(c.p)), at:Date.now()}); store.set(dpStoreKey(), all);
+  winnerPackScreen(aw, cards);
+}
+// The reveal: the God Pack screen's pieces (a sealed gold pack, shake, flash, tear; the WINNER stamp when one is inside; the cards flip in).
+// S is a stub while it shows (cardHTML and openCard read it; playoffs set, so Home logs no quit). The cards are banked before it opens.
+function winnerPackScreen(aw, cards){
+  pkStop(); CARD_CLOSE?.(); applyLook(lookRetro()); clearTimeout(spinTimer);
+  S = {reveal:true, packSel:null, level:"beginner", mode:"packs", playoffs:{}, used:new Set(), roster:{}, picks:[], pack:cards, winnerPack:true};
+  const P = DP_PACK[aw.pack], win = cards.find(c=>c.v?.fam==="winner"), title = P.name.toUpperCase(), sub = `${DP_ORD[aw.place-1]} place on ${dpDate(aw.day)}. Every card goes to your Ring.`;
+  $("#app").innerHTML = `${header(`${lookBtn()}<button class="ghost" id="quit">Home</button>`)}
+  <section class="god wpk" id="godside"><h2 class="packtitle god-h">${esc(title)}</h2><p class="god-sub">${esc(sub)}</p>
+    <button class="pack god wpack" id="wpack" style="--c1:#ffd23f"><span class="pk-shine"></span><span class="pk-logo">WINNER</span><span class="pk-name">${esc(P.name)}</span><span class="pk-sub">${cards.length} cards · tap to open</span></button></section>`;
+  $("#homebtn").onclick = $("#quit").onclick = renderHome; wireLook(); window.scrollTo(0, 0);
+  const show = () => {
+    const box = $("#godside"); if(!box) return;
+    box.innerHTML = `<h2 class="packtitle god-h">${esc(title)}</h2><p class="god-sub">${esc(sub)}</p>
+      <div class="pgrid pk-reveal">${cards.map((c,i)=>cardHTML(c,i)).join("")}</div>
+      <div class="pactions"><button class="btn" id="wring">Open the Ring of Honor</button><button class="ghost" id="whome">Home</button></div>`;
+    box.querySelectorAll(".pcard").forEach(b=>b.onclick = () => openCard(cards[+b.dataset.i], "god"));
+    $("#wring").onclick = renderRing; $("#whome").onclick = renderHome;
+    if(win && !reduce) confetti();
+  };
+  const pk = $("#wpack");
+  pk.onclick = () => {
+    pk.onclick = null;
+    if(reduce){ if(win) pullToast(win); haptic("heavy"); return show(); }
+    pkLater(()=>pkWarm(cards), 0);
+    pk.classList.add("shake", "shake-hard", "glow-winner");
+    pkLater(()=>{
+      document.body.insertAdjacentHTML("beforeend", `<div class="pkflash"></div>`);
+      pkLater(()=>document.querySelector(".pkflash")?.remove(), PK_FLASH);
+      pk.classList.remove("shake","shake-hard"); pk.classList.add("tear");
+      if(win) pkLater(()=>pkStamp("winner", show), PK_FLASH); else pkLater(show, PK_TEAR);
+    }, PK_SHAKE_HARD);
+  };
+}
 const d17NameHTML = () => signedIn() ? "" : `<label class="acf d17name">Board name<span><input id="d17nm" maxlength="12" autocomplete="nickname" spellcheck="false" placeholder="3-12 letters or digits" value="${esc(getName())}"><button class="ghost" id="d17nmsave">Save</button></span></label><p class="hint" id="d17nmmsg">Your name goes up with your next try.</p>`;
 function wireD17Name(){
   const b = $("#d17nmsave"); if(!b) return;
   b.onclick = () => { const n = cleanName($("#d17nm").value), m = $("#d17nmmsg"); if(!n){ m.textContent = "Use 3-12 letters, digits or spaces, and keep it clean."; m.classList.add("bad"); return; }
-    store.set("seventeen-name", n); $("#d17nm").value = n; m.textContent = "Saved. Your name goes up with your next try."; m.classList.remove("bad"); };
+    store.set(nameKey(), n); $("#d17nm").value = n; m.textContent = "Saved. Your name goes up with your next try."; m.classList.remove("bad"); };
 }
 
 // ---------- Season sim ----------
@@ -3145,12 +3551,14 @@ function finish(w,l,po0,quiet){   // po0: the playoffs the animated season alrea
   const r = rec[rk] || {played:0,perfect:0,best:null,bestW:-1};
   r.played++; if(l===0) r.perfect++;
   const po = S.playoffs = po0 || playoffs(w), stage = !po.seed?0:po.champ?5:po.reached+1;
-  if(!(S.mode==="packs" && testWin()) && !S.daily) submitRun({mode:S.mode, level:S.level, w, l, stage, seed:po.seed, secs:S.draftSecs, ovr:Math.round(teamOvr()), ts:Date.now()});
+  if(!(S.mode==="packs" && testWin()) && !S.daily && !S.dp) submitRun({mode:S.mode, level:S.level, w, l, stage, seed:po.seed, secs:S.draftSecs, ovr:Math.round(teamOvr()), ts:Date.now()});
   if(po.champ) r.titles = (r.titles||0)+1;
   if(w > (r.bestW ?? -1)){ r.bestW = w; r.best = `${w}–${l}`; }
-  rec[rk] = r; if(!(S.mode==="packs" && testWin()) && !S.daily) saveRecords(rec);
-  if(!S.daily) track("season_end", {mode:S.mode, level:S.level, w, l, secs:S.draftSecs, extra:{stage}});   // the daily's finish is its daily17_try row
+  rec[rk] = r; if(!(S.mode==="packs" && testWin()) && !S.daily && !S.dp) saveRecords(rec);   // a Daily Packs run keeps no records (its runs are its board)
+  if(!S.daily) track("season_end", {mode:S.dp ? "dailypacks" : S.mode, level:S.level, w, l, secs:S.draftSecs, extra:{stage}});   // the daily's finish is its daily17_try row
+  if(!S.daily && !S.dp){ xpAdd("season", {w, stage}); if(l===0) xpAdd("perfect"); }   // v12 lane X: XP (the daily pays in d17Save, a Daily Packs run in dpSave)
   const d17 = S.daily ? d17Save({w, l, stage, secs:S.draftSecs, ovr:Math.round(teamOvr()), roster:d17RosterKey(), ts:Date.now()}) : null;
+  const dp = S.dp ? dpSave({w, l, stage, secs:S.draftSecs, ovr:Math.round(teamOvr())}) : null;   // v12 lane P
 
   const perfect = l===0;
   const banked = S.mode==="packs" && perfect ? bankRoster(po) : null;
@@ -3181,7 +3589,7 @@ function finish(w,l,po0,quiet){   // po0: the playoffs the animated season alrea
       <td class="co num" style="--tc:${tierColor(b.ovr)}">${same?"":`${b.ovr}<small class="up">+${diff}</small>`}</td>
     </tr>`;}).join("");
   $("#after").innerHTML = `
-    <div class="verdict ${perfect?"perfect":""}"><h2>${msg[0]}</h2><p>${msg[1]} ${d17 ? `Daily 17-0 #${dlNum(S.daily)}, try ${d17.n} of ${D17_TRIES}: ${w}-${l} in ${fmtTime(S.draftSecs)}. Best today ${d17.best.w}-${d17.best.l} in ${fmtTime(d17.best.secs)}.` : `Perfect seasons in ${MODES[S.mode].label} · ${LEVELS[S.level].label}: ${r.perfect} of ${r.played}. Titles: ${r.titles||0}.`}${S.filter ? ` <span class="vfilter">Filter: ${esc(filterLabel(S.filter))}.${S.filterOut ? " One spin found nothing left in it and drew from every team." : ""}</span>` : ""}</p>${nearMissHTML(w,l)}
+    <div class="verdict ${perfect?"perfect":""}"><h2>${msg[0]}</h2><p>${msg[1]} ${d17 ? `Daily 17-0 #${dlNum(S.daily)}, try ${d17.n} of ${D17_TRIES}: ${w}-${l} in ${fmtTime(S.draftSecs)}. Best today ${d17.best.w}-${d17.best.l} in ${fmtTime(d17.best.secs)}.` : dp ? `Daily Packs ${dpDate(S.dp)}, run ${dp.n} of ${DP_RUNS}: ${w}-${l}, ${Math.round(teamOvr())} OVR, drafted in ${fmtTime(S.draftSecs)}. Best today ${dpRec(dp.best)}.` : `Perfect seasons in ${MODES[S.mode].label} · ${LEVELS[S.level].label}: ${r.perfect} of ${r.played}. Titles: ${r.titles||0}.`}${S.filter ? ` <span class="vfilter">Filter: ${esc(filterLabel(S.filter))}.${S.filterOut ? " One spin found nothing left in it and drew from every team." : ""}</span>` : ""}</p>${nearMissHTML(w,l)}
     <div class="actions"><button class="btn ${perfect?"alt":""}" id="again">Draft again</button><button class="btn alt" id="share">Share</button><button class="btn alt" id="home">Change mode</button><button class="btn alt" id="board">🏆 Leaderboard</button>${lookBtn()}</div>
     <p class="hint num">Drafted in ${fmtTime(S.draftSecs)}.</p></div>
     ${poHTML}${banked?ringStripHTML(banked):""}
@@ -3193,7 +3601,7 @@ function finish(w,l,po0,quiet){   // po0: the playoffs the animated season alrea
     </div>
     <p class="hint">Team OVR includes boosts. Best possible uses the same spins you got and swaps in the top-rated option each spin offered for that spot.</p>
     <div class="tablewrap"><table class="cmp"><thead><tr><th>Spot</th><th>Your pick</th><th>OVR</th><th>Should have picked</th><th>OVR</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-  $("#again").onclick = () => S.daily ? d17Start() : newDraft(S.level, S.mode, S.off, S.def, S.filter);
+  $("#again").onclick = () => S.dp ? dpStart() : S.daily ? d17Start() : newDraft(S.level, S.mode, S.off, S.def, S.filter);
   $("#home").onclick = renderHome;
   $("#share").onclick = () => share(w,l,d17);
   $("#board").onclick = () => renderBoard(S.mode, S.level);
@@ -3907,7 +4315,7 @@ function rsRender(bc){
       <div class="games" id="games">${S.season.map(g=>rsTile("g"+g.week, `WEEK ${g.week}`, g, g.away)).join("")}</div>
       <div class="label rs-poh" id="rpoh" hidden>Playoffs</div>
       <div class="games po" id="rpo"></div>`;
-  $("#app").innerHTML = `${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${S.daily ? "Daily 17-0" : MODES[S.mode].label} · ${L.label}</span><span id="rlook">${lookBtn(true)}</span><button class="ghost" id="quit">Quit</button>`, true)}
+  $("#app").innerHTML = `${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${S.dp ? "Daily Packs" : S.daily ? "Daily 17-0" : MODES[S.mode].label} · ${L.label}</span><span id="rlook">${lookBtn(true)}</span><button class="ghost" id="quit">Quit</button>`, true)}
   ${bc ? `<div class="bc">
     <div class="bc-tv"><canvas id="stad" class="bc-cv" width="${BC.W*BC.S}" height="${BC.H*BC.S}" aria-label="Game broadcast"></canvas></div>
     <div class="bc-side">${side}</div>
@@ -4122,7 +4530,8 @@ const RARE = { beginner:{legend:.05, variant:1/250, moment:1/200, alt:1/400, myt
 // Printed odds come from the probability that actually rolled the card (the plain RARE[level] rate).
 const oddsStr = p => "1 IN " + Math.round(1/p).toLocaleString("en-US");
 // Pack tier weights (they sum to 1): the RARE legend delta comes out of Gold.
-function packW(lv){
+function packW(lv, base){   // base (v12 lane P): the plain table even during a Daily Packs run (dpW reads it)
+  if(!base && S && S.dp) return dpW();
   const lw = RARE[lv].legend;
   return {legend:lw, elite:.13, gold:.37 + (.05 - lw), silver:.30, bronze:.15};
 }
@@ -4194,13 +4603,48 @@ const DESC = new Map(DDATA.map(r=>[r[0],{blurb:r[1],vdesc:r[2]}]));
 let BY_KEY = null; const byKey = () => BY_KEY ||= new Map(ringPool().map(p=>[ringKey(p),p]));
 // Card-back fallback for players without a DDATA row.
 const descFor = p => p.unit ? (p.stats||"") : `${p.pos} · ${years(p)} · ${p.teams.length} team${p.teams.length===1?"":"s"} · ${p.stats}`;
+// ---------- v12 lane P: Winner cards (D5): the Daily Packs podium prize, the only 100 OVR cards, family "winner" ----------
+// WINNERS = data-build/v12/winners.json (the scout's list: key, title, line; its "why" stays in the file). A Winner card wears the player's
+// best base card (seasonBase: his highest team-decade OVR, as the seasonal sets do) at OVR 100; its Ring title is "Winner: <title>"
+// (the bare nicknames collide with VDATA variant titles for the same key). The line is the card text (desc), shown where a Moment's shows.
+const WINNERS = [
+  {"key": "Tom Brady|QB|2000", "title": "The Comeback", "line": "Super Bowl LI: down 28-3, won in overtime, Feb 5, 2017"},
+  {"key": "Patrick Mahomes|QB|2017", "title": "Mahomes Magic", "line": "Super Bowl LIV: rallied from 10 down to win, Feb 2, 2020"},
+  {"key": "Peyton Manning|QB|1998", "title": "The Sheriff", "line": "Omaha! The Sheriff changes the play at the line"},
+  {"key": "Joe Montana|QB|1979", "title": "Joe Cool", "line": "Super Bowl XXIII: 92-yard winning drive, Jan 22, 1989"},
+  {"key": "Brett Favre|QB|1991", "title": "The Gunslinger", "line": "The Gunslinger: fearless arm, schoolyard grin"},
+  {"key": "Josh Allen|QB|2018", "title": "Bills Mafia", "line": "Bills Mafia's quarterback, tables beware"},
+  {"key": "Lamar Jackson|QB|2018", "title": "Unanimous", "line": "2019: second unanimous MVP in NFL history"},
+  {"key": "Jerry Rice|WR|1985", "title": "World", "line": "Most career touchdowns ever: 208"},
+  {"key": "Randy Moss|WR|1998", "title": "Mossed", "line": "Nov 26, 1998: 3 catches, 163 yards, 3 TDs on Thanksgiving"},
+  {"key": "Calvin Johnson|WR|2007", "title": "Megatron", "line": "2012: 1,964 receiving yards, an NFL single-season record"},
+  {"key": "Justin Jefferson|WR|2020", "title": "The Griddy", "line": "2022: 1,809 yards, one-handed grabs, the Griddy"},
+  {"key": "Barry Sanders|RB|1989", "title": "Barry Barry", "line": "1997: 2,053 rushing yards, the cut nobody could tackle"},
+  {"key": "Walter Payton|RB|1975", "title": "Sweetness", "line": "Retired in 1987 with 16,726 rushing yards"},
+  {"key": "Derrick Henry|RB|2016", "title": "King Henry", "line": "2020: 2,027 rushing yards, the stiff-arm king"},
+  {"key": "Adrian Peterson|RB|2007", "title": "All Day", "line": "2012: 2,097 rushing yards and the MVP award"},
+  {"key": "Rob Gronkowski|TE|2010", "title": "Gronk Spike", "line": "Spikes the ball, throws the party"},
+  {"key": "Travis Kelce|TE|2013", "title": "Three Rings", "line": "Super Bowl champion in 2019, 2022 and 2023"},
+  {"key": "Emmitt Smith|RB|1990", "title": "Emmitt", "line": "Retired with 18,355 rushing yards, the career leader"},
+  {"key": "LaDainian Tomlinson|RB|2001", "title": "LT", "line": "2006: NFL MVP and 28 rushing touchdowns"},
+  {"key": "Jim Brown|RB|1957", "title": "Jimmy", "line": "Led the NFL in rushing in eight of his nine seasons"},
+  {"key": "Dan Marino|QB|1983", "title": "Marino 84", "line": "1984: 5,084 passing yards and 48 touchdowns"},
+  {"key": "John Elway|QB|1983", "title": "The Drive", "line": "Jan 11, 1987: 98 yards to tie the AFC title game"},
+  {"key": "Terrell Owens|WR|1996", "title": "T.O.", "line": "Super Bowl XXXIX: 9 catches, 122 yards, Feb 6, 2005"},
+  {"key": "Tony Gonzalez|TE|1997", "title": "Mr. Tight End", "line": "Retired as the all-time tight end leader in catches"}];
+const WINNER_BY_KEY = new Map(WINNERS.map(w=>[w.key, w]));
+const winTitle = w => `Winner: ${w.title}`;
+const winnerV = (w, b, odds) => ({fam:"winner", title:winTitle(w), team:b.t, year:b.d, pose:"", odds, desc:w.line});
+function winnerCard(w, odds=""){ const p = w && byKey().get(w.key); if(!p) return null; const b = seasonBase(p); return {p, t:b.t, d:b.d, ovr:100, v:winnerV(w, b, odds)}; }
+const winnersOwned = ring => WINNERS.filter(w=>(((ring.p||{})[w.key]||{}).v||[]).includes(winTitle(w)));   // the Winner cards this Ring holds
+const WIN_SWAP = {beginner:1/80, medium:1/60, hard:1/50};   // drawPack's owner-only swap, per skill card
 // Families. cls picks the color (--fam-*); rank orders the titles stored on one Ring entry: mythic > legend > moment > the alts.
-const FAM = {moment:{label:"MOMENT",cls:"moment"}, rookie:{label:"ROOKIE",cls:"alt"}, throwback:{label:"THROWBACK",cls:"alt"}, farewell:{label:"FAREWELL",cls:"alt"}, legend:{label:"VARIANT",cls:"legend"}, mythic:{label:"MYTHIC",cls:"mythic"}, ghouls:{label:"GHOULS",cls:"ghouls"}, turkey:{label:"TURKEY DAY",cls:"turkey"}};
-const FAM_RANK = {mythic:4, legend:3, moment:2, ghouls:1.5, turkey:1.5, rookie:1, throwback:1, farewell:1};   // a seasonal card sits between the Moments and the alts
-const FAM_CH = {moment:"M", rookie:"R", throwback:"T", farewell:"F", mythic:"★", legend:"V", ghouls:"G", turkey:"D"};   // field token plate letter
+const FAM = {moment:{label:"MOMENT",cls:"moment"}, rookie:{label:"ROOKIE",cls:"alt"}, throwback:{label:"THROWBACK",cls:"alt"}, farewell:{label:"FAREWELL",cls:"alt"}, legend:{label:"VARIANT",cls:"legend"}, mythic:{label:"MYTHIC",cls:"mythic"}, ghouls:{label:"GHOULS",cls:"ghouls"}, turkey:{label:"TURKEY DAY",cls:"turkey"}, winner:{label:"WINNER",cls:"winner"}};
+const FAM_RANK = {mythic:4, winner:3.5, legend:3, moment:2, ghouls:1.5, turkey:1.5, rookie:1, throwback:1, farewell:1};   // a seasonal card sits between the Moments and the alts
+const FAM_CH = {moment:"M", rookie:"R", throwback:"T", farewell:"F", mythic:"★", legend:"V", ghouls:"G", turkey:"D", winner:"W"};   // field token plate letter
 // A seasonal title resolves through SEASON_BY_KEY whether or not its window is open, so an owned card never turns into a plain Legend.
 const seasonFam = (key,t) => (SEASON_BY_KEY.get(key)||[]).find(z=>t===seasonTitle(z, key.split("|")[0]))?.fam || "";
-const famOfTitle = (key,t) => seasonFam(key,t) || (MYTHIC_BY_KEY.get(key)?.title===t ? "mythic" : MOMENT.get(key)?.title===t ? "moment" : VARIANT.get(key)?.title===t ? "legend" : /^Rookie ·/.test(t) ? "rookie" : /^Throwback ·/.test(t) ? "throwback" : /^Farewell ·/.test(t) ? "farewell" : "legend");
+const famOfTitle = (key,t) => (WINNER_BY_KEY.has(key) && winTitle(WINNER_BY_KEY.get(key))===t ? "winner" : "") || seasonFam(key,t) || (MYTHIC_BY_KEY.get(key)?.title===t ? "mythic" : MOMENT.get(key)?.title===t ? "moment" : VARIANT.get(key)?.title===t ? "legend" : /^Rookie ·/.test(t) ? "rookie" : /^Throwback ·/.test(t) ? "throwback" : /^Farewell ·/.test(t) ? "farewell" : "legend");
 const famTitles = (key, r, fams) => ((r && r.v) || []).filter(t=>fams.includes(famOfTitle(key,t)));
 const bestTitle = (key, r) => ((r && r.v) || []).slice().sort((a,b)=>FAM_RANK[famOfTitle(key,b)]-FAM_RANK[famOfTitle(key,a)])[0] || "";
 // Arm pose per variant pose word (VOCAB.cue index): 18 ball in hand, 19 spike, 20 stiff-arm, 31 pointing up, 32 flex.
@@ -4226,6 +4670,7 @@ function famCardV(p, title){
   if(fam==="mythic") return {fam, ...MYTHIC_BY_KEY.get(key)};
   if(fam==="moment") return {fam, ...MOMENT.get(key)};
   if(seasonSet(key, fam)) return seasonV(seasonSet(key, fam), p, seasonBase(p), "");
+  if(fam==="winner") return winnerV(WINNER_BY_KEY.get(key), seasonBase(p), "");   // v12 lane P
   if(fam==="rookie") return altV(p, fam, st.find(s=>s.from===p.from) || st[0]);
   if(fam==="throwback"){ const nick = title.slice(12); return altV(p, fam, st.find(s=>(TEAMS[s.t]||[])[1]===nick) || st[0]); }
   if(fam==="farewell") return altV(p, fam, st.find(s=>s.from<=p.to && s.to>=p.to) || st[st.length-1]);
@@ -4257,7 +4702,7 @@ function seasonURL(key, scale, fam){
 }
 const seasonArt = (p, scale, fam) => { const u = seasonURL(ringKey(p), scale, fam); return u ? `<img class="spr" src="${u}" width="${32*scale}" height="${40*scale}" alt="">` : ""; };
 const isSeasonFam = f => !!f && SEASONS.some(z=>z.fam===f);
-const markHTML = v => isSeasonFam(v?.fam) ? `<i class="pc-mark mk-${v.fam}" aria-hidden="true"></i>` : "";
+const markHTML = v => isSeasonFam(v?.fam) || v?.fam==="winner" ? `<i class="pc-mark mk-${v.fam}" aria-hidden="true"></i>` : "";
 const PACK_NAMES = {QB:"Quarterback",RB:"Running Back",HB:"Running Back",FB:"Fullback",WR:"Receiver",TE:"Tight End",FLEX:"Flex","O-LINE":"O-Line",DEFENSE:"Defense",SLOT:"Slot",COACH:"Head Coach"};
 let CARD_POOL = null;
 function cardPool(){
@@ -4356,6 +4801,14 @@ function drawPack(slot){
       const list = ((sp[c.p.pos]||{})[tierOf(c.ovr).k]||[]).filter(g=>g.p.id===c.p.id || (!S.used.has(g.p.id) && !out.some(x=>x.p.id===g.p.id)));
       if(list.length && Math.random() < so){ const g = list[rnd(list.length)]; out[i] = {p:g.p, t:g.t, d:g.d, ovr:c.ovr, v:seasonV(sz, g.p, g, oddsStr(so))}; break; } }
   }
+  // v12 lane P: owner-only Winner swap. Only a Ring holding a Winner title rolls here (anyone else draws no number); each skill card rolls
+  // WIN_SWAP[level] to become one of the owned Winner cards this pack's slot takes, never a player already in the pack or the roster, in
+  // the replaced card's place, at 100 OVR (the reward: an owner's 17-0 rate rises). A Daily Packs run skips it, so the podium stays even.
+  if(!S.dp){ const own = S.winOwn ||= winnersOwned(loadRing());
+    if(own.length){ const so = WIN_SWAP[S.level];
+      out.forEach((c,i)=>{ if(c.p.unit || c.gronk || Math.random() >= so) return;
+        const list = own.filter(w=>{ const q = byKey().get(w.key); return q && slot.acc.includes(q.pos) && !S.used.has(q.id) && !out.some(x=>x.p.id===q.id); });
+        if(list.length) out[i] = winnerCard(list[rnd(list.length)], oddsStr(so)); }); } }
   // Baby GOAT: every card drawn rolls a flat 1 in 100,000,000 (every level, every slot, unit packs too), once per draft.
   // #test-gronk forces him into the first pack.
   if(!S.gronkShown && ((testGronk() && S.picks.length===0) || out.some(()=>Math.random()<GRONK_ODDS))){ out[rnd(out.length)] = {p:GRONK, t:"NE", d:2020, ovr:100, gronk:true}; S.gronkShown = true; }
@@ -4363,6 +4816,241 @@ function drawPack(slot){
   return out;
 }
 const cardPlayer = c => ({...c.p, ovr:c.ovr, draftedFor:c.t, decade:c.d, ...(c.v?{v:c.v}:{}), ...(c.rec?{rec:c.rec}:{})});
+// ---------- v12 lane X: XP and ranks ----------
+// XP for finishing things, never for opening the app or for time (docs/ranks.md). xpAdd(kind, n): XP_KINDS[kind](n) is the XP that finish pays;
+// an unknown kind adds 0 and warns. Hooks: finish (season, perfect), d17Save (d17_try), dlFinish (td_drive, td_practice), ntFinish (nt_day),
+// lane P's Daily Packs run save (dp_run, n = 1).
+const XP_TD_STEP = {dump:1, chains:2, big:3, break:4, deep:5, bk:6};   // a TD Trivia play's yard tier, one step per tier up (a miss or a sack is 0)
+const XP_KINDS = {
+  season: d => 40 + 4*(d.w|0) + 15*(d.stage|0),   // Classic, Full Roster or Packs finished: 40, 4 a win, 15 a playoff stage reached (stage 1 to 5)
+  perfect: () => 150,                              // a 17-0 regular season, on top of the season
+  d17_try: d => 30 + (d.l===0 ? 100 : 0),          // a Daily 17-0 try, 100 more on 17-0
+  td_drive: a => 25 + 2*(Array.isArray(a) ? a : []).reduce((s,x)=>s + (XP_TD_STEP[x && x.k]||0), 0),   // the TD Trivia daily drive: 25, 2 a yard-tier step on each play
+  td_practice: () => 10,                           // a TD Trivia Practice drive
+  nt_day: n => 20 + 2*(n|0),                       // an NFL Trivia day: 20, 2 a name found
+  dp_run: n => 30*Math.max(1, n|0),                // a Daily Packs run (lane P calls xpAdd("dp_run", 1))
+};
+const XP_MAX = 1e7;   // the saves column's CHECK
+// The ladder as data (tune here): k the stored key, name + tier the label ("Pro Bowler III"), xp the threshold. Legend is the cap.
+const RANKS = [
+  {k:"rookie1", name:"Rookie", tier:"I", xp:0}, {k:"rookie2", name:"Rookie", tier:"II", xp:150}, {k:"rookie3", name:"Rookie", tier:"III", xp:350}, {k:"rookie4", name:"Rookie", tier:"IV", xp:600},
+  {k:"veteran1", name:"Veteran", tier:"I", xp:900}, {k:"veteran2", name:"Veteran", tier:"II", xp:1300}, {k:"veteran3", name:"Veteran", tier:"III", xp:1800}, {k:"veteran4", name:"Veteran", tier:"IV", xp:2400},
+  {k:"pro1", name:"Pro Bowler", tier:"I", xp:3100}, {k:"pro2", name:"Pro Bowler", tier:"II", xp:3900}, {k:"pro3", name:"Pro Bowler", tier:"III", xp:4800}, {k:"pro4", name:"Pro Bowler", tier:"IV", xp:5800},
+  {k:"allpro1", name:"All-Pro", tier:"I", xp:7000}, {k:"allpro2", name:"All-Pro", tier:"II", xp:8300}, {k:"allpro3", name:"All-Pro", tier:"III", xp:9700}, {k:"allpro4", name:"All-Pro", tier:"IV", xp:11200},
+  {k:"champ1", name:"Champion", tier:"I", xp:13000}, {k:"champ2", name:"Champion", tier:"II", xp:15000}, {k:"champ3", name:"Champion", tier:"III", xp:17200}, {k:"champ4", name:"Champion", tier:"IV", xp:19600},
+  {k:"hof1", name:"Hall of Fame", tier:"I", xp:22500}, {k:"hof2", name:"Hall of Fame", tier:"II", xp:25600}, {k:"hof3", name:"Hall of Fame", tier:"III", xp:29000}, {k:"hof4", name:"Hall of Fame", tier:"IV", xp:32700},
+  {k:"legend", name:"Legend", tier:"", xp:37000},
+];
+const rankLabel = r => r ? r.name + (r.tier ? " " + r.tier : "") : "";
+const rankIdx = xp => { let i = 0; while(i + 1 < RANKS.length && xp >= RANKS[i+1].xp) i++; return i; };
+const rankOf = xp => RANKS[rankIdx(+xp || 0)];
+const nextRank = xp => RANKS[rankIdx(+xp || 0) + 1] || null;
+// The pack each rank family grants on a rank-up (Rookie II is the first; Rookie I is where everyone starts).
+const RANK_PACK = {"Rookie":"toilet", "Veteran":"silver", "Pro Bowler":"gold", "All-Pro":"elite", "Champion":"legend", "Hall of Fame":"moment", "Legend":"cap"};
+// Store {v:1, xp, log:[the last 50 {k, n, t}], rewards:[{rank, pack, opened}], claimed:{rankKey:true}}; every test hash uses the -test twin.
+const xpStoreKey = () => testWin() ? "seventeen-xp-test" : "seventeen-xp-v1";
+const xpClamp = x => Math.min(XP_MAX, Math.max(0, Math.round(+x) || 0));
+function xpLoad(){
+  const s = store.get(xpStoreKey(), null);
+  return s && s.v===1 ? {v:1, xp:xpClamp(s.xp), log:Array.isArray(s.log) ? s.log : [], rewards:Array.isArray(s.rewards) ? s.rewards : [], claimed:s.claimed && typeof s.claimed==="object" ? s.claimed : {}} : {v:1, xp:0, log:[], rewards:[], claimed:{}};
+}
+const xpSave = s => store.set(xpStoreKey(), s);
+// Every rank above index i0 up to the current one, once each (claimed). grant false = XP that came from the account: the device that
+// earned those ranks got their packs, so they are marked claimed with no pack here.
+function xpClaim(s, i0, grant){
+  const out = [];
+  for(let i = i0 + 1; i <= rankIdx(s.xp); i++){ const r = RANKS[i]; if(s.claimed[r.k]) continue; s.claimed[r.k] = true; if(grant){ s.rewards.push({rank:r.k, pack:RANK_PACK[r.name], opened:false}); out.push(r); } }
+  return out;
+}
+const XPQ = [];   // rank-ups waiting for the next Home render (a rank-up mid season never fights the season's reveal)
+let XP_SYNC = 0;
+function xpAdd(kind, n){
+  const f = XP_KINDS[kind]; if(!f){ console.warn("[xp] unknown kind", kind); return 0; }
+  const add = xpClamp(f(n ?? {}) || 0); if(!add) return 0;
+  const s = xpLoad(), i0 = rankIdx(s.xp);
+  s.xp = xpClamp(s.xp + add); s.log = [...s.log, {k:kind, n:add, t:Date.now()}].slice(-50);
+  const ups = xpClaim(s, i0, true); xpSave(s);
+  ups.forEach(r => { XPQ.push(r); track("rank_up", {extra:{rank:r.k}}); });
+  clearTimeout(XP_SYNC); XP_SYNC = setTimeout(() => cloudSync(), 1500);   // signed in: the saves row's xp (a no-op signed out or under a test hash)
+  if($(".home")) rankHomeFresh();
+  return add;
+}
+// The saves mirror: the account's xp merges by max, so a sync never lowers local XP. Pure: xpMerge(a, b) = the larger valid value.
+const xpMerge = (a, b) => Math.max(xpClamp(a), xpClamp(b));
+function xpFromCloud(x){ const s = xpLoad(), m = xpMerge(s.xp, x); if(m===s.xp) return false; const i0 = rankIdx(s.xp); s.xp = m; xpClaim(s, i0, false); xpSave(s); return true; }
+// The Home chip: the rank label, a thin bar to the next rank, a badge with the waiting reward packs. One copy rides in the corner row
+// (desktop), one under the tagline (phones); CSS shows one. Not a control (the shelf's button opens the packs).
+function rankChipHTML(at){
+  const s = xpLoad(), r = rankOf(s.xp), nx = nextRank(s.xp), w = s.rewards.filter(x=>!x.opened).length;
+  const pct = nx ? Math.max(0, Math.min(100, (s.xp - r.xp)/(nx.xp - r.xp)*100)) : 100;
+  const say = `${rankLabel(r)}, ${s.xp.toLocaleString("en-US")} XP${nx ? `, ${(nx.xp - s.xp).toLocaleString("en-US")} to ${rankLabel(nx)}` : ""}${w ? `, ${w} reward pack${w>1?"s":""} waiting` : ""}`;
+  return `<div class="rkchip rk-${at}" role="img" aria-label="${say}" title="${say}"><span class="rk-l">${rankLabel(r)}</span><span class="rk-bar"><i style="width:${pct.toFixed(1)}%"></i></span><span class="rk-x num">${s.xp.toLocaleString("en-US")} XP</span>${w ? `<b class="rk-badge num">${w}</b>` : ""}</div>`;
+}
+const RW_WAIT = () => xpLoad().rewards.filter(x=>!x.opened);
+function rewardShelfHTML(){
+  const q = RW_WAIT(); if(!q.length) return "";
+  const P = RW_PACKS[q[0].pack] || RW_PACKS.toilet, r = RANKS.find(x=>x.k===q[0].rank);
+  return `<div class="rwshelf" role="group" aria-label="Rewards"><span class="rw-h">Rewards<b class="num">${q.length}</b></span><button class="btn rw-open" id="rwopen" style="--rc:${P.col}">Open ${esc(P.name)}<small>${esc(rankLabel(r))}</small></button></div>`;
+}
+// Home: the chips and the shelf redrawn in place (xpAdd from the console, a cloud merge), then any queued rank-up: one toast and one pulse.
+function rankHomeFresh(){
+  document.querySelectorAll(".home .rkchip").forEach(e => e.outerHTML = rankChipHTML(e.classList.contains("rk-top") ? "top" : "under"));
+  const sh = $(".home .rwshelf"), html = rewardShelfHTML();
+  if(sh) sh.outerHTML = html || ""; else if(html) $(".home .hbtns")?.insertAdjacentHTML("afterbegin", html);   // the shelf leads the Home buttons (phones: it shares the Leaderboards row)
+  wireRank();
+}
+function wireRank(){
+  const b = $("#rwopen"); if(b) b.onclick = renderReward;
+  if(!XPQ.length) return;
+  const ups = XPQ.splice(0), last = ups[ups.length-1];
+  toast(`RANK UP: ${rankLabel(last)}${ups.length>1 ? ` (${ups.length} ranks)` : ""}. Reward pack on Home.`); haptic("heavy");
+  if(!reduce) document.querySelectorAll(".home .rkchip").forEach(e => e.classList.add("pulse"));
+}
+// ---------- v12 lane X: reward packs ----------
+// One pack per rank-up, opened from the Home shelf through the pack reveal (godStage's look: shake, flash, tear, the Moment stamp or the
+// Mythic reveal, the cards flip in). Every card goes straight into the Ring (ringBankCards), never into a team. w = tier weights over the
+// Ring pool's skill cards (cardPool, Ring-eligible players only, so every card banks); n = cards drawn by w; plus = one guaranteed card.
+const RW_PACKS = {
+  toilet:{name:"Toilet Pack", sub:"Six Bronze and Silver cards", col:"#b87333", w:{silver:.5, bronze:.5}},
+  silver:{name:"Silver Pack", sub:"Six Silver and Gold cards", col:"#c9d2de", w:{gold:.5, silver:.5}},
+  gold:{name:"Gold Pack", sub:"Six Gold cards, a Legend chance", col:"#ffc93c", w:{gold:1}, legend:1/6},
+  elite:{name:"Elite Pack", sub:"Six Elite cards, variant odds up", col:"#b78bff", w:{elite:1}, boost:3},
+  legend:{name:"Legend Pack", sub:"Five Elite cards and a Legend", col:"#ffffff", n:5, w:{elite:1}, plus:"legend"},
+  moment:{name:"Moment Pack", sub:"A Moment, a Mythic chance", col:"#ff8a3d", n:5, w:{elite:.8, legend:.2}, plus:"moment", mythic:1/500},
+  cap:{name:"Legend Variant", sub:"The top of the ladder", col:"#b78bff", cap:true},
+};
+let RW_POOL = null;
+const rwPool = () => RW_POOL ||= RING_POS.reduce((o,pos)=>{ Object.entries(cardPool()[pos]||{}).forEach(([t,l])=>(o[t] ||= []).push(...l.filter(c=>ringEligible(c.p)))); return o; }, {});
+const rwDec = y => Math.floor(y/10)*10;
+const rwMoment = (p, m, odds) => ({p, t:m.team, d:rwDec(m.year), ovr:ovrFor(p, m.team, rwDec(m.year)), v:{fam:"moment", ...m, odds}});
+// The cap: a Legend-rank variant (family legend, the VDATA title) of the highest-OVR player in the Ring who has one and does not hold it
+// yet; none left in the Ring: the best such player in the pool; none at all: a Legend card.
+function rwCap(){
+  const ring = loadRing(), need = p => variantFor(p) && !famTitles(ringKey(p), ring.p[ringKey(p)], ["legend"]).length, hi = (a,b)=>b.ovr-a.ovr || a.name.localeCompare(b.name);
+  const p = Object.keys(ring.p).map(k=>byKey().get(k)).filter(p=>p && need(p)).sort(hi)[0] || ringPool().filter(need).sort(hi)[0];
+  if(!p){ const l = rwPool().legend; return [l[rnd(l.length)]]; }
+  const b = seasonBase(p);
+  return [{p, t:b.t, d:b.d, ovr:b.ovr, v:{fam:"legend", title:variantFor(p).title, pose:"", odds:"", desc:""}}];
+}
+function drawReward(pack){
+  const P = RW_PACKS[pack]; if(!P) return [];
+  if(P.cap) return rwCap();
+  const pool = rwPool(), ids = new Set(), out = [];
+  const take = tier => { const l = pool[tier] || []; for(let t=0; t<60 && l.length; t++){ const c = l[rnd(l.length)]; if(!ids.has(c.p.id)){ ids.add(c.p.id); return c; } } return null; };
+  const ws = Object.entries(P.w), roll = () => { let x = Math.random(); for(const [t,w] of ws){ if((x -= w) <= 0) return t; } return ws[0][0]; };
+  for(let t=0; out.length < (P.n || PACK_N) && t < 200; t++){ const c = take(roll()); if(c) out.push(c); }
+  if(P.legend && Math.random() < P.legend){ const c = take("legend"); if(c) out[rnd(out.length)] = c; }   // Gold Pack: 1 in 6 packs swap one card for a Legend
+  if(P.boost){   // Elite Pack: drawPack's Moment and alt rolls at 3 times the Medium odds
+    const R = RARE.medium, mo = R.moment*P.boost, ao = R.alt*P.boost;
+    out.forEach((c,i)=>{ const r = Math.random(), m = MOMENT.get(ringKey(c.p));
+      if(m && r < mo) out[i] = rwMoment(c.p, m, oddsStr(mo)); else if(c.p.ovr >= 97 && r < mo + ao) out[i] = altCard(c, oddsStr(ao)); });
+  }
+  if(P.plus==="legend"){ const c = take("legend"); if(c) out.push(c); }
+  if(P.plus==="moment"){
+    const ks = [...MOMENT.keys()].filter(k=>{ const p = byKey().get(k); return p && !ids.has(p.id); }), k = ks[rnd(ks.length)], p = k && byKey().get(k);
+    if(p){ ids.add(p.id); out.push(rwMoment(p, MOMENT.get(k), "")); }
+  }
+  if(P.mythic && MYTHIC.length && Math.random() < P.mythic){   // Moment Pack: 1 in 500 swaps a plain card for a Mythic
+    const rows = MYTHIC.filter(r=>{ const q = byKey().get(r.key); return q && !ids.has(q.id); }), row = rows[rnd(rows.length)], p = row && byKey().get(row.key), i = out.findIndex(c=>!c.v);
+    if(p && i >= 0) out[i] = {p, t:row.team, d:rwDec(row.year), ovr:ovrFor(p, row.team, rwDec(row.year)), v:{fam:"mythic", ...row, odds:oddsStr(P.mythic)}};
+  }
+  return shuffle(out);
+}
+// The Ring keep path for reward cards (bankRoster's per-card lines, no season): one entry per key, the family title into v (and le in
+// the launch window), o the best OVR seen. A repeat raises n; the card shows "In your Ring". Returns the keys the Ring already held.
+function ringBankCards(cards){
+  const ring = loadRing(), now = Date.now(), inLE = inLaunchWindow(), had = new Set();
+  cards.forEach(c=>{
+    const k = ringKey(c.p), r = ring.p[k];
+    if(r){ had.add(k); r.n = (r.n||0) + 1; r.o = Math.max(r.o||0, c.ovr); } else ring.p[k] = {n:1, f:now, lv:0, o:c.ovr};
+    const rv = ring.p[k], ts = [c.v && c.v.title].filter(Boolean);
+    if(ts.length){ rv.v = [...new Set([...(rv.v||[]), ...ts])]; if(inLE) rv.le = [...new Set([...(rv.le||[]), ...ts])]; }
+    rv.d = now;
+  });
+  saveRing(ring);
+  return had;
+}
+// The pack components read S (cardHTML, pkWarm): a reward screen has no season, so they run with the minimal fields they read
+// (reveal on, Easy sprites, no roster), then S goes back to what it was (null on Home).
+const rwS = fn => { const s0 = S; S = {reveal:true, level:"beginner", mode:"packs", packSel:null, roster:{}, off:""}; try{ return fn(); } finally{ S = s0; } };
+const RW = {cards:null, had:null, pack:""};
+function renderReward(){
+  const q = RW_WAIT(); if(!q.length) return renderHome();
+  pkStop(); CARD_CLOSE?.(); applyLook(lookRetro()); window.scrollTo(0, 0);
+  const it = q[0], P = RW_PACKS[it.pack] || RW_PACKS.toilet, rk = RANKS.find(x=>x.k===it.rank);
+  $("#app").innerHTML = `${header(`<span class="pill" style="color:${P.col};border-color:${P.col}">Rank reward · ${esc(rankLabel(rk))}</span>${lookBtn()}<button class="ghost" id="quit">Home</button>`)}
+  <section class="god rwside" id="rwside">
+    <h2 class="packtitle god-h">${esc(P.name)}</h2><p class="god-sub">${esc(P.sub)}</p>
+    <button class="pack god rwpack" id="rwpack" style="--c1:${P.col}"><span class="pk-shine"></span><span class="pk-logo">17-0</span><span class="pk-name">${esc(P.name)}</span><span class="pk-sub">${P.cap ? "1 card" : `${(P.n||PACK_N) + (P.plus?1:0)} cards`} · tap to open</span></button>
+  </section>`;
+  $("#homebtn").onclick = $("#quit").onclick = renderHome; wireLook();
+  const pk = $("#rwpack");
+  pk.onclick = () => {
+    pk.onclick = null;
+    // Banked on the tap, before any animation: leaving mid reveal never loses the pack or its cards.
+    const s = xpLoad(), r = s.rewards.find(x=>!x.opened); if(!r) return renderHome();
+    const cards = drawReward(r.pack); r.opened = true; r.at = Date.now(); xpSave(s);
+    RW.had = ringBankCards(cards); RW.cards = cards; RW.pack = r.pack;
+    const myth = cards.find(c=>c.v?.fam==="mythic"), mo = !myth && (cards.find(c=>c.v?.fam==="moment") || cards.find(c=>c.v && !isSeasonFam(c.v.fam)));
+    const show = () => rwGrid("reveal");
+    if(reduce){ if(myth) return mythicReveal(myth, show); if(mo) pullToast(mo); return show(); }
+    pkLater(()=>rwS(()=>pkWarm(cards)), 0);
+    const top = Math.max(...cards.map(c=>c.ovr));
+    pk.classList.add("shake", myth || top >= 94 ? "glow-legend" : mo ? "glow-moment" : top >= 89 ? "glow-elite" : "glow-legend"); (myth || mo) && pk.classList.add("shake-hard");
+    pkLater(()=>{
+      document.body.insertAdjacentHTML("beforeend", `<div class="pkflash"></div>`);
+      pkLater(()=>document.querySelector(".pkflash")?.remove(), PK_FLASH);
+      pk.classList.remove("shake","shake-hard"); pk.classList.add("tear");
+      if(myth) pkLater(()=>mythicReveal(myth, show), PK_FLASH);
+      else if(mo) pkLater(()=>pkStamp(mo.v.fam, show), PK_FLASH);
+      else pkLater(show, PK_TEAR);
+    }, myth || mo ? PK_SHAKE_HARD : PK_SHAKE);
+  };
+}
+// The opened pack: every card face up with OVR and tier; "In your Ring" on a repeat; a tap opens the card view with its Ring line.
+function rwGrid(state){
+  const box = $("#rwside"), cards = RW.cards; if(!box || !cards) return;
+  const P = RW_PACKS[RW.pack], left = RW_WAIT().length;
+  const grid = rwS(()=>cards.map((c,i)=>cardHTML(c,i).replace(/<span class="chips pc-bz">[\s\S]*?<\/span>/, "")
+    .replace(`<div class="pc-tier">`, RW.had.has(ringKey(c.p)) ? `<div class="rw-own">In your Ring</div><div class="pc-tier">` : `<div class="pc-tier">`)).join(""));
+  box.innerHTML = `<h2 class="packtitle god-h">${esc(P.name)}</h2><p class="god-sub">${cards.length===1 ? "Banked in your Ring" : `All ${cards.length} banked in your Ring`}</p>
+    <div class="pgrid ${state==="reveal" ? "pk-reveal" : "pk-shown"}${cards.length===1 ? " rw-one" : ""}">${grid}</div>
+    <div class="pactions rwacts">${left ? `<button class="btn" id="rwnext">Open next (${left})</button>` : ""}<button class="btn${left ? " alt" : ""}" id="rwring">🏅 Ring of Honor</button><button class="btn alt" id="rwhome">Home</button></div>`;
+  const ring = loadRing();
+  box.querySelectorAll(".pcard").forEach(b=>b.onclick=()=>{ const c = cards[+b.dataset.i]; openCard({...c, r:ring.p[ringKey(c.p)]}, "ring"); });
+  $("#rwnext") && ($("#rwnext").onclick = renderReward);
+  $("#rwring").onclick = renderRing; $("#rwhome").onclick = renderHome;
+  if(cards.some(x=>x.v?.fam==="mythic")) pkFrames(); else { clearInterval(PK.f); PK.f = 0; }
+}
+// ---------- v12 lane X: the Ranks boards (lane A's Leaderboards: the Ranks tab calls these when they exist) ----------
+// rankBoardCard(): the Me card (rank, XP, next rank) in the boards' .bcard shape. rankBoardHTML(): the global XP board, the top 100
+// board names with rank labels and XP, the caller pinned (rank_board in supabase/v12-xp.sql); signed in only, never under a test hash.
+function rankBoardCard(){
+  const s = xpLoad(), r = rankOf(s.xp), nx = nextRank(s.xp), nm = cleanName(getName()), f = v => (+v||0).toLocaleString("en-US"), w = RW_WAIT().length;
+  return `<article class="bcard rkcard" data-area="rank"><span class="bk">#${RANKS.indexOf(r) + 1}</span><div class="bm"><b class="bt">Rank</b><span class="bn">${nm ? esc(nm) + " (you)" : "You"}</span></div>
+    <div class="bv"><b class="bh">${esc(rankLabel(r))}</b><small class="bl">${f(s.xp)} XP</small></div>
+    <p class="bs">${nx ? `${f(nx.xp - s.xp)} XP to ${esc(rankLabel(nx))}` : "Top of the ladder"}${w ? ` · ${w} reward pack${w>1?"s":""} on Home` : ""}</p></article>`;
+}
+const rankOn = () => signedIn() && !testWin();
+function rankBoardHTML(){
+  if(!rankOn()) return `<div id="rankboard"><p class="hint">Sign in to see the global rank board.</p></div>`;
+  setTimeout(rankBoardFill, 0);
+  return `<div id="rankboard"><p class="hint">Loading the rank board...</p></div>`;
+}
+async function rankBoardFill(){
+  if(!$("#rankboard") || !rankOn()) return;
+  const r = await api("/rest/v1/rpc/rank_board", {method:"POST", body:{p_limit:100}}); if(!$("#rankboard")) return;
+  if(!r.ok || !Array.isArray(r.data)){ $("#rankboard").innerHTML = `<p class="hint">The rank board is offline.</p>`; if(r.status===404) console.warn("[cloud] rank_board missing: run supabase/v12-xp.sql"); return; }
+  rankBoardRows(r.data);
+}
+// rows: [{name, xp, me}] best first. The caller's row is marked; outside the top 100 it is pinned under the list from this device's XP.
+function rankBoardRows(rows){
+  const box = $("#rankboard"); if(!box) return;
+  const top = (Array.isArray(rows) ? rows : []).filter(x=>x && typeof x==="object").slice(0, 100), mine = top.some(x=>x.me), s = xpLoad(), f = v => (+v||0).toLocaleString("en-US");
+  const li = (x, me) => `<li${me ? ' class="me"' : ""}><span class="cn"></span><span class="rk-bl">${esc(rankLabel(rankOf(+x.xp||0)))}</span><span class="num">${f(x.xp)}</span></li>`;
+  box.innerHTML = `<h3 class="cmp-h">Global ranks</h3>${top.length ? `<ol class="d17rows rkrows">${top.map(x=>li(x, !!x.me)).join("")}${mine ? "" : li({xp:s.xp}, true)}</ol>` : `<p class="hint">No ranks yet.</p>`}`;
+  box.querySelectorAll(".rkrows li").forEach((el,i)=>{ el.querySelector(".cn").textContent = i < top.length ? `${i+1}. ${cleanName(top[i].name) || "Player"}` : (cleanName(getName()) ? `${cleanName(getName())} (you)` : "You"); });
+}
 // ---------- Baby GOAT (Packs only; internal ids stay gronk/GRONK) ----------
 // Never pushed into PLAYERS, BY_SPIN or CARD_POOL, so Classic, Full Roster and search cannot find him. Art: window.GRONK.
 const GRONK = {id:"gronk", gronk:true, name:"Baby GOAT", pos:"ANY", ovr:100, from:2026, to:0, teams:["NE"], stints:[{t:"NE",from:2026,to:2026,o:100}], stats:"The only 100. Plays anywhere.", unit:false, n:"baby goat", words:["baby","goat"]};
@@ -4446,7 +5134,7 @@ function renderPackDraft(){
   ringCloudSync(); // pull the account Ring before the draft so the win strip counts are right on a second device (no-op offline / in test mode)
   LB_DROP?.(); applyLook(lookRetro());
   const L = LEVELS[S.level];
-  $("#app").innerHTML = `<div class="dcol">${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${MODES[S.mode].label} · ${L.label}</span>${lookBtn(true)}<button class="ghost" id="quit">Quit</button>`, true)}
+  $("#app").innerHTML = `<div class="dcol">${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${S.dp ? "Daily Packs" : MODES[S.mode].label} · ${L.label}</span>${lookBtn(true)}<button class="ghost" id="quit">Quit</button>`, true)}
   <div class="board pk">
     <section style="min-width:0" id="packside"></section>
     <section class="field-wrap" id="fieldwrap"></section>
@@ -4615,7 +5303,7 @@ function openPack(slot){
   // Rarity glow while it shakes: gold for a Mythic or a Legend (94+, Baby GOAT too), orange for a Moment / alt (with the harder shake),
   // purple for Elite (89+) where the level shows ratings (Medium and Hard Packs hide them, v8 D12).
   const tiers = showFor(S.level,S.mode).ovr;
-  const glow = myth ? "glow-legend" : mo ? "glow-moment" : sz ? `glow-${sz.v.fam}` : top>=94 ? "glow-legend" : top>=89 && tiers ? "glow-elite" : "";
+  const glow = myth ? "glow-legend" : mo ? (mo.v.fam==="winner" ? "glow-winner" : "glow-moment") : sz ? `glow-${sz.v.fam}` : top>=94 ? "glow-legend" : top>=89 && tiers ? "glow-elite" : "";
   pk.classList.remove("drop"); pk.classList.add("shake"); (myth || mo || sz) && pk.classList.add("shake-hard"); glow && pk.classList.add(glow);
   // Cards fly from where the pack sits into their grid spots, face down, then flip in order.
   const fly = ghost => {
@@ -4724,7 +5412,7 @@ function godPackFlow(po, w, cb){
   if(!god && !dyn) return cb();
   const kinds = [god && "god", dyn && "dyn"].filter(Boolean), L = LEVELS[S.level];
   pkStop();
-  $("#app").innerHTML = `${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${MODES[S.mode].label} · ${L.label}</span>${lookBtn()}<button class="ghost" id="quit">Quit</button>`)}
+  $("#app").innerHTML = `${header(`<span class="pill" style="color:${L.color};border-color:${L.color}">${S.dp ? "Daily Packs" : MODES[S.mode].label} · ${L.label}</span>${lookBtn()}<button class="ghost" id="quit">Quit</button>`)}
   <section class="god" id="godside"></section>
   <div id="after"></div>`;
   // Leaving mid-pack settles the season first (finish -> bankRoster banks the roster plus any card already kept), then goes home.
@@ -4937,7 +5625,8 @@ const testVariant = () => location.hash==="#test-variant";
 const testNT = () => location.hash==="#test-nt";   // NFL Trivia against seventeen-nfltrivia-test; TD Trivia, ELO, Ring and My Team opened from it use their -test stores too
 const testDaily = () => location.hash==="#test-daily";   // TD Trivia daily against seventeen-daily-test; the Ring, My Team and a Packs season reached from it use -test stores too, never the real saves
 const testDaily17 = () => location.hash==="#test-daily17";   // Daily 17-0 against seventeen-daily17-test (and no records, no cloud)
-const testWin = () => location.hash==="#test-win" || testVariant() || testGronk() || testMoment() || testMythic() || testGod() || testNT() || testDaily() || testDaily17() || !!testSeason() || !!testEvent();
+const testDp = () => location.hash==="#test-dp";   // v12 lane P: Daily Packs against seventeen-dp-test, signed in by fiat, every cloud call answered by window.DP_FAKE (never the network)
+const testWin = () => location.hash==="#test-win" || testDp() || testVariant() || testGronk() || testMoment() || testMythic() || testGod() || testNT() || testDaily() || testDaily17() || !!testSeason() || !!testEvent();
 const ringStoreKey = () => testWin() ? "seventeen-ring-test" : "seventeen-ring-v1";
 function loadRing(){ const r = store.get(ringStoreKey(), null); return r && r.p ? r : {v:1, p:{}, g:null}; }
 function saveRing(r){ store.set(ringStoreKey(), r); ringCloudSync(); }
@@ -5104,7 +5793,7 @@ function renderRing(){
   const have = pool.filter(got).length, legends = pool.filter(p=>p.ovr>=94), hofs = pool.filter(isHOF);
   const fgot = fams => Object.entries(ring).filter(([k,r])=>famTitles(k, r, fams).length).length;   // entries holding a title of these families
   const vgot = fgot(["legend"]), mgot = fgot(["moment"]), xgot = fgot(["mythic"]), dyn = mtDynasty();
-  const tabs = [["all","All"],["QB","QB"],["RB","RB"],["WR","WR"],["TE","TE"],["HOF","HOF"],["legend","Legends"],["variant","Variants"],["moment","Moments"],...(MYTHIC.length?[["mythic","Mythic"]]:[]),...SEASONS.map(z=>[z.fam, z.tab || z.name.split(" ").pop()])];
+  const tabs = [["all","All"],["QB","QB"],["RB","RB"],["WR","WR"],["TE","TE"],["HOF","HOF"],["legend","Legends"],["variant","Variants"],["moment","Moments"],...(MYTHIC.length?[["mythic","Mythic"]]:[]),...SEASONS.map(z=>[z.fam, z.tab || z.name.split(" ").pop()]),["winner","Winner"]];
   $("#app").innerHTML = `${header(`${lookBtn()}<button class="ghost" id="back">Back</button>`)}
   <section class="lboard">
     <h2 class="packtitle ring-h${rm.hard?" ring-hard":""}${dyn?" ring-dyn":""}">Ring of Honor <span class="ring-troph num" title="Perfect title seasons (20-0)">🏆 ×${rm.titles||0}</span>${dyn?`<span class="ring-dync" title="My Team: all six slotted cards are variants">DYNASTY</span>`:""}</h2>
@@ -5118,11 +5807,12 @@ function renderRing(){
       <span>Moments <b>${mgot}</b> of ${MOMENT.size}</span>
       ${MYTHIC.length?`<span>Mythics <b>${xgot}</b> of ${MYTHIC.length}</span>`:""}
       ${SEASONS.map(z=>`<span>${esc(z.name)} <b>${fgot([z.fam])}</b> of ${z.cards.length}</span>`).join("")}
+      <span>Winners <b>${fgot(["winner"])}</b> of ${WINNERS.length}</span>
     </div>
     <p class="hint" id="ringsync">${ringSyncLabel()}</p>
     ${have?"":`<p class="hint">Go 17-0 in Packs and every eligible player on your roster is banked here.</p>`}
     <div class="ring-tools">
-      <div class="seg" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${RING_F.tab===k}" data-rtab="${k}"${isSeasonFam(k)?` class="ring-tabsz ring-tab${k}"`:""}>${l}</button>`).join("")}</div>
+      <div class="seg" role="tablist">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${RING_F.tab===k}" data-rtab="${k}"${isSeasonFam(k)?` class="ring-tabsz ring-tab${k}"`:k==="winner"?` class="ring-tabwinner"`:""}>${l}</button>`).join("")}</div>
       <input class="ring-q" id="ringq" type="search" autocomplete="off" spellcheck="false" placeholder="Search a name…" value="${esc(RING_F.q)}">
       <label class="ring-chk"><input type="checkbox" id="ringmine" ${RING_F.mine?"checked":""}> Collected only</label>
       <button class="ghost" id="ringmt">MY TEAM</button>
@@ -5132,12 +5822,12 @@ function renderRing(){
     <p class="disc">${DISCLAIMER}</p>
   </section>`;
   $("#back").onclick = renderHome; $("#homebtn").onclick = renderHome; wireLook();
-  const ringFT = tab => isSeasonFam(tab) ? [tab] : {variant:["legend"], moment:["moment"], mythic:["mythic"]}[tab];   // the families a Ring tab shows
+  const ringFT = tab => isSeasonFam(tab) ? [tab] : {variant:["legend"], moment:["moment"], mythic:["mythic"], winner:["winner"]}[tab];   // the families a Ring tab shows
   const grid = () => {
     const q = norm(RING_F.q.trim());
     // Family tabs: Variants = the VDATA legend titles only, Moments = MOMENT keys, Mythic = MYTHIC keys; uncollected show ???.
     const tab = RING_F.tab, FT = ringFT(tab);
-    const has = isSeasonFam(tab) ? p=>!!seasonSet(ringKey(p), tab) : {variant:p=>variantFor(p), moment:p=>MOMENT.has(ringKey(p)), mythic:p=>MYTHIC_BY_KEY.has(ringKey(p))}[tab];
+    const has = isSeasonFam(tab) ? p=>!!seasonSet(ringKey(p), tab) : {variant:p=>variantFor(p), moment:p=>MOMENT.has(ringKey(p)), mythic:p=>MYTHIC_BY_KEY.has(ringKey(p)), winner:p=>WINNER_BY_KEY.has(ringKey(p))}[tab];
     const vgotP = p => { const r = got(p); return r && famTitles(ringKey(p), r, FT).length ? r : null; };
     const list = pool.filter(p=>(tab==="all" || (tab==="HOF" ? isHOF(p) : tab==="legend" ? p.ovr>=94 : FT ? has(p) : p.pos===tab))
       && (!RING_F.mine || (FT ? vgotP(p) : got(p))) && (!q || p.n.includes(q)));
@@ -5626,14 +6316,107 @@ function renderPractice(){
   DL = {tok:DL.tok, clock:null, key:dlKey(), all:null, day:{a:[]}, P, practice:true, busy:false, used:new Set(),
     G:{field:rbField(P.opp), spr:dlSprites(P.opp), opp:P.opp, q:{label:"PRACTICE", away:false}, kit:dlKit(P.opp)}};
   $("#app").innerHTML = `<div class="tcol fit">${header(`<span class="pill" style="color:var(--sky);border-color:var(--sky)">Practice</span>${lookBtn(true)}<button class="ghost" id="quit">Home</button>`, true)}
-  <section class="dl rs"><div class="rs-main" id="dlmain"><div id="dlfield"></div><div id="dlside"></div></div></section></div>`;
+  <section class="dl elo rs"><div class="rs-main" id="dlmain">${eloStripHTML()}<div id="dlfield"></div><div id="dlside"></div></div></section></div>`;
   $("#quit").onclick = renderHome; $("#homebtn").onclick = renderHome; wireLook();
-  dlMount();
+  dlMount(); eloStrip();
   document.querySelectorAll("[data-look]").forEach(b=>b.addEventListener("click", ()=>{ dlMount(); if(!DL.busy) dlIdle(); dlBoard(dlDrive(DL.day)); }));
   const dr = dlDrive(DL.day); dlBoard(dr); dlIdle(dr.ball);
   dlIntro();
 }
-const prRulesHTML = () => `<p>A practice drive: seven questions like the daily's, never ones the daily asks. Same yards, same clock, same two-minute drill. Nothing here counts toward your streak, your touchdowns or today's score. Play as many as you like.</p>`;
+const prRulesHTML = () => `<p>A practice drive: seven questions like the daily's, never ones the daily asks. Same yards, same clock, same two-minute drill. Nothing here counts toward your streak, your touchdowns or today's score. Play as many as you like.</p>${eloRulesHTML()}`;
+// ---------- v12 lane E: TD Trivia ELO, back, earned in Practice too (docs/elo.md) ----------
+// ---------- TD Trivia ELO: rating math (pure, tested by data-build/v12/elo_test.mjs) ----------
+// A prompt's rating comes from its count of right answers (n = pr.pool.length, the answers tqPool lists): fewer answers, harder prompt.
+// The player's rating moves by standard Elo after every play. Nothing in this block reads the DOM or any game state.
+const ELO_START = 1000, ELO_PROV = 20;   // the start; answers shown as Provisional
+const eloRating = n => Math.round(Math.min(2100, Math.max(700, 1500 + 230 * (3 - Math.log(Math.max(1, n))))));
+const eloBand = rq => rq < 1000 ? "Easy" : rq < 1400 ? "Medium" : rq < 1800 ? "Hard" : "Expert";
+const eloExpected = (r, rq) => 1 / (1 + 10 ** ((rq - r) / 400));
+const eloK = n => n < 30 ? 40 : n < 100 ? 24 : 16;   // n = plays so far: big steps while the rating finds its level
+// One play: {r, delta}; delta is the rating's real change (it differs from K * (S - E) only on the 400 floor). half: a Practice play moves it at half K.
+// Never mutates st.
+function eloNext(st, rq, correct, half = false){
+  const K = half ? Math.round(eloK(st.n) / 2) : eloK(st.n), r = Math.max(400, st.r + Math.round(K * ((correct ? 1 : 0) - eloExpected(st.r, rq))));
+  return {r, delta:r - st.r};
+}
+const eloFmt = r => Math.round(r).toLocaleString("en-US");
+const eloSigned = d => `${d>=0?"+":"-"}${Math.abs(d)}`;   // hyphen-minus: the Retro pixel font draws U+2212 as a low dash
+// ---------- /ELO math ----------
+// The store {v:2, r, best, n, streak, bestStreak, last:[10 booleans], hist:[20 deltas]}. With no v2 yet, r and best seed from the retired
+// seventeen-elo-v1 once (and v2 is written at once), else from ELO_START; v1 is never read again after that.
+const eloStoreKey = () => testWin() ? "seventeen-elo-test" : "seventeen-elo-v2";
+function eloGet(){
+  const s = store.get(eloStoreKey(), null);
+  if(s && s.v===2 && Number.isFinite(s.r)) return {v:2, r:s.r, best:Number.isFinite(s.best) ? s.best : s.r, n:s.n|0, streak:s.streak|0, bestStreak:s.bestStreak|0,
+    last:Array.isArray(s.last) ? s.last.slice(-10) : [], hist:Array.isArray(s.hist) ? s.hist.slice(-20) : []};
+  const v1 = store.get("seventeen-elo-v1", null), ok = x => Number.isFinite(x) ? Math.max(400, Math.round(x)) : null;
+  const r = ok(v1 && v1.r) ?? ELO_START, e = {v:2, r, best:Math.max(r, ok(v1 && v1.best) ?? r), n:0, streak:0, bestStreak:0, last:[], hist:[]};
+  store.set(eloStoreKey(), e); return e;
+}
+const eloSave = e => store.set(eloStoreKey(), e);
+// The play's one rating change (a skip and the play clock are misses; yards and the drive result never reach it). Called once per play from
+// dlAnswer, under its busy token. A Practice drive (DL.practice) moves the rating at half K. Returns what the screens show.
+function eloPlay(pr, correct){
+  const e = eloGet(), rq = eloRating(pr.pool.length), {r, delta} = eloNext(e, rq, correct, !!DL.practice), keep = (a, x, m) => [...a, x].slice(-m), streak = correct ? e.streak + 1 : 0;
+  if(DL.r0 == null) DL.r0 = e.r;   // the rating before this drive's first play
+  Object.assign(e, {r, best:Math.max(e.best, r), n:e.n + 1, streak, bestStreak:Math.max(e.bestStreak, streak), last:keep(e.last, !!correct, 10), hist:keep(e.hist, delta, 20)});
+  eloSave(e); return {delta, rq, band:eloBand(rq), r};
+}
+// The strip over the field: the rating, the last play's delta sliding in, Provisional, best, streak, the bar to the next 100
+function eloStrip(delta){
+  const box = $("#elostrip"), e = eloGet(); if(!box) return;
+  box.innerHTML = `<b class="elo-r">${eloFmt(e.r)}</b>${delta==null ? "" : `<span class="elo-d ${delta>=0?"up":"down"}">${eloSigned(delta)}</span>`}${e.n<ELO_PROV ? `<span class="elo-chip">Provisional</span>` : ""}<span class="elo-s elo-best">Best <b>${eloFmt(e.best)}</b></span><span class="elo-s">🔥 <b>${e.streak}</b></span><i class="elo-bar" style="--p:${e.r%100}%" aria-hidden="true"></i>`;
+}
+const eloStripHTML = () => `<div class="elo-strip num" id="elostrip" aria-live="polite"></div>`;
+// The result card's line: "Hard · 1,540 · +18"
+const eloLineHTML = o => `<p class="elo-line">${o.band} · ${eloFmt(o.rq)} · <span class="${o.delta>=0?"up":"down"}">${eloSigned(o.delta)}</span></p>`;
+// The drive's end card: the rating before and after this drive (known when the drive was played here), best, and the Practice note
+function eloEndHTML(){
+  const e = eloGet(), moved = DL.r0 != null ? e.r - DL.r0 : null;
+  return `<p class="elo-line">Rating ${DL.r0 != null ? `${eloFmt(DL.r0)} to ` : ""}<b>${eloFmt(e.r)}</b>${moved == null ? "" : ` <span class="${moved>=0?"up":"down"}">${eloSigned(moved)}</span>`} · Best ${eloFmt(e.best)}${DL.practice ? " · Practice counts half" : ""}</p>`;
+}
+const eloRulesHTML = () => `<p>Every drive moves your TD Trivia rating, which starts at 1,000. A right answer on a hard prompt, one few players can name, pays more than one on an easy prompt. A miss costs more when the prompt was easy for your rating. Practice drives count at half the daily's weight, and yards and streaks never touch the rating.</p>`;
+// The card under the drive status on the Daily tab
+const eloCardHTML = () => { const e = eloGet(); return `<small class="elo-card num">Rating ${eloFmt(e.r)}${e.n<ELO_PROV ? " · Provisional" : ` · Best ${eloFmt(e.best)}`}</small>`; };
+// Signed in: mirror the rating to this player's ratings row after each drive (supabase/v12-elo.sql). Through the cloud queue, never throws; a
+// missing table or an offline moment is a quiet no-op (the next drive pushes the then-current rating, which is the whole state).
+function eloPush(){
+  if(testWin() || !signedIn()) return Promise.resolve(false);
+  return clQueue(async () => {
+    if(testWin() || !signedIn()) return false;
+    await refresh(); if(!signedIn()) return false;
+    const e = eloGet(), body = {user_id:myId(), kind:"td", rating:Math.round(e.r), games:e.n, name:cleanName(getName()) || null, updated_at:new Date().toISOString()};
+    const r = await api("/rest/v1/ratings?on_conflict=user_id,kind", {method:"POST", body, prefer:"resolution=merge-duplicates,return=minimal"});
+    if(!r.ok && !r.net) console.warn("[cloud] rating not saved", r.status, r.data);
+    return r.ok;
+  });
+}
+// The global board (lane A's Daily tab calls eloBoardHTML() when it exists): the container returns at once and fills itself with the top
+// 100 from elo_board; the caller is pinned on top from this device's store. Signed out: one line and the Account button, never an error.
+function eloBoardHTML(){
+  if(testWin() || !cloudOn()) return `<div class="elo-board"><p class="hint">The global rating board needs the cloud, which is off here.</p></div>`;
+  if(!signedIn()) return `<div class="elo-board"><h3 class="cmp-h">TD Trivia rating</h3><p class="hint">Sign in to put your TD Trivia rating on the global board.</p>${acctOn() ? `<button class="ghost" data-elo-acct>Account</button>` : ""}</div>`;
+  setTimeout(eloBoardFill, 0);
+  return `<div class="elo-board" id="eloboard"><h3 class="cmp-h">TD Trivia rating</h3><p class="hint">Loading…</p></div>`;
+}
+async function eloBoardFill(){
+  const box = $("#eloboard"); if(!box) return;
+  await eloPush();
+  const r = await api("/rest/v1/rpc/elo_board", {method:"POST", body:{p_limit:100}}), me = eloGet(); if(!$("#eloboard")) return;
+  const rows = r.ok && Array.isArray(r.data) ? r.data : null;
+  if(!rows){ box.innerHTML = `<h3 class="cmp-h">TD Trivia rating</h3><p class="hint">The rating board is offline.</p>`; return; }
+  const nm = cleanName(getName());
+  box.innerHTML = `<h3 class="cmp-h">TD Trivia rating</h3><ol class="d17rows"><li class="me"><span class="cn"></span><span class="num">${eloFmt(me.r)}</span><span class="num">${me.n} plays</span></li>${rows.slice(0,100).map(x=>`<li><span class="cn"></span><span class="num">${eloFmt(+x.rating||0)}</span><span class="num">${+x.games||0} plays</span></li>`).join("")}</ol>${rows.length ? "" : `<p class="hint">No ratings yet.</p>`}`;
+  box.querySelectorAll(".d17rows li").forEach((li,i)=>{ li.querySelector(".cn").textContent = i===0 ? `You${nm ? " (" + nm + ")" : ""}` : `${i}. ${cleanName(rows[i-1].name) || "Player"}`; });
+}
+// The Me view's card: rating, best, and the provisional flag
+function eloBoardCard(){
+  const e = eloGet();
+  return `<article class="bcard" data-area="elo"><span class="bk">TD</span><div class="bm"><b class="bt">TD Trivia rating</b><span class="bn">${e.n<ELO_PROV ? "Provisional" : "Established"}</span></div>
+    <div class="bv"><b class="bh">${eloFmt(e.r)}</b><small class="bl">Rating</small></div><p class="bs">Best ${eloFmt(e.best)} · ${e.n} play${e.n===1?"":"s"} · Streak ${e.streak}</p></article>`;
+}
+document.addEventListener("click", e => { if(e.target.closest && e.target.closest("[data-elo-acct]") && typeof openAcct==="function") openAcct(); });
+// ---------- /v12 lane E ----------
 // Replay the saved answers: where the ball is and how the drive ended
 function dlDrive(day){
   let ball = DL_START;
@@ -5650,19 +6433,20 @@ function dailyHomeHTML(){
   const all = dlLoad(), key = dlKey(), day = all.days[key], dr = day && dlDrive(day), st = dlStreak(all);
   const status = !day || !day.a.length ? "Today's drive is ready" : dr.done ? `Today: ${dr.end.label === "PUNT" ? "Punt" : dr.end.pts===7 ? "Touchdown" : "Field goal"} · ${dr.yds} yds` : `Drive in progress · play ${day.a.length+1} of ${DL_PLAYS}`;
   return `<div class="mode" style="--c:var(--gold)">
-    <button class="go" id="dlgo"><span><b>TD Trivia</b><br><small>Touchdowns since 1999</small><br><small>${status}</small></span><small class="num">#${dlNum(key)}${st?` · 🔥 ${st}`:""}</small></button>
+    <button class="go" id="dlgo"><span><b>TD Trivia</b><br><small>Touchdowns since 1999</small><br><small>${status}</small>${eloCardHTML()}</span><small class="num">#${dlNum(key)}${st?` · 🔥 ${st}`:""}</small></button>
     <button class="info" id="dlinfo" aria-label="Touchdown Trivia rules"><span>i</span></button>${dr?.done ? `<button class="prac" id="dlprac">Practice</button>` : ""}</div>
   ${typeof ntHomeHTML==="function" ? ntHomeHTML() : ""}
-  ${d17HomeHTML()}`;
+  ${d17HomeHTML()}
+  ${dpHomeHTML()}`;
 }
 const dlRulesHTML = () => `<p>Six prompts a day in a fresh order, touchdowns from 1999 on and rosters of anyone who played in 1980 or later, then the two-minute drill, a tougher last question that changes every day: players who suited up for two teams, caught touchdowns from two quarterbacks, picked off two quarterbacks and more. Every 8th day it is the nickname drill: name a player by his nickname, the rarer the better, and a nickname you used on an earlier nickname day does not count again. Name anyone in 17-0's database who fits. The more touchdowns your answer has in the list, the shorter the gain: the top answer is a dump-off, deep cuts go deep. On the two-minute drill a rare or elite answer is ball knowledge, the biggest play of all. Once today's drive is done, Practice deals more drives like it from questions the daily never asks.</p>
   <ul class="dl-tiers">${[DL_BK, ...DL_TIERS, DL_MISS, DL_SACK].map(t=>`<li><b style="color:${t.col}">${t.label}</b><span class="num">${t.yds>0?"+":""}${t.yds} yds</span><span>${t.say}</span></li>`).join("")}</ul>
-  <p class="hint">${DL_CLOCK} seconds a play; play 7 is a ${DL_BONUS}-second two-minute drill. Start at your own 25. Score a touchdown (7), stall inside the 35 for a field goal (3), or punt. Rarity is estimated from touchdown share (from the rating on a roster list, by hand on the nicknames); a list of fewer than 10 names splits into thirds and has no deep shot.</p>`;
+  <p class="hint">${DL_CLOCK} seconds a play; play 7 is a ${DL_BONUS}-second two-minute drill. Start at your own 25. Score a touchdown (7), stall inside the 35 for a field goal (3), or punt. Rarity is estimated from touchdown share (from the rating on a roster list, by hand on the nicknames); a list of fewer than 10 names splits into thirds and has no deep shot.</p>${eloRulesHTML()}`;
 function wireDailyHome(){
   $("#dlgo").onclick = () => renderDaily();
   $("#dlprac")?.addEventListener("click", renderPractice);
   if(typeof wireNTHome==="function") wireNTHome();
-  wireD17Home();
+  wireD17Home(); wireDPHome();
   $("#dlinfo").onclick = () => {
     document.body.insertAdjacentHTML("beforeend", `<div class="overlay" id="ov"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rt" style="--c:var(--gold)"><h2 id="rt">TD Trivia</h2>${dlRulesHTML()}<div class="actions"><button class="btn" id="closeov">Got it</button></div></div></div>`);
     const close = () => $("#ov")?.remove();
@@ -5686,9 +6470,9 @@ function renderDaily(){
   DL = {tok:DL.tok, clock:null, key, all, day, P, busy:false, used:new Set(day.a.map(x=>x.id).filter(x=>x!=null)),
     G:{field:rbField(P.opp), spr:dlSprites(P.opp), opp:P.opp, q:{label:`DAILY #${dlNum(key)}`, away:false}, kit:dlKit(P.opp)}};
   $("#app").innerHTML = `<div class="tcol fit">${header(`<span class="pill" style="color:var(--gold);border-color:var(--gold)">Daily #${dlNum(key)}</span>${lookBtn(true)}<button class="ghost" id="quit">Home</button>`, true)}
-  <section class="dl rs"><div class="rs-main" id="dlmain"><div id="dlfield"></div><div id="dlside"></div></div></section></div>`;
+  <section class="dl elo rs"><div class="rs-main" id="dlmain">${eloStripHTML()}<div id="dlfield"></div><div id="dlside"></div></div></section></div>`;
   $("#quit").onclick = renderHome; $("#homebtn").onclick = renderHome; wireLook();
-  dlMount();
+  dlMount(); eloStrip();
   // switching the look mid-drive swaps the painter in place (a running play carries on in the new one)
   document.querySelectorAll("[data-look]").forEach(b=>b.addEventListener("click", ()=>{ dlMount(); if(!DL.busy) dlIdle(); dlBoard(dlDrive(DL.day)); }));
   const dr = dlDrive(day);
@@ -5824,6 +6608,7 @@ function dlAnswer(p, sacked, nick=null){
   const tier = sacked ? DL_SACK : !hit ? DL_MISS : pr.bonus && (tq==="rare" || tq==="elite") ? DL_BK : DL_TIERS.find(t=>t.tier===tq);
   DL.day.a.push({id:p?p.id:null, name:p?(nick||p.name):null, k:tier.k}); if(p){ DL.used.add(p.id); tqLog(pr.id, p.id, !!hit); }
   if(!DL.practice) store.set(dlStoreKey(), DL.all);
+  const elo = eloPlay(pr, rank>=0);   // v12 lane E: the play's one rating change, here under the busy token (a Practice play at half K)
   const after = dlDrive(DL.day), gained = after.ball - before.ball;
   const ends = isNick ? [pr.pool[0][3], pr.pool[pr.pool.length-1][3]] : [PLAYERS[pr.ids[0]]?.name, PLAYERS[pr.ids[pr.ids.length-1]]?.name];
   const why = hit ? `${tier===DL_BK ? "Ball knowledge: " + TQ_SAY[tq].toLowerCase() : TQ_SAY[tq]}. ${esc(tqWhy(pr.id, hit))}.` : sacked ? "The play clock hit zero." : !p ? "Skipped." : reused ? `You already used ${esc(nick)} on an earlier nickname day.` : isNick && !nick ? `${esc(p.name)} is the name. Type the nickname.` : `${esc(nick || p.name)} doesn't fit this one.`;
@@ -5831,10 +6616,10 @@ function dlAnswer(p, sacked, nick=null){
   $("#dlside").innerHTML = `<p class="dl-meta"><span>Play ${i+1} of ${DL_PLAYS}</span><span>Ball on ${dlSpot(before.ball)}</span></p>
     ${dlQ(pr, false)}
     <div class="dl-out${reduce ? "" : " wait glass"}"><b style="color:${tier.col}">${tier.label} ${gained>0?"+":""}${gained} yds</b><p>${p?`<b style="font-size:16px;color:var(--fg)">${esc(nick ? `${nick} (${p.name})` : p.name)}</b> · `:""}${why}</p>
-      ${ends[0] && ends[1] ? `<p>Top answer: ${esc(ends[0])} · Deepest cut: ${esc(ends[1])}</p>` : ""}</div>
+      ${ends[0] && ends[1] ? `<p>Top answer: ${esc(ends[0])} · Deepest cut: ${esc(ends[1])}</p>` : ""}${eloLineHTML(elo)}</div>
     <div class="actions"><button class="btn alt" id="dlgoon">${after.done?"See the result":"Next play"} ›</button></div>
     ${dlLog()}`;
-  dlLogEnd();
+  dlLogEnd(); eloStrip(elo.delta);
   // the button (or the auto-advance) goes on once: a play still running jumps to its end first
   let gone = false;
   // the button while the play still runs is a tap on the field: the end state, the card, then the auto-advance; after that it goes on
@@ -6165,7 +6950,8 @@ function dlKick(Y){
 // Drive over: the touchdown already played; a field goal gets its kick, a punt gets its banner. Then the summary.
 function dlFinish(before, after){
   const tok = DL.tok, Y = Math.min(99, after.ball);
-  track("trivia_day", {mode:DL.practice ? "td_practice" : "td", extra:{score:after.end.pts, plays:DL.day.a.length}});   // once per drive, here: dlEnd also redraws a finished day
+  track("trivia_day", {mode:DL.practice ? "td_practice" : "td", extra:{score:after.end.pts, plays:DL.day.a.length, rating:Math.round(eloGet().r)}}); eloPush();   // once per drive, here: dlEnd also redraws a finished day
+  xpAdd(DL.practice ? "td_practice" : "td_drive", DL.day.a);   // v12 lane X: XP, once per drive like the row above
   DL.deco = dlDeco(DL.day.a.length, after.ball, true, after.end.pts);   // the drive is decided: the broadcast scorebug reads FINAL and the points under the kick / punt
   if(after.ball>=100) return dlEnd();   // its confetti went off as he crossed (the "td" cue)
   if(after.ball>=65){
@@ -6193,6 +6979,7 @@ function dlEnd(){
       <h2 class="dl-big" style="color:${dr.end.pts===7?"var(--gold)":dr.end.pts?"var(--turf)":"var(--muted)"}">${dr.end.label.split(" · ")[0]}</h2>
       <p class="dl-sq">${sq}</p>
       <div class="dl-stats num"><span>Right <b>${right} of ${DL.day.a.length}</b></span><span>Drive <b>${dr.yds} yds</b></span></div>
+      ${eloEndHTML()}
       <div class="actions"><button class="btn" id="dlagain">Practice again</button><button class="btn alt" id="dlhome">Home</button></div>
       <p class="hint">Practice never counts toward your streak or today's score.</p>
       ${dlLog()}`;
@@ -6204,6 +6991,7 @@ function dlEnd(){
     <h2 class="dl-big" style="color:${dr.end.pts===7?"var(--gold)":dr.end.pts?"var(--turf)":"var(--muted)"}">${dr.end.label.split(" · ")[0]}</h2>
     <p class="dl-sq">${sq}</p>
     <div class="dl-stats num"><span>Drive <b>${dr.yds} yds</b></span><span>Streak <b>${st}</b></span><span>Touchdowns <b>${dlTDs(all)}</b></span></div>
+    ${eloEndHTML()}
     <div class="actions"><button class="btn" id="dlshare">Share</button><button class="btn alt" id="dlprac">Practice</button><button class="btn alt" id="dlhome">Home</button></div>
     <p class="hint num">Next drive in ${h}h ${m}m.</p>
     ${dlLog()}`;
@@ -6322,7 +7110,7 @@ function ntAnswer(p){
 function ntFinish(){
   const {st, id} = NT; if(st.end) return; st.end = true; NT.save();
   const N = ntN(id);
-  if(NT.daily){ track("trivia_day", {mode:"nfl", extra:{score:st.f.length, max:N, strikes:st.w.length, hints:st.h, q:id}}); maybeReview("trivia"); }
+  if(NT.daily){ track("trivia_day", {mode:"nfl", extra:{score:st.f.length, max:N, strikes:st.w.length, hints:st.h, q:id}}); xpAdd("nt_day", st.f.length); maybeReview("trivia"); }
   if(st.f.length >= N) confetti(1);
   ntDraw();
 }
@@ -6395,11 +7183,13 @@ function localBest(){ return store.get("seventeen-lb-v1", {}); }
 // never races a pull. Offline: the payload waits in seventeen-pending and goes up on the next sync or the 'online' event.
 // Test mode (testWin) never touches the cloud.
 const cloudOn = () => !!CLOUD.url && !!CLOUD.anon;
-const getSess = () => store.get("seventeen-session", null);
+const sessKey = () => testWin() ? "seventeen-session-test" : "seventeen-session";   // v12 lane A: a test hash signs in to a twin, never the real session
+const nameKey = () => testWin() ? "seventeen-name-test" : "seventeen-name";
+const getSess = () => store.get(sessKey(), null);
 const acctOn = () => cloudOn() && CLOUD.accounts===true;   // the Account button and sign-in: off while CLOUD.accounts is false, whatever token a store holds
 const signedIn = () => acctOn() && !!(getSess()||{}).access_token;
 const myId = () => ((getSess()||{}).user||{}).id;
-const getName = () => store.get("seventeen-name", "");
+const getName = () => store.get(nameKey(), "");
 const getPending = () => store.get("seventeen-pending", null) || {};
 const dropKey = k => { try{ localStorage.removeItem(k); }catch(e){} };
 const CL = {state:"", last:0, q:Promise.resolve(), refreshing:null, errAt:{}};
@@ -6409,15 +7199,15 @@ function cloudErr(msg, e){ console.warn("[cloud] "+msg, e ?? ""); if(Date.now()-
 function setPending(fn){ const p = getPending(); fn(p); if(p.save || p.scores) store.set("seventeen-pending", p); else dropKey("seventeen-pending"); }
 function saveSess(d){
   const old = getSess() || {}, u = d.user || old.user || {};
-  store.set("seventeen-session", {access_token:d.access_token, refresh_token:d.refresh_token || old.refresh_token,
+  store.set(sessKey(), {access_token:d.access_token, refresh_token:d.refresh_token || old.refresh_token,
     expires_at:d.expires_at || Math.floor(Date.now()/1000) + (d.expires_in || 3600), user:{id:u.id, email:u.email}});
 }
 // keep: leave a token-less stub {user:{id}} so the next sign-in knows whose progress this device holds (signedIn() stays false).
-function clearSess(keep){ const id = myId(); if(keep && id) store.set("seventeen-session", {user:{id}}); else dropKey("seventeen-session"); dropKey("seventeen-pending"); CL.state = ""; CL.last = 0; }
+function clearSess(keep){ const id = myId(); if(keep && id) store.set(sessKey(), {user:{id}}); else dropKey(sessKey()); dropKey("seventeen-pending"); CL.state = ""; CL.last = 0; }
 const hasProgress = () => { const r = loadRing(); return !!(Object.keys(r.p).length || r.g || (r.m && Object.values(r.m).some(Boolean)) || Object.keys(loadRecords()).length || Object.keys(localBest()).length); };
 // A fresh sign-in by a different account than the one that last synced here must not inherit (or upload) that player's progress unasked.
 const otherOwner = d => { const id = myId(); return !!id && id!==((d||{}).user||{}).id && hasProgress(); };
-function ownSess(d){ if(myId() && myId()!==((d||{}).user||{}).id) dropKey("seventeen-name"); saveSess(d); }
+function ownSess(d){ if(myId() && myId()!==((d||{}).user||{}).id) dropKey(nameKey()); saveSess(d); }
 // Display names: 3-12 letters, digits or spaces, checked against a tiny list (also on read, so a hand-made row can't show).
 const BAD_WORDS = ["fuck","shit","cunt","nigg","fagg","bitch","whore","slut","rape","nazi","hitler","porn","kkk","retard","twat","pussy","penis","dildo","jizz"];
 function cleanName(s){
@@ -6467,9 +7257,43 @@ async function verifyCode(email, code){
   cloudErr(r.net ? "Offline: try again when you're connected" : "That code didn't work: "+errMsg(r), r.data);
   return null;
 }
+// ---------- v12 lane A: Sign in with Apple ----------
+// The app only (Capacitor iOS plus a Sign in with Apple plugin): Apple's sheet returns an identity token, which goes to Supabase Auth as an
+// id_token sign-in (/auth/v1/token?grant_type=id_token, provider apple). The nonce: 32 random bytes as hex; the plugin gets its SHA-256
+// (Apple writes that into the token's nonce claim), Supabase gets the raw string (it hashes it and compares). Two plugin shapes are read:
+// @capawesome/capacitor-apple-sign-in (AppleSignIn.signIn, the one mobile/package.json pins: it builds with Capacitor 8 under SPM) and
+// @capacitor-community/apple-sign-in (SignInWithApple.authorize). The web keeps the email code only. docs/accounts.md.
+const APPLE_ID = "com.johntaylen.seventeenzero";   // the App ID (bundle id): the token's audience on the native sheet
+const applePlugin = () => { const P = window.Capacitor?.Plugins || {};
+  return typeof P.AppleSignIn?.signIn==="function" ? {k:"cw", p:P.AppleSignIn} : typeof P.SignInWithApple?.authorize==="function" ? {k:"cc", p:P.SignInWithApple} : null; };
+const appleAvailable = () => { try{ return window.Capacitor?.getPlatform?.()==="ios" && !!applePlugin(); }catch(e){ return false; } };
+const hexOf = b => [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
+async function appleNonce(){ const raw = hexOf(crypto.getRandomValues(new Uint8Array(32))); return {raw, hashed:hexOf(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(raw)))}; }
+// Resolves the new session (not saved yet: the caller checks otherOwner, then ownSess, as with the email code) or null after a toast.
+async function appleSignIn(){
+  const pl = appleAvailable() ? applePlugin() : null;
+  if(!pl){ toast("Sign in with Apple works in the iPhone app"); return null; }
+  let n, idt;
+  try{
+    n = await appleNonce();
+    const res = pl.k==="cw" ? await pl.p.signIn({scopes:["EMAIL"], nonce:n.hashed})
+      : await pl.p.authorize({clientId:APPLE_ID, redirectURI:SHARE_URL, scopes:"email name", nonce:n.hashed});
+    idt = pl.k==="cw" ? res && res.idToken : res && res.response && res.response.identityToken;
+  }catch(e){
+    const m = String((e && (e.code || e.message)) || e || "");
+    console.warn("[cloud] Sign in with Apple:", m);
+    toast(/1001|cancel/i.test(m) ? "Sign in cancelled" : "Sign in with Apple failed. Try again or use email.");
+    return null;
+  }
+  if(!idt){ toast("Sign in with Apple failed. Try again or use email."); return null; }
+  const r = await api("/auth/v1/token?grant_type=id_token", {method:"POST", auth:false, body:{provider:"apple", id_token:idt, nonce:n.raw}});
+  if(r.ok && r.data && r.data.access_token && r.data.user && r.data.user.id) return r.data;
+  cloudErr(r.net ? "Offline: try again when you're connected" : "Sign in with Apple failed: "+errMsg(r), r.data);
+  return null;
+}
 const logoutToken = t => t && api("/auth/v1/logout", {method:"POST", auth:false, token:t});
 async function signOut(){
-  const s = getSess(); clearSess(true); dropKey("seventeen-name");   // local first: game data stays, queued syncs see signed-out and stop
+  const s = getSess(); clearSess(true); dropKey(nameKey());   // local first: game data stays, queued syncs see signed-out and stop
   if(s) await logoutToken(s.access_token);
 }
 // App Store 5.1.1(v): the SQL function deletes the caller's rows and auth user. Local game data stays.
@@ -6478,7 +7302,7 @@ function deleteAccount(){
     if(!signedIn()) return false;
     const r = await api("/rest/v1/rpc/delete_my_account", {method:"POST", body:{}});
     if(!r.ok){ cloudErr(r.net ? "Offline: connect to delete your account" : "Couldn't delete the account: "+errMsg(r), r.data); return false; }
-    clearSess(); dropKey("seventeen-name");
+    clearSess(); dropKey(nameKey());
     return true;
   });
 }
@@ -6499,7 +7323,7 @@ function mergeRecords(a, b){
   return out;
 }
 const recSig = r => JSON.stringify(Object.keys(r).sort().map(k=>{ const x = r[k]||{}; return [k, x.played, x.perfect, x.titles||0, x.bestW, x.best]; }));
-const savePayload = () => ({user_id:myId(), ring:loadRing(), records:loadRecords(), name:cleanName(getName()) || null, updated_at:new Date().toISOString()});
+const savePayload = () => ({user_id:myId(), ring:loadRing(), records:loadRecords(), name:cleanName(getName()) || null, ...(CL.xpCol ? {xp:xpLoad().xp} : {}), updated_at:new Date().toISOString()});   // xp (v12 lane X) only once the row shows the column, so a project without v12-xp.sql keeps saving
 async function pushSave(){   // only from inside the queue
   const body = savePayload();
   const r = await api("/rest/v1/saves", {method:"POST", body, prefer:"resolution=merge-duplicates,return=minimal"});
@@ -6526,10 +7350,11 @@ function cloudSync(){
     const lr = loadRing(), lc = loadRecords(), mr = ringMerge(lr, cr), mc = mergeRecords(lc, cc);
     if(ringSig(mr)!==ringSig(lr)) store.set(ringStoreKey(), mr);
     if(recSig(mc)!==recSig(lc)) saveRecords(mc);
-    if(!getName() && row && cleanName(row.name)) store.set("seventeen-name", cleanName(row.name));
-    const changed = ringSig(loadRing())!==ringSig(lr) || recSig(loadRecords())!==recSig(lc);   // false if storage refused the write: no re-render loop
+    if(!getName() && row && cleanName(row.name)) store.set(nameKey(), cleanName(row.name));
+    CL.xpCol = !!row && "xp" in row; const lx = xpLoad().xp; if(CL.xpCol) xpFromCloud(row.xp);   // v12 lane X: xp merges by max, never lowers local
+    const changed = ringSig(loadRing())!==ringSig(lr) || recSig(loadRecords())!==recSig(lc) || xpLoad().xp!==lx;   // false if storage refused the write: no re-render loop
     const added = Object.keys(loadRing().p).length - Object.keys(lr.p).length;
-    const need = !row || getPending().save || ringSig(mr)!==ringSig(cr) || recSig(mc)!==recSig(cc) || (cleanName(getName())||null)!==(row.name||null);
+    const need = !row || getPending().save || ringSig(mr)!==ringSig(cr) || recSig(mc)!==recSig(cc) || (cleanName(getName())||null)!==(row.name||null) || (CL.xpCol && xpClamp(row.xp)!==xpLoad().xp);
     if(need) await pushSave(); else { CL.state = "synced"; CL.last = Date.now(); }
     return {added, changed};
   });
@@ -6578,7 +7403,7 @@ function cloudBoot(){
 // go with the next event, the next app start or the 'online' event; a batch the server refuses is dropped, never retried forever.
 // A row: device_id (seventeen-device, the daily board's id), event, mode, level, look, platform, w, l, secs, extra (a small object
 // of numbers and codes). No name, no email, no free text.
-const EV_EVENTS = ["app_open", "mode_start", "season_end", "trivia_day", "daily17_try", "quit", "session"];
+const EV_EVENTS = ["app_open", "mode_start", "season_end", "trivia_day", "daily17_try", "quit", "session", "rank_up"];   // rank_up: v12 lane X
 const evOn = () => cloudOn() && !testWin();
 const evStoreKey = () => testWin() ? "seventeen-events-test" : "seventeen-events-pending";   // the twin is a guard: evOn() keeps a test hash out of track() and evFlush()
 const evPending = () => store.get(evStoreKey(), null) || [];
@@ -6630,22 +7455,22 @@ function sessShow(){
 }
 
 // ---------- Account panel (#acct) ----------
-const ACCT = {step:"email", email:"", del:0, hold:null};
+const ACCT = {step:"email", email:"", del:0, hold:null, mail:0};   // mail: the email form opened under the Apple button (v12 lane A)
 function dropHold(){ if(ACCT.hold){ logoutToken(ACCT.hold.access_token); ACCT.hold = null; } }
 function claimSess(d){
   ACCT.hold = null; ACCT.step = "email"; ownSess(d); renderAcct();
-  syncAll().then(([x]) => { if(x && x.added>0) toast(`+${x.added} players merged from the cloud`); cloudUI(); });
+  syncAll().then(([x]) => { if(x && x.added>0) toast(`+${x.added} players merged from the cloud`); cloudUI(); maybeNameSheet(); });
 }
 function acctKey(e){ if(e.key==="Escape") closeAcct(); }
-function openAcct(){ dropHold(); ACCT.step = "email"; ACCT.del = 0; renderAcct(); addEventListener("keydown", acctKey); }
-function closeAcct(){ dropHold(); $("#acct")?.remove(); removeEventListener("keydown", acctKey); if($(".home")) renderHome(); }
+function openAcct(){ dropHold(); ACCT.step = "email"; ACCT.del = 0; ACCT.mail = 0; renderAcct(); addEventListener("keydown", acctKey); }
+function closeAcct(){ dropHold(); $("#acct")?.remove(); removeEventListener("keydown", acctKey); if($(".home")) renderHome(); else if($(".boards")) renderBoards(); }
 function renderAcct(){
   const s = getSess(), on = signedIn(), p = getPending();
   const when = CL.state==="offline" || p.save || p.scores ? "Offline: will sync when you're back online"
     : CL.state==="error" ? "Last sync failed: tap Sync now" : CL.last ? "Last sync "+new Date(CL.last).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) : "Not synced yet on this visit";
   const body = on ? `
-    <p>Signed in as <b>${esc(s.user.email||"")}</b></p>
-    <label class="acf">Display name<input id="acname" maxlength="12" autocomplete="nickname" spellcheck="false" placeholder="3-12 letters or digits" value="${esc(getName())}"></label>
+    <p>Signed in as <b>${esc(s.user.email||"your Apple ID")}</b></p>
+    <label class="acf">Board name<input id="acname" maxlength="12" autocomplete="nickname" spellcheck="false" placeholder="3-12 letters or digits" value="${esc(getName())}"></label>
     <div class="actions"><button class="btn alt" id="acsave">Save name</button></div>
     <p class="msg" id="acmsg"></p>
     <p class="hint">${when}</p>
@@ -6655,13 +7480,17 @@ function renderAcct(){
       : `<button class="acdel" id="acdel">Delete account</button>`}`
   : ACCT.step==="claim" && ACCT.hold ? `
     <p>This device has another player's progress on it (Ring of Honor, records, best runs).</p>
-    <p>Add it to <b>${esc(ACCT.hold.user.email||ACCT.email)}</b>? It gets saved to this account and its best runs go on the leaderboard under this account's name.</p>
+    <p>Add it to <b>${esc(ACCT.hold.user.email||ACCT.email||"this account")}</b>? It gets saved to this account and its best runs go on the leaderboard under this account's name.</p>
     <div class="actions"><button class="btn" id="acyes">Add it</button><button class="btn alt" id="acno">Cancel</button></div>`
   : ACCT.step==="code" ? `
     <p>We sent a code to <b>${esc(ACCT.email)}</b>. Enter it here.</p>
     <label class="acf">6-digit code<input id="accode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></label>
     <div class="actions"><button class="btn" id="acin">Sign in</button><button class="btn alt" id="acback">Use another email</button></div>
     <p class="msg bad" id="acmsg"></p>`
+  : appleAvailable() && !ACCT.mail ? `
+    <p>Play anywhere: sign in to save your Ring of Honor, records and leaderboard across devices.</p>
+    <button class="applebtn" id="acapple" aria-label="Sign in with Apple">${APPLE_GLYPH}<span>Sign in with Apple</span></button>
+    <button class="acmail" id="acmail">Use email instead</button>`
   : `
     <p>Play anywhere: sign in to save your Ring of Honor, records and leaderboard across devices.</p>
     <label class="acf">Email<input id="acemail" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" value="${esc(ACCT.email)}"></label>
@@ -6672,7 +7501,7 @@ function renderAcct(){
   if(!ov){ ov = document.createElement("div"); ov.className = "overlay"; ov.id = "acct"; document.body.appendChild(ov); ov.onclick = e => { if(e.target===ov) closeAcct(); }; }
   ov.innerHTML = `<div class="sheet acct${again?" re":""}" role="dialog" aria-modal="true" aria-labelledby="actt">
     <div class="actop"><h2 id="actt">Account</h2><button class="ghost" id="acclose">Close</button></div>${body}
-    <p class="fine">We store your email, a random user id and your game data (Ring of Honor, records, best runs, display name). Everything also stays on this device. <a href="privacy.html" target="_blank" rel="noopener">Privacy</a></p>
+    <p class="fine">We store your email (with Apple, the address Apple shares, which can be a private relay), a random user id and your game data (Ring of Honor, records, best runs, board name). Everything also stays on this device. <a href="privacy.html" target="_blank" rel="noopener">Privacy</a></p>
   </div>`;
   const msg = (t, bad) => { const m = $("#acmsg"); if(m){ m.textContent = t; m.classList.toggle("bad", !!bad); } };
   const busy = (b, t) => { b.disabled = true; b.textContent = t; };
@@ -6681,7 +7510,7 @@ function renderAcct(){
     $("#acsave").onclick = () => {
       const n = cleanName($("#acname").value);
       if(!n) return msg("Use 3-12 letters, digits or spaces, and keep it clean.", true);
-      store.set("seventeen-name", n); $("#acname").value = n; msg("Saved");
+      store.set(nameKey(), n); $("#acname").value = n; msg("Saved");
       syncAll().then(cloudUI);
     };
     $("#acsync").onclick = e => { busy(e.target, "Syncing…"); syncAll().then(([x]) => { if(x && x.added>0) toast(`+${x.added} players merged from the cloud`); renderAcct(); cloudUI(); }); };
@@ -6706,6 +7535,16 @@ function renderAcct(){
       });
     };
     $("#accode").focus();
+  } else if(appleAvailable() && !ACCT.mail){
+    $("#acapple").onclick = e => {
+      const b = e.currentTarget; b.disabled = true; b.querySelector("span").textContent = "Signing in…";
+      appleSignIn().then(d => {
+        if(!d){ renderAcct(); return; }
+        if(otherOwner(d)){ ACCT.hold = d; ACCT.step = "claim"; renderAcct(); return; }
+        claimSess(d);
+      });
+    };
+    $("#acmail").onclick = () => { ACCT.mail = 1; renderAcct(); $("#acemail")?.focus(); };
   } else {
     $("#acsend").onclick = e => {
       const em = $("#acemail").value.trim();
@@ -6714,6 +7553,35 @@ function renderAcct(){
       sendCode(em).then(ok => { if(ok) ACCT.step = "code"; renderAcct(); });
     };
   }
+}
+
+// ---------- v12 lane A: the board name, asked once ----------
+// After the first sign-in on a device with no board name (local or in the saves row, which cloudSync has merged by now), one small sheet
+// asks for it (cleanName: 3-12 letters, digits or spaces). Skippable; the flag in seventeen-namesheet (test twin) means it never comes back.
+// The global boards then show "Pick a board name" on the player's own row; Account keeps the field for later.
+const APPLE_GLYPH = `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>`;
+const nsKey = () => testWin() ? "seventeen-namesheet-test" : "seventeen-namesheet";
+function maybeNameSheet(){ if(!signedIn() || cleanName(getName()) || store.get(nsKey(), 0)) return false; store.set(nsKey(), 1); nameSheet(); return true; }
+function nameSheet(){
+  $("#nmsheet")?.remove();
+  const ov = document.createElement("div"); ov.className = "overlay"; ov.id = "nmsheet";
+  ov.innerHTML = `<div class="sheet acct" role="dialog" aria-modal="true" aria-labelledby="nmtt">
+    <div class="actop"><h2 id="nmtt">Board name</h2></div>
+    <p>Pick the name other players see next to your scores on the global boards.</p>
+    <label class="acf">Board name<input id="nmin" maxlength="12" autocomplete="nickname" spellcheck="false" placeholder="3-12 letters or digits"></label>
+    <p class="msg bad" id="nmmsg"></p>
+    <div class="actions"><button class="btn" id="nmsave">Save</button><button class="btn alt" id="nmskip">Skip</button></div>
+    <p class="fine">You can change it any time under Account.</p>
+  </div>`;
+  document.body.appendChild(ov);
+  const close = () => { ov.remove(); if($("#acct")) renderAcct(); else if($(".boards")) renderBoards(); };
+  $("#nmskip").onclick = close;
+  $("#nmsave").onclick = () => {
+    const n = cleanName($("#nmin").value);
+    if(!n){ $("#nmmsg").textContent = "Use 3-12 letters, digits or spaces, and keep it clean."; return; }
+    store.set(nameKey(), n); close(); toast("Board name saved");
+    syncAll().then(cloudUI);   // the saves row and every scores row carry it
+  };
 }
 
 async function submitRun(run){
@@ -6768,9 +7636,25 @@ async function renderBoard(mode, level){
     tb.appendChild(tr);
   });
 }
-// One card per area, all read from this device's stores; the #1 badge becomes a real rank when the global boards land.
-function renderBoards(area){
+// ---------- v12 lane A: the Leaderboards tabs (D2): Seasons, Daily, Ranks, each with Global and Me ----------
+// Me = this device's cards (the v7 one-card-per-area layout, grouped by tab; the #1 badge stays). Global = the shared boards, signed in;
+// the Daily 17-0 board is device-based and stays open signed out, as before. The Global / Me toggle shows only with CLOUD set and never
+// under a test hash (as d17Global: no read). The tab, the view and the Global season chips live in seventeen-lbtab (test twin).
+// Other lanes plug in through globals called only if they exist: eloBoardCard, dpBoardCard, rankBoardCard (Me cards, each given the
+// card helper) and eloBoardHTML, ntBoardHTML, dpBoardHTML, rankBoardHTML (Global panels, signed in).
+const LB_TABS = [["seasons","Seasons"],["daily","Daily"],["ranks","Ranks"]];
+const LB_AREA = {packs:"seasons", classic:"seasons", full:"seasons", daily:"daily", td:"daily", nt:"daily", d17:"daily", dp:"daily", ring:"ranks", ranks:"ranks"};
+const lbKey = () => testWin() ? "seventeen-lbtab-test" : "seventeen-lbtab";
+function lbState(){ const s = store.get(lbKey(), null) || {};
+  return {tab:LB_TABS.some(t=>t[0]===s.tab) ? s.tab : "seasons", view:s.view==="global" ? "global" : "me", mode:MODES[s.mode] ? s.mode : "packs", level:LEVELS[s.level] ? s.level : "beginner"}; }
+const lbSet = o => store.set(lbKey(), {...lbState(), ...o});
+const lbCloud = () => cloudOn() && !testWin();
+// area: where the player came from (a Home mode tab or a card key) picks the tab and lights its card; none = the remembered tab.
+// view: "global" or "me" to force one (else the remembered one).
+function renderBoards(area, view){
   LB_DROP?.(); applyLook(lookRetro()); clearTimeout(spinTimer); $("#confetti").hidden = true;
+  const st = lbState(), tab = LB_AREA[area] || st.tab, v = !lbCloud() ? "me" : view==="global" || view==="me" ? view : st.view;
+  lbSet({tab, view:lbCloud() ? v : st.view});
   const n = v => Number.isFinite(+v) ? +v : 0, fmt = v => n(v).toLocaleString("en-US"), rec = loadRecords(), nm = cleanName(getName());
   const card = (k, title, head, label, sub, o={}) => `<article class="bcard${o.runs?" runs":""}" data-area="${k}">
     <span class="bk">#1</span><div class="bm"><b class="bt">${title}</b><span class="bn">${nm ? esc(nm)+" (you)" : "You"}</span></div>
@@ -6782,30 +7666,77 @@ function renderBoards(area){
     const pf = rs.reduce((s,r)=>s+n(r.perfect),0), ti = rs.reduce((s,r)=>s+n(r.titles),0);
     return card(m, MODES[m].label, esc(top.best), "Best record", `${fmt(pf)}× 17-0 · ${fmt(ti)} title${ti===1?"":"s"}`, {runs:true});
   };
-  const dl = dlLoad(), fin = Object.values(dl.days).filter(d=>d && Array.isArray(d.a) && dlDrive(d).done), yds = Math.max(0, ...fin.map(d=>n(dlDrive(d).yds)));
-  const nt = ntLoad(), ring = loadRing(), pool = ringPool(), rm = ring.m || {}, got = pool.filter(p=>ring.p[ringKey(p)]).length;
+  const d17Card = all => { const key = dlKey(), day = all.days[key] || {tries:[]}, best = d17Best(day.tries), ever = d17AllBest(all), used = d17Used(day);
+    const ranked = [...day.tries].sort((a,b)=>d17Better(a,b) ? -1 : 1).map(t=>`${n(t.w)}-${n(t.l)} in ${fmtTime(n(t.secs))}`).join(", ");   // this device's tries today, best first
+    const today = used ? `${fmt(used)} of ${D17_TRIES} tries today${ranked ? `: ${ranked}` : ", none finished"}` : "", everS = ever ? `Best ever ${n(ever.w)}-${n(ever.l)} in ${fmtTime(n(ever.secs))} (#${dlNum(ever.key)})` : "";
+    return card("d17", "Daily 17-0", best ? `${n(best.w)}-${n(best.l)}` : "No tries yet", best ? `Best today · ${fmtTime(n(best.secs))}` : `${D17_TRIES - Math.min(used, D17_TRIES)} of ${D17_TRIES} tries left`,
+      [today, everS].filter(Boolean).join(" · ") || "Draft today's spins to set a score", {none:!best, pill: d17Global() ? `<span class="pill">Global</span>` : ""}); };
+  const seg = (items, cur, attr, label, cls="") => `<div class="seg${cls}" role="tablist" aria-label="${label}">${items.map(([k,l])=>`<button role="tab" aria-selected="${cur===k}" data-${attr}="${k}">${l}</button>`).join("")}</div>`;
+  const sign = `<div class="lbsign"><p>Sign in to see the global boards.</p>${acctOn() ? `<button class="btn" id="lbsignin">Account</button>` : ""}</div>`;
+  let body;
+  if(v==="me"){
+    const dl = dlLoad(), fin = Object.values(dl.days).filter(d=>d && Array.isArray(d.a) && dlDrive(d).done), yds = Math.max(0, ...fin.map(d=>n(dlDrive(d).yds)));
+    const nt = ntLoad(), ring = loadRing(), pool = ringPool(), rm = ring.m || {}, got = pool.filter(p=>ring.p[ringKey(p)]).length;
+    const cards = tab==="seasons" ? MODE_ORDER.map(season).join("")
+      : tab==="daily" ? card("td", "TD Trivia", fmt(dlTDs(dl)), "Touchdowns", `Streak ${fmt(dlStreak(dl))} · Best drive ${fmt(yds)} yds`)
+        + (typeof eloBoardCard==="function" ? eloBoardCard(card) : "")
+        + card("nt", "NFL Trivia", fmt(nt.best), "Best day", `Streak ${fmt(nt.streak)}`)
+        + d17Card(d17Load())
+        + (typeof dpBoardCard==="function" ? dpBoardCard(card) : "")
+      : card("ring", "Ring of Honor", `${fmt(got)} of ${fmt(pool.length)}`, "Collected", `Best 17-0 streak ${fmt(rm.bestStreak)} · ${fmt(rm.titles)} title${n(rm.titles)===1?"":"s"}`)
+        + (typeof rankBoardCard==="function" ? rankBoardCard(card) : "");
+    body = `<p class="hint">${lbCloud() ? "Your scores on this device. Tap Global for everyone's." : "Your scores on this device."}</p>
+    <div class="bcards">${cards}</div>`;
+  } else if(tab==="seasons"){
+    const chips = `<div class="lbchips">${seg(MODE_ORDER.map(k=>[k, k==="full" ? `Full<span class="lbxl"> Roster</span>` : MODES[k].label]), st.mode, "lbmode", "Season mode", " small")}${seg(Object.entries(LEVELS).map(([k,L])=>[k, k==="medium" ? `Med<span class="lbxl">ium</span>` : L.label]), st.level, "lblevel", "Level", " small")}</div>`;
+    body = signedIn() ? `${chips}<div id="lbg"><p class="msg">Loading…</p></div>` : sign;
+  } else if(tab==="daily"){
+    const more = [typeof eloBoardHTML==="function" ? "elo" : "", typeof ntBoardHTML==="function" ? "nt" : "", typeof dpBoardHTML==="function" ? "dp" : ""].filter(Boolean);
+    body = `<div class="bcards">${d17Card(d17Load())}</div>${d17Global() ? `${d17NameHTML()}<div id="d17top"></div>` : ""}
+    ${signedIn() ? (more.includes("elo") ? eloBoardHTML() : "") + (more.includes("nt") ? ntBoardHTML() : "") + (more.includes("dp") ? dpBoardHTML() : "") : more.length ? sign : ""}`;
+  } else body = signedIn() ? (typeof rankBoardHTML==="function" ? rankBoardHTML() : `<p class="hint">The global rank board is not open yet.</p>`) : sign;
   $("#app").innerHTML = `${header(`${lookBtn()}<button class="ghost" id="back">Home</button>`)}
   <section class="lboard boards">
     <h2>Leaderboards</h2>
-    <p class="hint">${d17Global() ? "Your scores on this device; the Daily 17-0 board is global." : "Global leaderboards come in the next update. These are your scores on this device."}</p>
-    <div class="bcards">${MODE_ORDER.map(season).join("")}
-    ${card("td", "TD Trivia", fmt(dlTDs(dl)), "Touchdowns", `Streak ${fmt(dlStreak(dl))} · Best drive ${fmt(yds)} yds`)}
-    ${card("nt", "NFL Trivia", fmt(nt.best), "Best day", `Streak ${fmt(nt.streak)}`)}
-    ${card("ring", "Ring of Honor", `${fmt(got)} of ${fmt(pool.length)}`, "Collected", `Best 17-0 streak ${fmt(rm.bestStreak)} · ${fmt(rm.titles)} title${n(rm.titles)===1?"":"s"}`)}
-    ${(all => { const key = dlKey(), day = all.days[key] || {tries:[]}, best = d17Best(day.tries), ever = d17AllBest(all), used = d17Used(day);
-      const ranked = [...day.tries].sort((a,b)=>d17Better(a,b) ? -1 : 1).map(t=>`${n(t.w)}-${n(t.l)} in ${fmtTime(n(t.secs))}`).join(", ");   // this device's tries today, best first
-      const today = used ? `${fmt(used)} of ${D17_TRIES} tries today${ranked ? `: ${ranked}` : ", none finished"}` : "", everS = ever ? `Best ever ${n(ever.w)}-${n(ever.l)} in ${fmtTime(n(ever.secs))} (#${dlNum(ever.key)})` : "";
-      return card("d17", "Daily 17-0", best ? `${n(best.w)}-${n(best.l)}` : "No tries yet", best ? `Best today · ${fmtTime(n(best.secs))}` : `${D17_TRIES - Math.min(used, D17_TRIES)} of ${D17_TRIES} tries left`,
-        [today, everS].filter(Boolean).join(" · ") || "Draft today's spins to set a score", {none:!best, pill: d17Global() ? `<span class="pill">Global</span>` : ""}); })(d17Load())}</div>
-    ${d17Global() ? `${d17NameHTML()}<div id="d17top"></div>` : ""}
+    <div class="lbbar">${seg(LB_TABS, tab, "lbtab", "Leaderboard")}${lbCloud() ? seg([["global","Global"],["me","Me"]], v, "lbview", "Board", " lbview") : ""}</div>
+    ${body}
     ${(id => id ? `<p class="disc">Device id ${esc(String(id).slice(0, 8))}. Quote it to have this device's play stats deleted (see Privacy).</p>` : "")(evOn() ? store.get("seventeen-device", "") : "")}
   </section>`;
-  if(d17Global()){ wireD17Name(); d17TopFill(dlKey()); }
+  if(v==="global" && tab==="daily" && d17Global()){ wireD17Name(); d17TopFill(dlKey()); }
+  if(v==="global" && tab==="seasons" && signedIn()) lbSeasonsFill(st.mode, st.level);
   $("#back").onclick = renderHome; $("#homebtn").onclick = renderHome; wireLook();
+  if($("#lbsignin")) $("#lbsignin").onclick = openAcct;
+  document.querySelectorAll("[data-lbtab]").forEach(b=>b.onclick=()=>{ lbSet({tab:b.dataset.lbtab}); renderBoards(); });
+  document.querySelectorAll("[data-lbview]").forEach(b=>b.onclick=()=>{ lbSet({view:b.dataset.lbview}); renderBoards(); });
+  document.querySelectorAll("[data-lbmode]").forEach(b=>b.onclick=()=>{ lbSet({mode:b.dataset.lbmode}); renderBoards(); });
+  document.querySelectorAll("[data-lblevel]").forEach(b=>b.onclick=()=>{ lbSet({level:b.dataset.lblevel}); renderBoards(); });
   document.querySelectorAll("[data-runs]").forEach(b=>b.onclick=()=>renderBoard(b.dataset.runs, "all"));
-  const on = document.querySelector(`.bcard[data-area="${area==="daily" ? "td" : area}"]`);   // the tab the player came from
+  const on = area && v==="me" && document.querySelector(`.bcard[data-area="${area==="daily" ? "td" : area}"]`);   // the card the player came from
   if(on){ on.classList.add("on"); on.scrollIntoView({block:"nearest"}); }
 }
+// Global season board: the top 50 of scores for one mode and level (the server orders it like better()), the caller's row marked; when the
+// caller is not in the top 50, his row comes from a second read on user_id and is pinned under the list. The list scrolls inside the
+// screen so the tabs, the toggle and the chips stay put on a phone. A missing table or function is a line, never a crash.
+async function lbSeasonsFill(mode, level){
+  const box = $("#lbg"); if(!box) return;
+  const tok = lbSeasonsFill.tok = (lbSeasonsFill.tok||0)+1, uid = myId(), live = () => tok===lbSeasonsFill.tok && $("#lbg")===box;
+  const q = `/rest/v1/scores?select=user_id,name,w,l,stage,secs&mode=eq.${encodeURIComponent(mode)}&level=eq.${encodeURIComponent(level)}`;
+  const r = await api(`${q}&order=w.desc,stage.desc,secs.asc&limit=50`); if(!live()) return;
+  if(!r.ok || !Array.isArray(r.data)){ box.innerHTML = `<p class="hint">${r.net ? "Offline: the global board needs a connection." : "The global board is not available right now."}</p>`; return; }
+  const rows = r.data.filter(x=>x && typeof x==="object").slice(0, 50);
+  let pin = null;
+  if(uid && !rows.some(x=>x.user_id===uid)){ const m = await api(`${q}&user_id=eq.${encodeURIComponent(uid)}`); if(!live()) return; pin = m.ok && Array.isArray(m.data) && m.data[0] || null; }
+  const myName = cleanName(getName()), label = x => x.user_id===uid ? (myName || "Pick a board name") : (cleanName(x.name) || "Player");
+  const li = (x, rank) => `<li${x.user_id===uid ? ' class="me"' : ""}><span class="cn">${rank}. ${esc(label(x))}</span><span class="num">${lbNum(x.w)}-${lbNum(x.l)}</span><span class="num">${fmtTime(lbNum(x.secs))}</span></li>`;
+  box.innerHTML = rows.length ? `<ol class="d17rows gbrows">${rows.map((x,i)=>li(x, i+1)).join("")}</ol>${pin ? `<ol class="d17rows gbpin">${li(pin, "50+")}</ol>` : ""}`
+    : `<p class="hint">No ${MODES[mode].label} ${LEVELS[level].label} runs on the global board yet. Finish a season to get on it.</p>`;
+  const ol = box.querySelector(".gbrows"); if(!ol) return;
+  const pinH = (box.querySelector(".gbpin")||{offsetHeight:0}).offsetHeight;
+  ol.style.maxHeight = Math.max(150, Math.floor(innerHeight - ol.getBoundingClientRect().top - pinH - 16)) + "px";
+  const over = document.documentElement.scrollHeight - innerHeight;   // the screen's bottom padding and the device line: trim until the page itself does not scroll
+  if(over > 0) ol.style.maxHeight = Math.max(150, ol.clientHeight - over) + "px";
+}
+const lbNum = v => Number.isFinite(+v) ? Math.max(0, Math.round(+v)) : 0;
 
 // Share cards (1.6.2, aso plan D4): text only, through shareCard (the share sheet on the app, the clipboard on the web). Every card ends
 // with the play page, never the App Store URL (the page carries the Smart App Banner). The season card's strip is the 17 regular-season
@@ -6813,7 +7744,7 @@ function renderBoards(area){
 const SHARE_URL = "https://jtaylen.github.io/17-0-play/";   // with https: email apps and some messengers link only a full URL
 const winStrip = season => season.map(g=>g.win?"🟩":"🟥").join("");
 // Packs: the rarest card on the roster (the Baby GOAT, then Mythic, the season families, a Legend variant, then the top OVR); other modes: the best card.
-const RARE_RANK = {mythic:5, ghouls:4, turkey:4, moment:4, rookie:4, throwback:4, farewell:4, legend:3};
+const RARE_RANK = {mythic:5, winner:4.5, ghouls:4, turkey:4, moment:4, rookie:4, throwback:4, farewell:4, legend:3};
 function rarestPick(){
   const rank = p => p.gronk ? 9 : p.v ? (RARE_RANK[p.v.fam]||2) : 0;
   const p = SLOTS.map(s=>S.roster[s.key]).filter(Boolean).reduce((a,b)=>!a || rank(b)>rank(a) || (rank(b)===rank(a) && b.ovr>a.ovr) ? b : a, null);
@@ -6828,6 +7759,91 @@ function share(w,l,d17){
   const qb = S.roster[SLOTS.find(s=>s.acc.includes("QB")).key];
   shareCard(`17-0: Draft a Perfect Season\n${strip}${tail}\n${dec(qb.decade)} ${TEAMS[qb.draftedFor][1]} · ${MODES[S.mode].label} ${LEVELS[S.level].label} · ${w}-${l}\n${rarestPick()}\n${SHARE_URL}`);
 }
+// ---------- v12 lane F: the Ideas inbox (D6) ----------
+// The envelope in the Home corner opens #ideasov (an .overlay with its own .sheet.ideas). Reading is open to everyone; posting, voting and
+// reporting need signedIn(). The server functions (supabase/v12-ideas.sql) are the real gate; the word list here only saves a round trip.
+// Whole words only (an optional plural s), so an innocent word that contains a banned one passes.
+const ideaBad = s => !cleanText(s).ok;   // the chat lane's filter (one word list, data-build/v12/words.json): words, links and phone numbers
+const IDEA_SUPPORT = "https://jtaylen.github.io/17-0-play/support.html";
+const IDEAS = {list:null, err:""};   // list: null while loading, else the rows ideas_list returned
+const ideaAge = t => { const m = Math.max(0, Math.floor((Date.now() - new Date(t).getTime()) / 60000)); return m < 1 ? "now" : m < 60 ? m+"m" : m < 1440 ? Math.floor(m/60)+"h" : Math.floor(m/1440)+"d"; };
+function ideaErr(r){
+  if(r.net) return "Offline: try again when you're connected";
+  if(r.status === 404) return "Ideas aren't available yet";
+  const m = errMsg(r);
+  return /too_soon/.test(m) ? "One idea every 10 minutes. Try again soon." : /banned_word/.test(m) ? "That word is not allowed" : /bad_length/.test(m) ? "Ideas are 3 to 140 characters." : /not_signed_in/.test(m) ? "Sign in to do that." : "Couldn't do that: "+m;
+}
+function ideaKey(e){ if(e.key === "Escape") closeIdeas(); }
+function closeIdeas(){ $("#ideasov")?.remove(); removeEventListener("keydown", ideaKey); }
+function openIdeas(){
+  closeIdeas(); IDEAS.list = null; IDEAS.err = "";
+  const on = signedIn(), ov = document.createElement("div"); ov.className = "overlay"; ov.id = "ideasov";
+  ov.onclick = e => { if(e.target === ov) closeIdeas(); };
+  ov.innerHTML = `<div class="sheet ideas" role="dialog" aria-modal="true" aria-labelledby="idt">
+    <div class="actop"><h2 id="idt">Ideas</h2><button class="ghost" id="idclose">Close</button></div>
+    <div class="ipost">${on ? `<textarea id="ideatxt" maxlength="140" rows="2" placeholder="Got an idea for 17-0? 3 to 140 characters." aria-label="Your idea"></textarea>
+      <div class="irow"><span class="icount" id="ideacount">0/140</span><button class="btn" id="ideapost">Post</button></div><p class="msg" id="ideamsg"></p>`
+      : `<p>Sign in to post and vote.</p><div class="actions"><button class="btn alt" id="ideaacct">Account</button></div>`}</div>
+    <ul id="ideaslist"></ul>
+    <p class="ifoot">Be decent. Ideas with three reports are hidden. Report abuse: <a href="${IDEA_SUPPORT}" target="_blank" rel="noopener">support</a></p>
+  </div>`;
+  document.body.appendChild(ov); addEventListener("keydown", ideaKey);
+  $("#idclose").onclick = closeIdeas;
+  if(on){
+    const ta = $("#ideatxt"); ta.oninput = () => { $("#ideacount").textContent = ta.value.length+"/140"; };
+    $("#ideapost").onclick = ideaPost;
+  } else $("#ideaacct").onclick = () => { closeIdeas(); openAcct(); };
+  paintIdeas(); loadIdeas();
+}
+async function loadIdeas(){
+  const r = await api("/rest/v1/rpc/ideas_list", {method:"POST", body:{p_limit:100}});
+  if(!$("#ideasov")) return;
+  if(r.ok && Array.isArray(r.data)){ IDEAS.list = r.data; IDEAS.err = ""; } else { IDEAS.list = []; IDEAS.err = ideaErr(r); }
+  paintIdeas();
+}
+function paintIdeas(){
+  const ul = $("#ideaslist"); if(!ul) return;
+  const on = signedIn(), L = IDEAS.list;
+  if(L === null){ ul.innerHTML = `<li class="hint">Loading ideas…</li>`; return; }
+  if(IDEAS.err){ ul.innerHTML = `<li class="hint">${esc(IDEAS.err)}</li>`; return; }
+  if(!L.length){ ul.innerHTML = `<li class="hint">No ideas yet. Be the first.</li>`; return; }
+  ul.innerHTML = L.map(x => `<li class="idea" data-id="${x.id}"><p class="ibody">${esc(x.body)}</p>
+    <div class="imeta"><span class="who">${esc(cleanName(x.name) || "A player")} · ${ideaAge(x.created_at)}</span>
+      <button class="iv up" data-v="1" aria-pressed="${x.myvote===1}" aria-label="Like"${on?"":" disabled"}>▲ <span class="n">${+x.up||0}</span></button>
+      <button class="iv dn" data-v="-1" aria-pressed="${x.myvote===-1}" aria-label="Dislike"${on?"":" disabled"}>▼</button>
+      ${on && !x.mine ? `<button class="irep" data-rep="1">Report</button>` : ""}</div></li>`).join("");
+  ul.querySelectorAll(".idea").forEach(li => {
+    const id = +li.dataset.id, row = IDEAS.list.find(x => +x.id === id);
+    li.querySelectorAll(".iv").forEach(b => b.onclick = () => ideaVote(row, +b.dataset.v === row.myvote ? 0 : +b.dataset.v));
+    const rep = li.querySelector(".irep"); if(rep) rep.onclick = () => ideaReport(row);
+  });
+}
+async function ideaPost(){
+  const ta = $("#ideatxt"), btn = $("#ideapost"), m = $("#ideamsg"), t = ta.value.replace(/\s+/g, " ").trim();
+  const say = (s, bad) => { m.textContent = s; m.classList.toggle("bad", !!bad); };
+  if(t.length < 3 || t.length > 140) return say("Ideas are 3 to 140 characters.", true);
+  if(ideaBad(t)) return say("That word is not allowed", true);
+  btn.disabled = true; say("");
+  const r = await clQueue(() => api("/rest/v1/rpc/idea_post", {method:"POST", body:{p_body:t}}));
+  if(!$("#ideasov")) return;
+  btn.disabled = false;
+  if(!r.ok) return say(ideaErr(r), true);
+  ta.value = ""; $("#ideacount").textContent = "0/140"; say("Posted. Thanks!"); loadIdeas();
+}
+async function ideaVote(row, v){
+  const r = await clQueue(() => api("/rest/v1/rpc/idea_vote", {method:"POST", body:{p_id:row.id, p_v:v}}));
+  if(!$("#ideasov")) return;
+  const d = Array.isArray(r.data) ? r.data[0] : r.data;
+  if(!r.ok || !d) return cloudErr(ideaErr(r));
+  row.up = +d.up || 0; row.myvote = +d.myvote || 0; paintIdeas();
+}
+async function ideaReport(row){
+  const r = await clQueue(() => api("/rest/v1/rpc/idea_report", {method:"POST", body:{p_id:row.id}}));
+  if(!$("#ideasov")) return;
+  if(!r.ok) return cloudErr(ideaErr(r));
+  IDEAS.list = IDEAS.list.filter(x => x !== row); paintIdeas(); toast("Reported. Thanks.");
+}
+// ---------- end v12 lane F ----------
 function toast(t){
   const d = document.createElement("div"), th = phoneUI() && $(".dcol #thumb"); d.className = "toast"; d.textContent=t;
   if(th) d.style.bottom = Math.round(innerHeight - th.getBoundingClientRect().top + 12) + "px";   // phone draft screens: 12 px above the thumb row (its height + the safe area), never over the header
@@ -6862,6 +7878,231 @@ function confetti(depth){
   draw();
 }
 
+
+// ---------- v12 lane C: chat filter (BANNED_SUBS and BANNED are data-build/v12/words.json; data-build/v12/words_test.mjs runs this block) ----------
+// cleanText(s) -> {ok, word, why}: refuses a link (http://, https://, www.), a phone number (7 digits in a row, or 3-3-4 with separators)
+// and a banned word. Words match whole tokens only (the Scunthorpe problem): lowercase, split on anything that is not a letter or a
+// substitute character, apply the substitutions (once as typed, once with the substitutes at the token's ends dropped, so "shit!" and
+// "a$$" both read), then match each token against every word's pattern (bannedRe): a single letter may repeat (f+u+c+k+), a double
+// letter needs at least two (a+s{2,}, so "as" passes and "asssss" does not), plus a plural (-s, or -es after s, sh, ch, x, z).
+// supabase/v12-chat.sql seeds banned_words with the same word and pattern pairs, and chat_bad runs the same steps on the server.
+const BANNED_SUBS = {"@":"a","4":"a","0":"o","3":"e","1":"i","!":"i","$":"s","5":"s","7":"t"};
+const BANNED = new Set([
+  "fuck","fucks","fucked","fucker","fuckers","fucking","fuckin","fuckhead","fuckface","fuckwit","fuckoff","fucktard","fuckboy","motherfucker","motherfuckers",
+  "motherfucking","mofo","mf","mfer","stfu","gtfo","wtf","fck","fcking","fuk","fuking","fuq","phuck","shit","shits","shitty","shithead","shitface","shithole",
+  "shitbag","shitter","bullshit","horseshit","dipshit","apeshit","batshit","shite","ass","asshole","assholes","asshat","asswipe","assclown","jackass","dumbass",
+  "fatass","smartass","kissass","arse","arsehole","bitch","bitches","bitchy","bitching","sonofabitch","biatch","bastard","bastards","cunt","cunts","cunty",
+  "dickhead","dickheads","dickface","dickwad","dicksucker","cock","cocks","cocksucker","cocksuckers","cockhead","pussy","pussies","twat","twats","prick","pricks",
+  "wanker","wankers","wank","wanking","bollocks","bellend","knobhead","tosser","piss","pissed","pissing","pisser","douche","douchebag","douchebags","slut",
+  "sluts","slutty","whore","whores","skank","skanks","thot","jizz","cumshot","cumslut","dildo","dildos","porn","porno","pornhub","blowjob","handjob","rimjob",
+  "tits","titties","boobs","boobies","penis","vagina","rape","raped","raping","rapist","rapists","molest","molester","pedo","pedophile","paedophile","retard",
+  "retards","retarded","nigger","niggers","nigga","niggas","niggaz","nigg","niglet","negro","coon","coons","darkie","jigaboo","porchmonkey","junglebunny",
+  "sambo","chink","chinks","gook","gooks","chingchong","spic","spics","spick","wetback","beaner","beaners","kike","kikes","heeb","hymie","dago","raghead",
+  "towelhead","sandnigger","cameljockey","paki","pakis","pikey","honky","fag","fags","faggot","faggots","faggy","fagot","dyke","dykes","lesbo","homo","homos",
+  "tranny","trannies","shemale","nazi","nazis","hitler","heil","kkk","siegheil","whitepower","killyourself","kys"
+]);
+const bannedPat = w => "^" + w.replace(/(.)\1*/g, r => r.length===1 ? r+"+" : `${r[0]}{${r.length},}`) + (/(s|sh|ch|x|z)$/.test(w) ? "(es|s)?" : "s?") + "$";
+const BANNED_RE = [...BANNED].map(w => [w, new RegExp(bannedPat(w))]);
+function cleanText(s){
+  s = String(s ?? "");
+  if(/https?:\/\/|www\./i.test(s)) return {ok:false, word:null, why:"link"};
+  if(/\d{7,}/.test(s) || /\d{3}[\s.)-]+\d{3}[\s.-]+\d{4}/.test(s)) return {ok:false, word:null, why:"phone"};
+  const sub = t => [...t].map(c => BANNED_SUBS[c] || c).join("");
+  for(const tk of s.toLowerCase().split(/[^a-z@4031!$57]+/))
+    for(const t of new Set([sub(tk), sub(tk.replace(/^[^a-z]+|[^a-z]+$/g, ""))])){
+      if(!t) continue;
+      const hit = BANNED_RE.find(([, re]) => re.test(t));
+      if(hit) return {ok:false, word:hit[0], why:"word"};
+    }
+  return {ok:true, word:null, why:null};
+}
+// ---------- /v12 lane C: chat filter ----------
+
+// ---------- v12 lane C: the global chat (docs/chat.md, supabase/v12-chat.sql) ----------
+// A 44 px button in the Home corner (accounts on) opens a full-height sheet on #ov: the last 100 messages, polled every 5 s while the
+// sheet is open and the page is visible (one setInterval, cleared on close, in renderHome and on visibilitychange hidden). Anyone may
+// read; posting needs signedIn() and the account's age_ok (the gate sheet, nothing behind it); the server re-checks both, the filter,
+// the mute and the 3 s limit. An attachment is built by the game only: {kind:"card", key, fam} from the Ring or
+// {kind:"trivia", t:"td"|"nfl", a, b} from today's TD Trivia (touchdowns, today's yards) or NFL Trivia (found, list length); every
+// other shape is dropped on read. No store: age_ok lives on the saves row (CHAT.age caches the confirmed user id for this visit).
+const CHAT = {msgs:[], last:0, timer:null, att:null, age:null, sent:0, q:Promise.resolve(), gone:new Set(), vis:false};
+const CHAT_HELP = "https://jtaylen.github.io/17-0-play/support.html";
+const chatBtnHTML = () => acctOn() ? `<button class="ghost chatbtn" id="chatbtn" aria-label="Chat"><span>Chat</span></button>` : "";
+const chatLive = () => !!document.querySelector("#ov.chatov");
+function chatStop(){ clearInterval(CHAT.timer); CHAT.timer = null; }
+function chatPoll(){ chatStop(); if(chatLive() && document.visibilityState!=="hidden") CHAT.timer = setInterval(() => { if(chatLive()) chatFetch(); else chatStop(); }, 5000); }
+function chatKey(e){ if(e.key==="Escape" && !$("#cardov")) chatClose(); }
+function chatClose(){ chatStop(); document.querySelector("#ov.chatov")?.remove(); removeEventListener("keydown", chatKey); }
+const chatAge = ts => { const s = Math.max(0, (Date.now() - Date.parse(ts)) / 1000);
+  return s < 60 ? "now" : s < 3600 ? Math.floor(s/60)+"m" : s < 86400 ? Math.floor(s/3600)+"h" : Math.floor(s/86400)+"d"; };
+const chatInt = v => Number.isInteger(v) && v >= 0 && v <= 999;
+// Only the two shapes the game builds pass; anything else is no attachment.
+function chatAttOk(a){
+  if(!a || typeof a!=="object" || Array.isArray(a)) return false;
+  const k = Object.keys(a);
+  if(a.kind==="card") return k.every(x=>["kind","key","fam"].includes(x)) && typeof a.key==="string" && (a.fam==null || typeof a.fam==="string");
+  if(a.kind==="trivia") return k.every(x=>["kind","t","a","b"].includes(x)) && (a.t==="td" || a.t==="nfl") && chatInt(a.a) && chatInt(a.b);
+  return false;
+}
+// The family title a card attachment stands for (the title the Ring stores for that family), "" for a base card.
+function chatFamTitle(p, fam){
+  const key = ringKey(p), st = p.stints, prim = primaryTeam(p), z = seasonSet(key, fam);
+  const t = fam==="mythic" ? MYTHIC_BY_KEY.get(key)?.title : fam==="moment" ? MOMENT.get(key)?.title : fam==="legend" ? VARIANT.get(key)?.title
+    : z ? seasonTitle(z, p.name) : fam==="rookie" ? altV(p, fam, st.find(s=>s.from===p.from) || st[0]).title
+    : fam==="throwback" ? altV(p, fam, st.find(s=>s.t!==prim) || st[0]).title : fam==="farewell" ? altV(p, fam, st.find(s=>s.from<=p.to && s.to>=p.to) || st[st.length-1]).title : "";
+  return t && famOfTitle(key, t)===fam ? t : "";
+}
+const chatCardR = a => { const p = byKey().get(a.key); if(!p) return null; const t = FAM[a.fam] ? chatFamTitle(p, a.fam) : ""; return {p, t, r:{o:p.ovr, n:1, v:t ? [t] : []}}; };
+const chatWord = (fam, o) => FAM[fam] ? FAM[fam].label.toLowerCase().replace(/\b[a-z]/g, c=>c.toUpperCase()) : tierOf(o).label;
+// The chip: a card renders the Ring's tile (sprite, family plate) and "Ace's Moment Randy Moss"; a trivia result one line. who = the poster's name.
+function chatChip(a, who, at){
+  if(!chatAttOk(a)) return "";
+  if(a.kind==="card"){ const c = chatCardR(a); if(!c) return "";
+    return `<button class="chchip chcard" data-ck="${esc(a.key)}" data-cf="${esc(c.t ? a.fam : "")}">${ringTile(c.p, c.r)}<span class="chcap">${esc(who)}'s ${chatWord(c.t ? a.fam : "", c.p.ovr)} ${esc(c.p.name)}</span></button>`; }
+  const txt = a.t==="td" ? `TD Trivia: ${a.a} TD${a.a===1 ? "" : "s"}, ${a.b} yds` : `NFL Trivia #${dlNum(dlKey(at ? new Date(at) : new Date()))}: ${a.a} of ${a.b}`;
+  return `<span class="chchip chtriv">${txt}</span>`;
+}
+// What the picker offers: the Ring's best 12 by OVR (each with its best family) and today's finished trivia.
+function chatOffers(){
+  const R = loadRing(), cards = Object.entries(R.p).map(([k,r])=>({k, r, p:byKey().get(k)})).filter(x=>x.p).sort((a,b)=>(b.r.o||0)-(a.r.o||0)).slice(0, 12)
+    .map(x=>{ const bt = bestTitle(x.k, x.r); return {kind:"card", key:x.k, fam:bt ? famOfTitle(x.k, bt) : ""}; });
+  const triv = [], key = dlKey(), d = dlLoad().days[key], dr = d && dlDrive(d);
+  if(dr && dr.done) triv.push({kind:"trivia", t:"td", a:Math.min(999, dlTDs(dlLoad())), b:Math.max(0, Math.min(999, dr.yds))});
+  const nd = ntLoad().days[key];
+  if(nd && nd.end && nd.id===ntQid(key)) triv.push({kind:"trivia", t:"nfl", a:Math.min(999, nd.f.length), b:Math.min(999, ntN(nd.id))});
+  return {cards, triv};
+}
+const chatMe = () => cleanName(getName()) || "My";
+function chatRowHTML(m){
+  return `<div class="chmsg${m.mine ? " mine" : ""}" data-id="${m.id}"><div class="chhd"><b>${esc(m.name || "Player")}</b><span class="chage">${chatAge(m.created_at)}</span>${m.mine || !signedIn() ? "" : `<button class="chmore" data-more="${m.id}" aria-label="Report or block">...</button>`}</div>
+    <p class="chbody">${esc(m.body)}</p>${chatChip(m.attach, m.name || "Player", m.created_at)}${m.mine || !signedIn() ? "" : `<div class="chacts" hidden><button data-rep="${m.id}">Report</button><button data-blk="${m.id}">Block</button></div>`}</div>`;
+}
+// The sheet's frame; body() fills #chmain (the gate, or the list plus the send row).
+function chatSheet(){
+  document.body.insertAdjacentHTML("beforeend", `<div class="overlay chatov" id="ov"><div class="sheet chat" role="dialog" aria-modal="true" aria-labelledby="chtt">
+    <div class="chtop"><h2 id="chtt">Chat</h2><button class="ghost" id="chclose">Close</button></div><div class="chmain" id="chmain"><p class="hint">Loading...</p></div></div></div>`);
+  $("#chclose").onclick = chatClose; $("#ov").onclick = e => { if(e.target.id==="ov") chatClose(); };
+  addEventListener("keydown", chatKey);
+}
+async function openChat(){
+  chatClose(); CHAT.msgs = []; CHAT.last = 0; CHAT.att = null;
+  if(!CHAT.vis){ CHAT.vis = true; document.addEventListener("visibilitychange", () => { if(document.visibilityState==="hidden") chatStop(); else if(chatLive() && $("#chlist")){ chatFetch(); chatPoll(); } }); }
+  chatSheet();
+  if(signedIn() && !await chatAgeOk()){ if(chatLive()) chatGate(); return; }
+  if(chatLive()) chatBody();
+}
+// The account's age_ok, read from its saves row (a missing column or row reads as not yet confirmed).
+async function chatAgeOk(){
+  const id = myId(); if(CHAT.age && CHAT.age===id) return true;
+  const r = await api(`/rest/v1/saves?select=age_ok&user_id=eq.${encodeURIComponent(id)}`);
+  const ok = r.ok && Array.isArray(r.data) && !!r.data[0] && r.data[0].age_ok===true;
+  if(ok) CHAT.age = id;
+  return ok;
+}
+function chatGate(){
+  $("#chmain").innerHTML = `<div class="chgate"><p><b>You must be 13 or older to use chat.</b></p><p class="hint">Chat is one room for every player. Be decent: report or block anyone who isn't.</p>
+    <div class="actions"><button class="btn" id="chage">I am 13 or older</button><button class="btn alt" id="chno">Not now</button></div></div>`;
+  $("#chno").onclick = chatClose;
+  $("#chage").onclick = async e => {
+    e.target.disabled = true;
+    const r = await api("/rest/v1/rpc/chat_age_ok", {method:"POST", body:{}});
+    if(!chatLive()) return;
+    if(!r.ok){ e.target.disabled = false; return toast(r.net ? "Offline: try again when you're connected" : r.status===404 ? "Chat isn't open yet" : "Couldn't confirm: "+errMsg(r)); }
+    CHAT.age = myId(); chatBody();
+  };
+}
+function chatBody(){
+  const on = signedIn();
+  $("#chmain").innerHTML = `<div class="chlist" id="chlist"><p class="hint">Loading...</p></div>
+    <div class="chpick" id="chpick" hidden></div>
+    ${on ? `<div class="chsend"><div class="chatt" id="chatt"></div><textarea id="chtx" maxlength="200" rows="2" placeholder="Say something (no links)" aria-label="Message"></textarea>
+      <div class="chrow"><button class="ghost" id="chattb">Attach</button><span class="chcount num" id="chcount">0/200</span><button class="btn" id="chgo">Send</button></div><p class="msg bad" id="chmsg"></p></div>`
+    : `<div class="chsend out"><p>Sign in to chat.</p><button class="btn" id="chacct">Account</button></div>`}
+    <p class="chfoot">Be decent. Three reports hide a message. Tap ... on a message to report or block its sender. <a href="${CHAT_HELP}" target="_blank" rel="noopener">Contact us</a></p>`;
+  const list = $("#chlist");
+  list.onclick = e => {
+    const b = e.target.closest("button"); if(!b) return;
+    if(b.dataset.more){ const a = b.closest(".chmsg").querySelector(".chacts"); if(a) a.hidden = !a.hidden; }
+    else if(b.dataset.rep) chatReport(+b.dataset.rep);
+    else if(b.dataset.blk) chatBlock(+b.dataset.blk);
+    else if(b.dataset.ck){ const c = chatCardR({key:b.dataset.ck, fam:b.dataset.cf}); if(c) openCard(ringCard(c.p, c.r), "ring"); }
+  };
+  if(on){
+    const tx = $("#chtx");
+    tx.oninput = () => { $("#chcount").textContent = `${tx.value.length}/200`; $("#chmsg").textContent = ""; };
+    $("#chgo").onclick = chatSend;
+    $("#chattb").onclick = chatPicker;
+    tx.onkeydown = e => { if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); chatSend(); } };
+  } else $("#chacct").onclick = () => { chatClose(); openAcct(); };
+  chatFetch(); chatPoll();
+}
+// One request at a time (CHAT.q): a poll never races a full reload. full = the whole last 100 again (after a block).
+function chatFetch(full){
+  return CHAT.q = CHAT.q.then(async () => {
+    if(!chatLive()) return;
+    const r = await api("/rest/v1/rpc/chat_list", {method:"POST", body:{p_after:full ? 0 : CHAT.last}});
+    const list = $("#chlist"); if(!chatLive() || !list) return;
+    if(!r.ok){ if(!CHAT.msgs.length) list.innerHTML = `<p class="hint">${r.net ? "Offline: chat loads when you're connected" : r.status===404 ? "Chat isn't open yet" : "Couldn't load chat"}</p>`; return; }
+    const rows = (Array.isArray(r.data) ? r.data : []).filter(m=>m && Number.isInteger(m.id) && typeof m.body==="string" && cleanText(m.body).ok && !CHAT.gone.has(m.id)).sort((a,b)=>a.id-b.id);
+    const end = list.scrollHeight - list.scrollTop - list.clientHeight < 40 || !CHAT.msgs.length;   // at the bottom: follow new messages; scrolled up: stay put
+    const fresh = full ? rows : rows.filter(m=>m.id > CHAT.last);
+    CHAT.last = Math.max(CHAT.last, ...rows.map(m=>m.id));
+    CHAT.msgs = (full ? rows : [...CHAT.msgs, ...fresh]).slice(-100);
+    if(full || !list.querySelector(".chmsg")) list.innerHTML = CHAT.msgs.length ? CHAT.msgs.map(chatRowHTML).join("") : `<p class="hint">No messages yet. Say hi.</p>`;
+    else { list.insertAdjacentHTML("beforeend", fresh.map(chatRowHTML).join("")); const all = list.querySelectorAll(".chmsg"); for(let i = 0; i < all.length - 100; i++) all[i].remove(); }
+    fillSprites(list);
+    if(end) list.scrollTop = list.scrollHeight;
+  });
+}
+function chatNote(t){ const m = $("#chmsg"); if(m) m.textContent = t; }
+async function chatSend(){
+  const tx = $("#chtx"), b = $("#chgo"); if(!tx || b.disabled) return;
+  const body = tx.value.trim();
+  if(!body) return chatNote("Type a message first.");
+  if(body.length > 200) return chatNote("200 characters at most.");
+  const c = cleanText(body);
+  if(!c.ok) return chatNote(c.why==="link" ? "Links aren't allowed in chat." : c.why==="phone" ? "Phone numbers aren't allowed in chat." : "That word isn't allowed.");
+  if(Date.now() - CHAT.sent < 3000) return chatNote("One message every 3 seconds.");
+  b.disabled = true;
+  const r = await api("/rest/v1/rpc/chat_post", {method:"POST", body:{p_body:body, p_attach:CHAT.att}});
+  b.disabled = false;
+  if(!chatLive()) return;
+  if(!r.ok){ const e = errMsg(r);
+    return chatNote(r.net ? "Offline: not sent." : r.status===404 ? "Chat isn't open yet." : /muted/.test(e) ? "You can't post in chat right now." : /slow/.test(e) ? "One message every 3 seconds."
+      : /age/.test(e) ? (CHAT.age = null, chatGate(), "") : /word|link|phone|attach|length/.test(e) ? "That message isn't allowed." : "Not sent: "+e); }
+  CHAT.sent = Date.now(); tx.value = ""; tx.oninput(); CHAT.att = null; chatAttDraw();
+  chatFetch();
+}
+function chatAttDraw(){
+  const box = $("#chatt"); if(!box) return;
+  box.innerHTML = CHAT.att ? `${chatChip(CHAT.att, chatMe(), null)}<button class="ghost chattx" id="chattx" aria-label="Remove the attachment">Remove</button>` : "";
+  fillSprites(box);
+  $("#chattx")?.addEventListener("click", () => { CHAT.att = null; chatAttDraw(); });
+}
+function chatPicker(){
+  const pk = $("#chpick"); if(!pk) return;
+  if(!pk.hidden){ pk.hidden = true; return; }
+  const o = chatOffers();
+  pk.innerHTML = `<h3>A card from my Ring</h3>${o.cards.length ? `<div class="chcards">${o.cards.map((a,i)=>{ const c = chatCardR(a); return c ? `<button class="chpk" data-pi="c${i}">${ringTile(c.p, c.r)}</button>` : ""; }).join("")}</div>` : `<p class="hint">Your Ring is empty: go 17-0 in Packs to bank cards.</p>`}
+    <h3>My trivia today</h3>${o.triv.length ? `<div class="chtrivs">${o.triv.map((a,i)=>`<button class="chpk" data-pi="t${i}">${chatChip(a, chatMe(), null)}</button>`).join("")}</div>` : `<p class="hint">Finish today's TD Trivia or NFL Trivia to share it.</p>`}
+    <div class="actions"><button class="ghost" id="chpickx">Cancel</button></div>`;
+  pk.hidden = false; fillSprites(pk);
+  $("#chpickx").onclick = () => { pk.hidden = true; };
+  pk.querySelectorAll("[data-pi]").forEach(b=>b.onclick = () => { const i = b.dataset.pi; CHAT.att = i[0]==="c" ? o.cards[+i.slice(1)] : o.triv[+i.slice(1)]; pk.hidden = true; chatAttDraw(); });
+}
+async function chatReport(id){
+  const r = await api("/rest/v1/rpc/chat_report", {method:"POST", body:{p_id:id}});
+  if(!r.ok) return toast(r.net ? "Offline: try again when you're connected" : r.status===404 ? "Chat isn't open yet" : "Couldn't report: "+errMsg(r));
+  CHAT.gone.add(id); CHAT.msgs = CHAT.msgs.filter(m=>m.id!==id); document.querySelector(`.chmsg[data-id="${id}"]`)?.remove();
+  toast("Reported. Thanks: we read every report.");
+}
+async function chatBlock(id){
+  const r = await api("/rest/v1/rpc/chat_block", {method:"POST", body:{p_user_of_msg:id}});
+  if(!r.ok) return toast(r.net ? "Offline: try again when you're connected" : r.status===404 ? "Chat isn't open yet" : "Couldn't block: "+errMsg(r));
+  toast("Blocked. You won't see their messages.");
+  chatFetch(true);   // the server leaves the blocked sender out of every list from now on; reload the 100 so his rows on screen go too
+}
+// ---------- /v12 lane C: the global chat ----------
 
 const DISCLAIMER = "Unofficial fan game. Not affiliated with the NFL, NFLPA, any team or player.";
 renderHome(); firstRunPick();
