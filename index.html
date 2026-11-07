@@ -969,6 +969,7 @@ body.retro .acmail{font-family:var(--px);font-weight:400;font-size:10px;letter-s
 .lbchips{display:flex;flex-wrap:wrap;gap:8px;max-width:560px;margin:0 0 8px}
 .lbsign{max-width:560px;margin-top:14px}
 .lbsign p{margin:0 0 10px}
+.lbsign .applebtn,.chsend .applebtn,.ideas .actions .applebtn,.dprules .applebtn{max-width:360px;margin:0}
 .gbrows{overflow:auto;overscroll-behavior:contain;margin-top:6px}
 .gbpin{margin-top:6px}
 .gbpin li{border-style:dashed}
@@ -1873,6 +1874,8 @@ body.retro .mode .prac{font-family:var(--px);font-weight:400;font-size:8px;lette
 .chpick .actions{justify-content:flex-end;margin-top:0}
 .chsend{flex:none;margin-top:6px;padding-top:8px;border-top:1px solid var(--line)}
 .chsend.out{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.chsend.out:has(.applebtn){flex-wrap:wrap}   /* Apple's button takes its own line under "Sign in to chat." (2026-11-07) */
+.chsend.out .applebtn{flex:1 1 100%;max-width:none}
 .chsend.out p{margin:0;font-weight:600}
 .chatt{display:flex;align-items:center;gap:8px}
 .chatt:not(:empty){margin-bottom:6px}
@@ -3343,7 +3346,7 @@ const dpRulesHTML = signin => `<div class="overlay" id="ov"><div class="sheet" r
       <li>At midnight Phoenix time the top three win a Winner Pack: 1st a Champion pack (a Winner card guaranteed), 2nd an Elite pack (1 in 2), 3rd a Gold pack (1 in 10).</li>
       <li>Winner cards are the only 100 OVR cards. Once you own one it can turn up in your own regular Packs draws, and nobody else's.</li>
     </ol>
-    <div class="actions">${signin ? (acctOn() ? `<button class="btn" id="dpacct">Account</button>` : `<p class="hint">Accounts arrive in the next update.</p>`) : ""}<button class="${signin ? "ghost" : "btn"}" id="closeov">Got it</button></div>
+    <div class="actions">${signin ? (acctOn() ? signInBtnHTML("dpacct") : `<p class="hint">Accounts arrive in the next update.</p>`) : ""}<button class="${signin ? "ghost" : "btn"}" id="closeov">Got it</button></div>
   </div></div>`;
 function dpSheet(html){
   document.body.insertAdjacentHTML("beforeend", html); const close = () => { $("#ov")?.remove(); document.removeEventListener("keydown", k); };
@@ -3351,7 +3354,7 @@ function dpSheet(html){
   $("#closeov").onclick = close; $("#closeov").focus(); $("#ov").onclick = e => { if(e.target.id==="ov") close(); }; document.addEventListener("keydown", k);
   return close;
 }
-function dpRules(signin){ const close = dpSheet(dpRulesHTML(signin)); $("#dpacct") && ($("#dpacct").onclick = () => { close(); openAcct(); }); }
+function dpRules(signin){ const close = dpSheet(dpRulesHTML(signin)); wireSignIn("dpacct", () => { close(); renderHome(); }, close); }
 const dpBoardSheet = () => dpSheet(`<div class="overlay" id="ov"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rt" style="--c:var(--fam-winner)">
     <h2 id="rt">Daily Packs board</h2><p class="hint">${dpDate(dpKey())} · each player's best run: the record, then team OVR, then the clock</p>${dpBoardHTML(dpKey())}
     <div class="actions"><button class="btn" id="closeov">Close</button></div></div></div>`);
@@ -7300,6 +7303,45 @@ async function appleSignIn(){
   return null;
 }
 const logoutToken = t => t && api("/auth/v1/logout", {method:"POST", auth:false, token:t});
+// Apple's login everywhere (2026-11-07): the native sheet in the app; on the web, Apple's own sign-in page through Supabase's OAuth
+// redirect (/auth/v1/authorize?provider=apple), which comes back to the play page with the session in the URL hash (appleWebReturn reads
+// it on boot). Needs the Services ID in Supabase's Apple client ids, its secret key, and the play page in Supabase's redirect allow list
+// (docs/accounts.md). Email stays behind "Use email instead". Under a test hash the web path is off unless the test forces it (window.__appleWeb).
+const appleWeb = () => !appleAvailable() && CLOUD.accounts===true && (window.__appleWeb===undefined ? cloudOn() && !testWin() && /^https?:$/.test(location.protocol) : !!window.__appleWeb);   // a test sets __appleWeb true or false
+const appleAny = () => appleAvailable() || appleWeb();
+let appleWebGo = url => location.assign(url);   // a test swaps this for a spy
+function appleWebStart(){ appleWebGo(`${CLOUD.url.replace(/\/+$/, "")}/auth/v1/authorize?provider=apple&redirect_to=${encodeURIComponent(location.origin + location.pathname)}`); }
+// The round trip lands as #access_token=...&refresh_token=...&expires_in=... (or #error=...&error_description=...).
+const appleWebParse = h => { h = h || ""; if(!/^#(access_token|error|error_description|refresh_token)=/.test(h) && !/[#&](access_token|error_description)=/.test(h)) return null;
+  const p = new URLSearchParams(h.slice(1)); return {at:p.get("access_token") || "", rt:p.get("refresh_token") || "", exp:+p.get("expires_in") || 3600, err:p.get("error_description") || p.get("error") || ""}; };
+async function appleWebSession(t){   // the user behind the token (the hash carries no user), as the id_token path's session shape
+  const r = await api("/auth/v1/user", {auth:false, token:t.at});
+  if(!r.ok || !r.data || !r.data.id){ cloudErr(r.net ? "Offline: try again when you're connected" : "Sign in with Apple failed: "+errMsg(r), r.data); return null; }
+  return {access_token:t.at, refresh_token:t.rt, expires_in:t.exp, user:{id:r.data.id, email:r.data.email}};
+}
+async function appleWebReturn(){
+  const t = appleWebParse(location.hash); if(!t) return false;
+  history.replaceState(null, "", location.pathname + location.search);   // the tokens leave the URL before anything else reads it
+  if(!t.at){ toast(t.err ? "Sign in with Apple failed: " + t.err : "Sign in with Apple failed"); return false; }
+  const d = await appleWebSession(t); if(!d) return false;
+  appleLanded(d, () => { toast("Signed in with Apple"); if($(".home")) renderHome(); }); return true;
+}
+// After Apple answered: another account's progress on this device asks first (the Account panel's claim step); else the session is kept
+// and `after` redraws the screen the player was on (no panel), or without `after` the panel shows signed in.
+function appleLanded(d, after){
+  if(otherOwner(d)){ dropHold(); ACCT.hold = d; ACCT.step = "claim"; ACCT.del = 0; ACCT.mail = 0; renderAcct(); addEventListener("keydown", acctKey); return; }
+  claimSess(d, after);
+}
+// One tap on any Apple button: the web goes to Apple's page; the app opens the sheet (the button reads Signing in… meanwhile).
+function appleTap(b, after){
+  if(appleWeb()){ appleWebStart(); return; }
+  const sp = b && b.querySelector("span"), was = sp && sp.textContent; if(b){ b.disabled = true; if(sp) sp.textContent = "Signing in…"; }
+  appleSignIn().then(d => { if(!d){ if(b && b.isConnected){ b.disabled = false; if(sp) sp.textContent = was; } if($("#acct")) renderAcct(); return; } appleLanded(d, after); });
+}
+const appleBtnHTML = id => `<button class="applebtn" id="${id}" aria-label="Sign in with Apple">${APPLE_GLYPH}<span>Sign in with Apple</span></button>`;
+// A sign-in gate (a global board, the ideas, the chat, Daily Packs): Apple's button when Apple can answer, else the Account panel's button.
+const signInBtnHTML = (id, cls="btn") => appleAny() ? appleBtnHTML(id) : `<button class="${cls}" id="${id}">Account</button>`;
+function wireSignIn(id, after, before){ const b = $("#" + id); if(!b) return; b.onclick = () => { if(appleAny()){ appleTap(b, after); } else { before?.(); openAcct(); } }; }
 async function signOut(){
   const s = getSess(); clearSess(true); dropKey(nameKey());   // local first: game data stays, queued syncs see signed-out and stop
   if(s) await logoutToken(s.access_token);
@@ -7465,8 +7507,9 @@ function sessShow(){
 // ---------- Account panel (#acct) ----------
 const ACCT = {step:"email", email:"", del:0, hold:null, mail:0};   // mail: the email form opened under the Apple button (v12 lane A)
 function dropHold(){ if(ACCT.hold){ logoutToken(ACCT.hold.access_token); ACCT.hold = null; } }
-function claimSess(d){
-  ACCT.hold = null; ACCT.step = "email"; ownSess(d); renderAcct();
+function claimSess(d, after){
+  ACCT.hold = null; ACCT.step = "email"; ownSess(d);
+  if(after){ $("#acct")?.remove(); removeEventListener("keydown", acctKey); after(); } else renderAcct();
   syncAll().then(([x]) => { if(x && x.added>0) toast(`+${x.added} players merged from the cloud`); cloudUI(); maybeNameSheet(); });
 }
 function acctKey(e){ if(e.key==="Escape") closeAcct(); }
@@ -7495,7 +7538,7 @@ function renderAcct(){
     <label class="acf">6-digit code<input id="accode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></label>
     <div class="actions"><button class="btn" id="acin">Sign in</button><button class="btn alt" id="acback">Use another email</button></div>
     <p class="msg bad" id="acmsg"></p>`
-  : appleAvailable() && !ACCT.mail ? `
+  : appleAny() && !ACCT.mail ? `
     <p>Play anywhere: sign in to save your Ring of Honor, records and leaderboard across devices.</p>
     <button class="applebtn" id="acapple" aria-label="Sign in with Apple">${APPLE_GLYPH}<span>Sign in with Apple</span></button>
     <button class="acmail" id="acmail">Use email instead</button>`
@@ -7543,15 +7586,8 @@ function renderAcct(){
       });
     };
     $("#accode").focus();
-  } else if(appleAvailable() && !ACCT.mail){
-    $("#acapple").onclick = e => {
-      const b = e.currentTarget; b.disabled = true; b.querySelector("span").textContent = "Signing in…";
-      appleSignIn().then(d => {
-        if(!d){ renderAcct(); return; }
-        if(otherOwner(d)){ ACCT.hold = d; ACCT.step = "claim"; renderAcct(); return; }
-        claimSess(d);
-      });
-    };
+  } else if(appleAny() && !ACCT.mail){
+    $("#acapple").onclick = e => appleTap(e.currentTarget);
     $("#acmail").onclick = () => { ACCT.mail = 1; renderAcct(); $("#acemail")?.focus(); };
   } else {
     $("#acsend").onclick = e => {
@@ -7680,7 +7716,7 @@ function renderBoards(area, view){
     return card("d17", "Daily 17-0", best ? `${n(best.w)}-${n(best.l)}` : "No tries yet", best ? `Best today · ${fmtTime(n(best.secs))}` : `${D17_TRIES - Math.min(used, D17_TRIES)} of ${D17_TRIES} tries left`,
       [today, everS].filter(Boolean).join(" · ") || "Draft today's spins to set a score", {none:!best, pill: d17Global() ? `<span class="pill">Global</span>` : ""}); };
   const seg = (items, cur, attr, label, cls="") => `<div class="seg${cls}" role="tablist" aria-label="${label}">${items.map(([k,l])=>`<button role="tab" aria-selected="${cur===k}" data-${attr}="${k}">${l}</button>`).join("")}</div>`;
-  const sign = `<div class="lbsign"><p>Sign in to see the global boards.</p>${acctOn() ? `<button class="btn" id="lbsignin">Account</button>` : ""}</div>`;
+  const sign = `<div class="lbsign"><p>Sign in to see the global boards.</p>${acctOn() ? signInBtnHTML("lbsignin") : ""}</div>`;
   let body;
   if(v==="me"){
     const dl = dlLoad(), fin = Object.values(dl.days).filter(d=>d && Array.isArray(d.a) && dlDrive(d).done), yds = Math.max(0, ...fin.map(d=>n(dlDrive(d).yds)));
@@ -7713,7 +7749,7 @@ function renderBoards(area, view){
   if(v==="global" && tab==="daily" && d17Global()){ wireD17Name(); d17TopFill(dlKey()); }
   if(v==="global" && tab==="seasons" && signedIn()) lbSeasonsFill(st.mode, st.level);
   $("#back").onclick = renderHome; $("#homebtn").onclick = renderHome; wireLook();
-  if($("#lbsignin")) $("#lbsignin").onclick = openAcct;
+  wireSignIn("lbsignin", () => renderBoards(null, "global"));
   document.querySelectorAll("[data-lbtab]").forEach(b=>b.onclick=()=>{ lbSet({tab:b.dataset.lbtab}); renderBoards(); });
   document.querySelectorAll("[data-lbview]").forEach(b=>b.onclick=()=>{ lbSet({view:b.dataset.lbview}); renderBoards(); });
   document.querySelectorAll("[data-lbmode]").forEach(b=>b.onclick=()=>{ lbSet({mode:b.dataset.lbmode}); renderBoards(); });
@@ -7797,7 +7833,7 @@ function openIdeas(){
     <div class="actop"><h2 id="idt">Ideas</h2><button class="ghost" id="idclose">Close</button></div>
     <div class="ipost">${on ? `<textarea id="ideatxt" maxlength="140" rows="2" placeholder="Got an idea for 17-0? 3 to 140 characters." aria-label="Your idea"></textarea>
       <div class="irow"><span class="icount" id="ideacount">0/140</span><button class="btn" id="ideapost">Post</button></div><p class="msg" id="ideamsg"></p>`
-      : `<p>Sign in to post and vote.</p><div class="actions"><button class="btn alt" id="ideaacct">Account</button></div>`}</div>
+      : `<p>Sign in to post and vote.</p><div class="actions">${signInBtnHTML("ideaacct", "btn alt")}</div>`}</div>
     <ul id="ideaslist"></ul>
     <p class="ifoot">Be decent. Ideas with three reports are hidden. Report abuse: <a href="${IDEA_SUPPORT}" target="_blank" rel="noopener">support</a></p>
   </div>`;
@@ -7806,7 +7842,7 @@ function openIdeas(){
   if(on){
     const ta = $("#ideatxt"); ta.oninput = () => { $("#ideacount").textContent = ta.value.length+"/140"; };
     $("#ideapost").onclick = ideaPost;
-  } else $("#ideaacct").onclick = () => { closeIdeas(); openAcct(); };
+  } else wireSignIn("ideaacct", () => { closeIdeas(); openIdeas(); }, closeIdeas);
   paintIdeas(); loadIdeas();
 }
 async function loadIdeas(){
@@ -8031,7 +8067,7 @@ function chatBody(){
     <div class="chpick" id="chpick" hidden></div>
     ${on ? `<div class="chsend"><div class="chatt" id="chatt"></div><textarea id="chtx" maxlength="200" rows="2" placeholder="Say something (no links)" aria-label="Message"></textarea>
       <div class="chrow"><button class="ghost" id="chattb">Attach</button><span class="chcount num" id="chcount">0/200</span><button class="btn" id="chgo">Send</button></div><p class="msg bad" id="chmsg"></p></div>`
-    : `<div class="chsend out"><p>Sign in to chat.</p><button class="btn" id="chacct">Account</button></div>`}
+    : `<div class="chsend out"><p>Sign in to chat.</p>${signInBtnHTML("chacct")}</div>`}
     <p class="chfoot">Be decent. Three reports hide a message. Tap ... on a message to report or block its sender. <a href="${CHAT_HELP}" target="_blank" rel="noopener">Contact us</a></p>`;
   const list = $("#chlist");
   list.onclick = e => {
@@ -8047,7 +8083,7 @@ function chatBody(){
     $("#chgo").onclick = chatSend;
     $("#chattb").onclick = chatPicker;
     tx.onkeydown = e => { if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); chatSend(); } };
-  } else $("#chacct").onclick = () => { chatClose(); openAcct(); };
+  } else wireSignIn("chacct", () => { chatClose(); openChat(); }, chatClose);
   chatFetch(); chatPoll();
 }
 // One request at a time (CHAT.q): a poll never races a full reload. full = the whole last 100 again (after a block).
@@ -8120,6 +8156,7 @@ async function chatBlock(id){
 
 const DISCLAIMER = "Unofficial fan game. Not affiliated with the NFL, NFLPA, any team or player.";
 renderHome(); firstRunPick();
+appleWebReturn().catch(e => console.warn("[cloud] Apple web return", e));   // a Sign in with Apple round trip lands here (2026-11-07)
 setTimeout(cloudBoot, 0);   // after Home is on screen: never blocks it
 // Offline cache on the hosted web only (never file:// or the Capacitor app, which has no service worker).
 try { if('serviceWorker' in navigator && !window.Capacitor && location.protocol.startsWith('http')) { navigator.serviceWorker.register('sw.js').catch(()=>{});
