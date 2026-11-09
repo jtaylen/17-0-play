@@ -966,8 +966,6 @@ body{-webkit-tap-highlight-color:transparent;overflow-x:hidden}
 .applebtn svg{width:17px;height:17px;flex:none;margin-top:-3px}
 .applebtn:disabled{opacity:.6;cursor:default}
 body.retro .applebtn{font:600 17px/1 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;letter-spacing:0;border-radius:8px;box-shadow:none}
-.acmail{display:block;margin:8px auto 0;min-height:44px;padding:8px 14px;color:var(--sky);font-family:var(--font-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:14px}
-body.retro .acmail{font-family:var(--px);font-weight:400;font-size:10px;letter-spacing:0}
 /* the tabs row with the Global / Me toggle right-aligned (its own row on phones); the Global season chips; the scrolling list */
 .lbbar{display:flex;align-items:center;justify-content:space-between;gap:8px 12px;flex-wrap:wrap;max-width:560px;margin:0 0 10px}
 .lboard .lbbar .seg,.lboard .lbchips .seg{margin:0}
@@ -7298,12 +7296,24 @@ const APPLE_ID = "com.johntaylen.seventeenzero";   // the App ID (bundle id): th
 const applePlugin = () => { const P = window.Capacitor?.Plugins || {};
   return typeof P.AppleSignIn?.signIn==="function" ? {k:"cw", p:P.AppleSignIn} : typeof P.SignInWithApple?.authorize==="function" ? {k:"cc", p:P.SignInWithApple} : null; };
 const appleAvailable = () => { try{ return window.Capacitor?.getPlatform?.()==="ios" && !!applePlugin(); }catch(e){ return false; } };
+// Apple only (2026-11-09, John): no email anywhere a player can reach. The iPhone app always shows Apple's button, even in a build whose
+// native sheet is missing (a tap then says to update); the web goes to Apple's page. The email code lives on only where neither can run,
+// a test hash, for the suite. The Account panel names the installed build in the app ("Version 1.7.0 (19)"), read from the App plugin.
+const iosApp = () => { try{ return window.Capacitor?.getPlatform?.()==="ios"; }catch(e){ return false; } };
+let APPVER = "";
+const appVer = () => APPVER;
+try{ const gi = window.Capacitor?.Plugins?.App?.getInfo?.(); if(gi && gi.then) gi.then(i => { if(i && i.version) APPVER = `${i.version} (${i.build})`; }).catch(()=>{}); }catch(e){}
+const nativePlugins = () => { try{ return Object.keys(window.Capacitor?.Plugins || {}).join(",").slice(0, 200); }catch(e){ return ""; } };
+// Every step of an Apple sign-in leaves one "apple" event (docs/telemetry.md): step is tap, noplugin, cancel, fail, refused, ok, webfail or
+// webok; err is Apple's or Supabase's own short error text (never an address or a token); build and plug name the app build and the native
+// plugins it registered. A phone that cannot sign in is then readable from the events table, without a cable.
+const appleLog = (step, err) => { try{ track("apple", {extra:{step, err:err ? String(err).slice(0, 120) : undefined, build:appVer() || undefined, plug:iosApp() ? nativePlugins() : undefined}}); }catch(e){} };
 const hexOf = b => [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
 async function appleNonce(){ const raw = hexOf(crypto.getRandomValues(new Uint8Array(32))); return {raw, hashed:hexOf(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(raw)))}; }
 // Resolves the new session (not saved yet: the caller checks otherOwner, then ownSess, as with the email code) or null after a toast.
 async function appleSignIn(){
   const pl = appleAvailable() ? applePlugin() : null;
-  if(!pl){ toast("Sign in with Apple works in the iPhone app"); return null; }
+  if(!pl){ if(iosApp()) appleLog("noplugin"); toast(iosApp() ? `This build can't open Sign in with Apple. Update the app${appVer() ? " (you have " + appVer() + ")" : ""}.` : "Sign in with Apple works in the iPhone app"); return null; }
   let n, idt;
   try{
     n = await appleNonce();
@@ -7311,14 +7321,16 @@ async function appleSignIn(){
       : await pl.p.authorize({clientId:APPLE_ID, redirectURI:SHARE_URL, scopes:"email name", nonce:n.hashed});
     idt = pl.k==="cw" ? res && res.idToken : res && res.response && res.response.identityToken;
   }catch(e){
-    const m = String((e && (e.code || e.message)) || e || "");
+    const m = (e && typeof e === "object" ? [e.code, e.message].filter(Boolean).join(" ") : String(e || "")).trim();   // Apple's code and words, shown as they came (1000: the build has no Sign in with Apple entitlement)
     console.warn("[cloud] Sign in with Apple:", m);
-    toast(/1001|cancel/i.test(m) ? "Sign in cancelled" : "Sign in with Apple failed. Try again or use email.");
+    const cancelled = /1001|cancel/i.test(m); appleLog(cancelled ? "cancel" : "fail", m);
+    toast(cancelled ? "Sign in cancelled" : "Sign in with Apple failed" + (m ? ": " + m.slice(0, 90) : ""));
     return null;
   }
-  if(!idt){ toast("Sign in with Apple failed. Try again or use email."); return null; }
+  if(!idt){ appleLog("fail", "no token"); toast("Sign in with Apple failed: Apple sent no token"); return null; }
   const r = await api("/auth/v1/token?grant_type=id_token", {method:"POST", auth:false, body:{provider:"apple", id_token:idt, nonce:n.raw}});
-  if(r.ok && r.data && r.data.access_token && r.data.user && r.data.user.id) return r.data;
+  if(r.ok && r.data && r.data.access_token && r.data.user && r.data.user.id){ appleLog("ok"); return r.data; }
+  appleLog("refused", r.net ? "offline" : errMsg(r));
   cloudErr(r.net ? "Offline: try again when you're connected" : "Sign in with Apple failed: "+errMsg(r), r.data);
   return null;
 }
@@ -7329,6 +7341,7 @@ const logoutToken = t => t && api("/auth/v1/logout", {method:"POST", auth:false,
 // (docs/accounts.md). Email stays behind "Use email instead". Under a test hash the web path is off unless the test forces it (window.__appleWeb).
 const appleWeb = () => !appleAvailable() && CLOUD.accounts===true && (window.__appleWeb===undefined ? cloudOn() && !testWin() && /^https?:$/.test(location.protocol) : !!window.__appleWeb);   // a test sets __appleWeb true or false
 const appleAny = () => appleAvailable() || appleWeb();
+const appleUI = () => appleAny() || iosApp();   // where Apple's button is the only sign-in shown
 let appleWebGo = url => location.assign(url);   // a test swaps this for a spy
 function appleWebStart(){ appleWebGo(`${CLOUD.url.replace(/\/+$/, "")}/auth/v1/authorize?provider=apple&redirect_to=${encodeURIComponent(location.origin + location.pathname)}`); }
 // The round trip lands as #access_token=...&refresh_token=...&expires_in=... (or #error=...&error_description=...).
@@ -7342,26 +7355,28 @@ async function appleWebSession(t){   // the user behind the token (the hash carr
 async function appleWebReturn(){
   const t = appleWebParse(location.hash); if(!t) return false;
   history.replaceState(null, "", location.pathname + location.search);   // the tokens leave the URL before anything else reads it
-  if(!t.at){ toast(t.err ? "Sign in with Apple failed: " + t.err : "Sign in with Apple failed"); return false; }
-  const d = await appleWebSession(t); if(!d) return false;
+  if(!t.at){ appleLog("webfail", t.err); toast(t.err ? "Sign in with Apple failed: " + t.err : "Sign in with Apple failed"); return false; }
+  const d = await appleWebSession(t); if(!d){ appleLog("webfail", "no user"); return false; }
+  appleLog("webok");
   appleLanded(d, () => { toast("Signed in with Apple"); if($(".home")) renderHome(); }); return true;
 }
 // After Apple answered: another account's progress on this device asks first (the Account panel's claim step); else the session is kept
 // and `after` redraws the screen the player was on (no panel), or without `after` the panel shows signed in.
 function appleLanded(d, after){
-  if(otherOwner(d)){ dropHold(); ACCT.hold = d; ACCT.step = "claim"; ACCT.del = 0; ACCT.mail = 0; renderAcct(); addEventListener("keydown", acctKey); return; }
+  if(otherOwner(d)){ dropHold(); ACCT.hold = d; ACCT.step = "claim"; ACCT.del = 0; renderAcct(); addEventListener("keydown", acctKey); return; }
   claimSess(d, after);
 }
 // One tap on any Apple button: the web goes to Apple's page; the app opens the sheet (the button reads Signing in… meanwhile).
 function appleTap(b, after){
-  if(appleWeb()){ appleWebStart(); return; }
+  appleLog("tap", appleWeb() ? "web" : "app");
+  if(appleWeb()){ evFlush(true); appleWebStart(); return; }   // the page is about to leave: the tap goes up first
   const sp = b && b.querySelector("span"), was = sp && sp.textContent; if(b){ b.disabled = true; if(sp) sp.textContent = "Signing in…"; }
   appleSignIn().then(d => { if(!d){ if(b && b.isConnected){ b.disabled = false; if(sp) sp.textContent = was; } if($("#acct")) renderAcct(); return; } appleLanded(d, after); });
 }
 const appleBtnHTML = id => `<button class="applebtn" id="${id}" aria-label="Sign in with Apple">${APPLE_GLYPH}<span>Sign in with Apple</span></button>`;
 // A sign-in gate (a global board, the ideas, the chat, Daily Packs): Apple's button when Apple can answer, else the Account panel's button.
-const signInBtnHTML = (id, cls="btn") => appleAny() ? appleBtnHTML(id) : `<button class="${cls}" id="${id}">Account</button>`;
-function wireSignIn(id, after, before){ const b = $("#" + id); if(!b) return; b.onclick = () => { if(appleAny()){ appleTap(b, after); } else { before?.(); openAcct(); } }; }
+const signInBtnHTML = (id, cls="btn") => appleUI() ? appleBtnHTML(id) : `<button class="${cls}" id="${id}">Account</button>`;
+function wireSignIn(id, after, before){ const b = $("#" + id); if(!b) return; b.onclick = () => { if(appleUI()){ appleTap(b, after); } else { before?.(); openAcct(); } }; }
 async function signOut(){
   const s = getSess(); clearSess(true); dropKey(nameKey());   // local first: game data stays, queued syncs see signed-out and stop
   if(s) await logoutToken(s.access_token);
@@ -7473,7 +7488,7 @@ function cloudBoot(){
 // go with the next event, the next app start or the 'online' event; a batch the server refuses is dropped, never retried forever.
 // A row: device_id (seventeen-device, the daily board's id), event, mode, level, look, platform, w, l, secs, extra (a small object
 // of numbers and codes). No name, no email, no free text.
-const EV_EVENTS = ["app_open", "mode_start", "season_end", "trivia_day", "daily17_try", "quit", "session", "rank_up", "share"];   // rank_up: v12 lane X; share: 2026-11-07
+const EV_EVENTS = ["app_open", "mode_start", "season_end", "trivia_day", "daily17_try", "quit", "session", "rank_up", "share", "apple"];   // rank_up: v12 lane X; share: 2026-11-07; apple: 2026-11-09 (appleLog)
 const evOn = () => cloudOn() && !testWin();
 const evStoreKey = () => testWin() ? "seventeen-events-test" : "seventeen-events-pending";   // the twin is a guard: evOn() keeps a test hash out of track() and evFlush()
 const evPending = () => store.get(evStoreKey(), null) || [];
@@ -7525,7 +7540,7 @@ function sessShow(){
 }
 
 // ---------- Account panel (#acct) ----------
-const ACCT = {step:"email", email:"", del:0, hold:null, mail:0};   // mail: the email form opened under the Apple button (v12 lane A)
+const ACCT = {step:"email", email:"", del:0, hold:null};
 function dropHold(){ if(ACCT.hold){ logoutToken(ACCT.hold.access_token); ACCT.hold = null; } }
 function claimSess(d, after){
   ACCT.hold = null; ACCT.step = "email"; ownSess(d);
@@ -7533,7 +7548,7 @@ function claimSess(d, after){
   syncAll().then(([x]) => { if(x && x.added>0) toast(`+${x.added} players merged from the cloud`); cloudUI(); maybeNameSheet(); });
 }
 function acctKey(e){ if(e.key==="Escape") closeAcct(); }
-function openAcct(){ dropHold(); ACCT.step = "email"; ACCT.del = 0; ACCT.mail = 0; renderAcct(); addEventListener("keydown", acctKey); }
+function openAcct(){ dropHold(); ACCT.step = "email"; ACCT.del = 0; renderAcct(); addEventListener("keydown", acctKey); }
 function closeAcct(){ dropHold(); $("#acct")?.remove(); removeEventListener("keydown", acctKey); if($(".home")) renderHome(); else if($(".boards")) renderBoards(); }
 function renderAcct(){
   const s = getSess(), on = signedIn(), p = getPending();
@@ -7558,10 +7573,9 @@ function renderAcct(){
     <label class="acf">Code or link<input id="accode" autocomplete="one-time-code" autocapitalize="off" spellcheck="false" placeholder="123456"></label>
     <div class="actions"><button class="btn" id="acin">Sign in</button><button class="btn alt" id="acback">Use another email</button></div>
     <p class="msg bad" id="acmsg"></p>`
-  : appleAny() && !ACCT.mail ? `
+  : appleUI() ? `
     <p>Play anywhere: sign in to save your Ring of Honor, records and leaderboard across devices.</p>
-    <button class="applebtn" id="acapple" aria-label="Sign in with Apple">${APPLE_GLYPH}<span>Sign in with Apple</span></button>
-    <button class="acmail" id="acmail">Use email instead</button>`
+    <button class="applebtn" id="acapple" aria-label="Sign in with Apple">${APPLE_GLYPH}<span>Sign in with Apple</span></button>`
   : `
     <p>Play anywhere: sign in to save your Ring of Honor, records and leaderboard across devices.</p>
     <label class="acf">Email<input id="acemail" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" value="${esc(ACCT.email)}"></label>
@@ -7573,6 +7587,7 @@ function renderAcct(){
   ov.innerHTML = `<div class="sheet acct${again?" re":""}" role="dialog" aria-modal="true" aria-labelledby="actt">
     <div class="actop"><h2 id="actt">Account</h2><button class="ghost" id="acclose">Close</button></div>${body}
     <p class="fine">We store your email (with Apple, the address Apple shares, which can be a private relay), a random user id and your game data (Ring of Honor, records, best runs, board name). Everything also stays on this device. <a href="privacy.html" target="_blank" rel="noopener">Privacy</a></p>
+    ${iosApp() ? `<p class="fine acver">Version ${esc(appVer() || "unknown")}${appleAvailable() ? "" : ` · Apple sign-in is missing from this build (it has: ${esc(nativePlugins() || "no plugins")}). Update the app.`}</p>` : ""}
   </div>`;
   const msg = (t, bad) => { const m = $("#acmsg"); if(m){ m.textContent = t; m.classList.toggle("bad", !!bad); } };
   const busy = (b, t) => { b.disabled = true; b.textContent = t; };
@@ -7606,9 +7621,8 @@ function renderAcct(){
       });
     };
     $("#accode").focus();
-  } else if(appleAny() && !ACCT.mail){
+  } else if(appleUI()){
     $("#acapple").onclick = e => appleTap(e.currentTarget);
-    $("#acmail").onclick = () => { ACCT.mail = 1; renderAcct(); $("#acemail")?.focus(); };
   } else {
     $("#acsend").onclick = e => {
       const em = $("#acemail").value.trim();
