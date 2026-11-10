@@ -753,7 +753,8 @@ body.retro .pc-art .spr,body.retro .wv .spr{filter:none}
 /* the Daily 17-0 result card on the end screen: what Share posts, shown first (growth plan 2026-11-07) */
 .shcard{margin:12px 0 2px;padding:10px 12px;border-radius:10px;background:rgba(0,0,0,.22);border:1px dashed var(--line);font-size:14px;line-height:1.5}
 .shcard .shc-s{font-size:17px;letter-spacing:1px;line-height:1.3}
-body.retro .shcard{border-radius:0;border:2px dashed var(--line);font-family:var(--px);font-size:8px;line-height:1.6}
+.shcard .shc-p{color:var(--gold,#ffc93c)}.shcard .shc-p:empty{display:none}
+body.retro .shcard{border-radius:0;border:2px dashed var(--line);font-family:var(--px);font-size:7px;line-height:1.7}
 .d17rows{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:4px;max-width:560px}
 .d17rows li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;padding:6px 10px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-size:14px}
 .d17rows li.me{border-color:var(--gold)}
@@ -1765,7 +1766,7 @@ body.retro[data-ev="fourth"]::before{--b1:radial-gradient(circle,transparent 0 3
 .modes.daily .mode .info{position:absolute;top:0;right:0;width:44px;height:44px;border-left:0}
 body.retro .modes.daily .mode .go b{font-size:11px;line-height:1.5}
 body.retro .modes.daily .mode .go small{font-size:12px}
-.modes.daily .mode .go b .nb{white-space:nowrap}
+.modes.daily .mode .go b .nb,.verdict .nb{white-space:nowrap}
 /* ---------- NFL Trivia v11 (z, 2026-11-05): one list a day in a grid, Collections ---------- */
 .ntg{display:flex;flex-direction:column;gap:10px;margin-top:6px}
 .ntg-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -2500,7 +2501,7 @@ function newDraft(level, mode, off, def, filter=null, daily=null, dp=null){   //
   const posSet = new Set(SLOTS.flatMap(s=>s.acc));
   S = { started:Date.now(), draftSecs:0, level, mode, off, def, roster:{}, round:1, respins:LEVELS[level].respins, team:null, decade:null, spinning:false, used:new Set(), pending:null, season:null, picks:[], view:"O", posSet,
     tSpins:LEVELS[level].spins.team, dSpins:LEVELS[level].spins.decade, filter:filterNarrow(filter) ? filter : null, filterOut:false, daily:daily || null, d17Try:0, spinMs:0, spinAt:0, dp:dp || null };
-  track("mode_start", {mode:dp ? "dailypacks" : daily ? "daily17" : mode, level});
+  track("mode_start", {mode:dp ? "dailypacks" : daily ? (d17Load().days[daily]?.started ? "daily17" : "d17practice") : mode, level});   // a practice run starts after the official try (d17Start)
   if(mode==="packs"){ recentStart(); renderPackDraft(); return; }
   renderDraft();
   spin();
@@ -2540,8 +2541,18 @@ function filterReason(mode, off, def, f){
   }
   return null;
 }
-// ---------- Daily 17-0 (v8 D10): one Classic Hard draft a day, fresh random spins and a fresh season on every try (2026-10-31: the seeded deal is out), three tries, ranked by record then time ----------
-const D17_TRIES = 3;
+// ---------- Daily 17-0 (v8 D10, rebuilt 2026-11-09): one Classic draft a day on the SAME deal for everyone (seeded spins, below), Medium info, ONE official try (spent when it starts) that goes to the board, then Practice runs on the same deal that count nowhere ----------
+const D17_LEVEL = "medium";   // ratings and years shown: pick 1 on a 1940s Cardinals spin was where 26 of 45 quits happened (names only)
+// The same deal for everyone (Wordle's one puzzle): every spin of the day is a seeded walk over every team and decade pair, keyed by the
+// day, the pick number and the axis, so pick 3's spin, and pick 3's team re-spin, land the same for every player whatever they did at picks
+// 1 and 2. A pair with fewer than two usable options for this roster is skipped (the one way two players can diverge, and it is rare).
+function d17Target(axis){
+  const same = p => p.t===S.team && p.d===S.decade, k = S.picks.length + 1;
+  const ok = p => !same(p) && (axis!=="team" || p.d===S.decade) && (axis!=="decade" || p.t===S.team);
+  const seed = [...`${S.daily}|${k}|${axis || "spin"}`].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0, 2166136261);   // FNV-1a
+  const R = rbRng(seed), pairs = shuffleR(Object.keys(TEAMS).flatMap(t=>DECADES.map(d=>({t, d}))), R);
+  return pairs.find(p=>ok(p) && countOptions(p.t, p.d, 2)>=2) || null;
+}
 const shuffleR = (a, R) => { a=[...a]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(R()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
 const d17RosterKey = () => SLOTS.map(s=>(S.roster[s.key]||{}).id ?? "").join(",");
 // Where the next spin lands. The first spin of a pick draws team and decade together; a re-spin of one axis keeps the other (v8 D8). Pairs
@@ -2549,6 +2560,7 @@ const d17RosterKey = () => SLOTS.map(s=>(S.roster[s.key]||{}).id ?? "").join(","
 // pair in it has an option (the pair just played included, when it is the only one left); only a filter with nothing left falls back to
 // everything, and that spin is flagged (S.filterOut) so the verdict says so. No spin can throw on an empty pool. The daily draws like Classic (no filter).
 function spinTarget(axis){
+  if(S.daily){ const t = d17Target(axis); if(t) return t; }
   const same = p => p.t===S.team && p.d===S.decade;
   const onAxis = p => !same(p) && (axis!=="team" || p.d===S.decade) && (axis!=="decade" || p.t===S.team);
   const draw = (teams, decs, f) => { const c = []; for(const t of teams) for(const d of decs){ if(!f({t,d})) continue; const n = countOptions(t,d,2); if(n) c.push({t,d,n}); }
@@ -2692,7 +2704,7 @@ function renderHome(){
     <div class="modes${MODE==="daily" ? " daily" : ""}">${MODE==="daily" ? dailyHomeHTML() : ""}${(MODE==="daily" ? [] : Object.entries(LEVELS)).map(([k,L])=>{
       const r = rec[MODE+"-"+k];
       return `<div class="mode" style="--c:${L.color}">
-        <button class="go" data-level="${k}"><span><b>${L.label}</b><br><small>${subFor(k,MODE)}</small></span><small class="num">${r?`Best ${r.best} · ${r.perfect}× 17–0`:""}</small></button>
+        <button class="go" data-level="${k}"><span><b>${L.label}</b><br><small>${subFor(k,MODE)}</small></span><small class="num">${r?`Best ${r.best} · ${r.perfect}× 17-0`:""}</small></button>
         <button class="info" data-info="${k}" aria-label="${L.label} rules"><span>i</span></button>
       </div>`;}).join("")}</div>
     <div class="hbtns">${rewardShelfHTML()}<button class="btn alt lbbtn" id="lbbtn">🏆 Leaderboards</button>${MODE==="packs"?`
@@ -3193,22 +3205,23 @@ const d17Better = (a,b) => !b || (a.w!==b.w ? a.w>b.w : a.secs<b.secs);   // the
 const d17Best = tries => (tries||[]).reduce((a,t)=>d17Better(t,a)?t:a, null);
 const d17Date = key => { const [y,m,d] = key.split("-").map(Number); return new Date(y, m-1, d).toLocaleDateString("en-US", {month:"short", day:"numeric"}); };
 const d17Rec = t => `${t.w}-${t.l} in ${fmtTime(t.secs)}`;
-const d17Used = day => Math.max(day.started||0, day.tries.length);   // tries spent today: a try counts once it starts (quitting keeps nothing)
+const d17Used = day => Math.max(day.started||0, day.tries.length);   // 1 once the official try started (quitting keeps nothing); tries holds the finished one
+const d17Pct = (p, n=5) => p && p.n>=n ? `Beat ${Math.round(100*p.beat/p.n)}% of today's ${p.n} drafters` : "";   // the server's count (daily_pct), from five drafters
 function d17HomeHTML(){
   const key = dlKey(), day = d17Load().days[key] || {tries:[]}, n = d17Used(day), best = d17Best(day.tries);
-  const status = !n ? `${D17_TRIES} tries` : n<D17_TRIES ? `Try ${n+1} of ${D17_TRIES}${best ? ` · best ${best.w}-${best.l}` : ""}` : best ? `Done · best ${d17Rec(best)}` : "Done · no try finished";
+  const status = !n ? "Same deal for everyone · one try" : best ? `${d17Rec(best)} · Practice open` : "Try spent · Practice open";
   return `<div class="mode d17" style="--c:var(--dm-d17)">
-    <button class="go" id="d17go"><span><b>Daily <span class="nb">17-0</span></b><br><small>${d17Date(key)} · Hard · ${status}</small></span><small class="num">#${dlNum(key)}</small></button>
+    <button class="go" id="d17go"><span><b>Daily <span class="nb">17-0</span></b><br><small>${d17Date(key)} · ${status}</small></span><small class="num">#${dlNum(key)}</small></button>
     <button class="info" id="d17info" aria-label="Daily 17-0 rules"><span>i</span></button></div>`;
 }
 const d17RulesHTML = () => `<div class="overlay" id="ov"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rt" style="--c:var(--dm-d17)">
     <h2 id="rt">Daily 17-0</h2>
     <ol>
-      <li>One Classic draft a day on Hard: names only, shotgun, fresh spins every try.</li>
-      <li>Three tries a day, and a try is spent the moment it starts: quitting keeps nothing. Each pick gives you one team re-spin and one decade re-spin; a re-spin keeps the other reel.</li>
+      <li>One Classic draft a day, and everyone gets the same spins. Ratings and playing years are shown.</li>
+      <li>One official try, spent the moment it starts: quitting keeps nothing. Each pick gives you two team re-spins and two decade re-spins; a re-spin keeps the other reel.</li>
       <li>The clock runs while you search and place, never while the reels spin.</li>
-      <li>Every try is a new draw: new spins, a new season.</li>
-      <li>Your best try counts: the record first, then the clock. ${d17Global() ? "Your tries go to the global board under your board name." : "Sign in and your tries go to the global board under your board name."}</li>
+      <li>Your record counts first, then the clock. ${d17Global() ? "Your try goes to the global board under your board name." : "Sign in and your try goes to the global board under your board name."}</li>
+      <li>After your try, Practice runs on the same deal are open all day. They count nowhere.</li>
     </ol>
     <div class="actions"><button class="btn" id="closeov">Got it</button></div>
   </div></div>`;
@@ -3218,19 +3231,24 @@ function wireD17Home(){
     $("#closeov").onclick = close; $("#closeov").focus(); $("#ov").onclick = e => { if(e.target.id==="ov") close(); };
     document.addEventListener("keydown", function k(e){ if(e.key==="Escape"){ close(); document.removeEventListener("keydown",k); } }); };
 }
-// The fourth try of a day is refused with the best try shown. A try is spent here, when it starts (day.started), not when it finishes:
-// a draft or a season left early keeps nothing and cannot be replayed for a better deal. Returns true when a draft started.
+// The official try is spent here, when it starts (day.started), not when it finishes: a draft or a season left early keeps nothing, and
+// since the deal is the same all day a peek would be an edge. Once it is spent the button opens a Practice run (S.d17Practice): the same
+// deal, no board, no XP, no records; its telemetry goes under mode d17practice so the Daily's own funnel stays clean. Returns true when a
+// draft started.
 function d17Start(){
-  const key = dlKey(), all = d17Load(), day = all.days[key] || (all.days[key] = {tries:[]}), best = d17Best(day.tries);
-  if(d17Used(day)>=D17_TRIES){ toast(`Three tries today. ${best ? `Your best: ${d17Rec(best)}. ` : ""}Back tomorrow.`); return false; }
-  day.started = d17Used(day) + 1; store.set(d17StoreKey(), all);
+  const key = dlKey(), all = d17Load(), day = all.days[key] || (all.days[key] = {tries:[]});
+  const practice = d17Used(day)>=1;
+  if(!practice){ day.started = 1; store.set(d17StoreKey(), all); }
   MODE = "daily"; store.set("seventeen-mode", MODE);   // Home comes back to the Daily tab, the card's home (v8 brief F)
-  newDraft("hard", "classic", "shotgun", "43", null, key); S.d17Try = day.started; return true;
+  newDraft(D17_LEVEL, "classic", "shotgun", "43", null, key); S.d17Try = practice ? 0 : 1; S.d17Practice = practice;
+  if(practice) toast("Practice: today's same deal. Not on the board.");
+  return true;
 }
 // Saves a finished try on its day (never more than three), sends it to the board when the cloud is on. Returns {n, best} for the verdict.
 function d17Save(t){
-  const all = d17Load(), day = all.days[S.daily] || (all.days[S.daily] = {tries:[]}), n = S.d17Try || d17Used(day) || 1;
-  if(day.tries.length<D17_TRIES){ day.tries.push({...t, n}); day.started = Math.max(day.started||0, n); store.set(d17StoreKey(), all); d17Submit(S.daily, n, t); track("daily17_try", {mode:"daily17", level:"hard", w:t.w, l:t.l, secs:t.secs, extra:{try:n, stage:t.stage}}); xpAdd("d17_try", t); }
+  if(S.d17Practice){ track("daily17_try", {mode:"d17practice", level:D17_LEVEL, w:t.w, l:t.l, secs:t.secs, extra:{stage:t.stage}}); return {practice:true}; }
+  const all = d17Load(), day = all.days[S.daily] || (all.days[S.daily] = {tries:[]}), n = 1;
+  if(day.tries.length<1){ day.tries.push({...t, n}); day.started = 1; store.set(d17StoreKey(), all); d17Submit(S.daily, n, t); track("daily17_try", {mode:"daily17", level:D17_LEVEL, w:t.w, l:t.l, secs:t.secs, extra:{try:n, stage:t.stage}}); xpAdd("d17_try", t); }
   return {n, best:d17Best(day.tries)};
 }
 // ---------- The daily board (v8 D11): this device's tries until CLOUD is set; then each try goes to daily_runs and the day's top 100 is read ----------
@@ -3568,7 +3586,7 @@ function finish(w,l,po0,quiet){   // po0: the playoffs the animated season alrea
   const po = S.playoffs = po0 || playoffs(w), stage = !po.seed?0:po.champ?5:po.reached+1;
   if(!(S.mode==="packs" && testWin()) && !S.daily && !S.dp) submitRun({mode:S.mode, level:S.level, w, l, stage, seed:po.seed, secs:S.draftSecs, ovr:Math.round(teamOvr()), ts:Date.now()});
   if(po.champ) r.titles = (r.titles||0)+1;
-  if(w > (r.bestW ?? -1)){ r.bestW = w; r.best = `${w}–${l}`; }
+  if(w > (r.bestW ?? -1)){ r.bestW = w; r.best = `${w}-${l}`; }
   rec[rk] = r; if(!(S.mode==="packs" && testWin()) && !S.daily && !S.dp) saveRecords(rec);   // a Daily Packs run keeps no records (its runs are its board)
   if(!S.daily) track("season_end", {mode:S.dp ? "dailypacks" : S.mode, level:S.level, w, l, secs:S.draftSecs, extra:{stage}});   // the daily's finish is its daily17_try row
   if(!S.daily && !S.dp){ xpAdd("season", {w, stage}); if(l===0) xpAdd("perfect"); }   // v12 lane X: XP (the daily pays in d17Save, a Daily Packs run in dpSave)
@@ -3579,12 +3597,12 @@ function finish(w,l,po0,quiet){   // po0: the playoffs the animated season alrea
   const banked = S.mode==="packs" && perfect ? bankRoster(po) : null;
   if(!banked && !S.daily) cloudSync();   // records reach the account now (bankRoster's saveRing already syncs); no-op signed out / test mode; the daily changes no records
   const pw = po.games.filter(g=>g.win).length;
-  const msg = perfect && po.champ ? ["PERFECT SEASON",`17–0 and a Super Bowl title. ${17+pw}–0 all-time. Your roster is immortal.`]
+  const msg = perfect && po.champ ? ["PERFECT SEASON",`17-0 and a Super Bowl title. ${17+pw}-0 all-time. Your roster is immortal.`]
     : perfect ? ["PERFECT SEASON",`17 up, 17 down, then a playoff loss. The regular season was immortal.`]
-    : po.champ ? ["SUPER BOWL CHAMPS", `${w}–${l}, then won it all. Not perfect, but you got the ring.`]
-    : w>=14 ? ["SO CLOSE", `${w}–${l}. A great team, but not perfection.`]
-    : po.seed ? ["PLAYOFF BOUND", `${w}–${l}. Solid, but the legends need upgrades.`]
-    : ["BACK TO THE DRAFT ROOM", `${w}–${l}. Time for a rebuild.`];
+    : po.champ ? ["SUPER BOWL CHAMPS", `${w}-${l}, then won it all. Not perfect, but you got the ring.`]
+    : w>=14 ? ["SO CLOSE", `${w}-${l}. A great team, but not perfection.`]
+    : po.seed ? ["PLAYOFF BOUND", `${w}-${l}. Solid, but the legends need upgrades.`]
+    : ["BACK TO THE DRAFT ROOM", `${w}-${l}. Time for a rebuild.`];
   const poHTML = `<h3 class="cmp-h">Playoffs</h3>
     <p class="po-line">${playoffLine(po)}</p>
     ${po.games.length?`<div class="games po">${po.seed===1?`<div class="game done bye"><div><div class="wk">WILD CARD</div><div class="opp">First-round bye</div></div><div class="res num"><b>—</b></div></div>`:""}${po.games.map(g=>{const [,n,c1,c2]=TEAMS[g.team];return `
@@ -3604,10 +3622,10 @@ function finish(w,l,po0,quiet){   // po0: the playoffs the animated season alrea
       <td class="co num" style="--tc:${tierColor(b.ovr)}">${same?"":`${b.ovr}<small class="up">+${diff}</small>`}</td>
     </tr>`;}).join("");
   $("#after").innerHTML = `
-    <div class="verdict ${perfect?"perfect":""}"><h2>${msg[0]}</h2><p>${msg[1]} ${d17 ? `Daily 17-0 #${dlNum(S.daily)}, try ${d17.n} of ${D17_TRIES}: ${w}-${l} in ${fmtTime(S.draftSecs)}. Best today ${d17.best.w}-${d17.best.l} in ${fmtTime(d17.best.secs)}.` : dp ? `Daily Packs ${dpDate(S.dp)}, run ${dp.n} of ${DP_RUNS}: ${w}-${l}, ${Math.round(teamOvr())} OVR, drafted in ${fmtTime(S.draftSecs)}. Best today ${dpRec(dp.best)}.` : `Perfect seasons in ${MODES[S.mode].label} · ${LEVELS[S.level].label}: ${r.perfect} of ${r.played}. Titles: ${r.titles||0}.`}${S.filter ? ` <span class="vfilter">Filter: ${esc(filterLabel(S.filter))}.${S.filterOut ? " One spin found nothing left in it and drew from every team." : ""}</span>` : ""}</p>${nearMissHTML(w,l)}
-    ${d17 ? (L => `<div class="shcard" aria-label="Your result card"><div class="shc-t num">${L[0]}</div><div class="shc-s">${L[1]}</div></div>`)(d17ShareLines(w, l, d17)) : ""}
-    <div class="actions">${d17 ? `<button class="btn" id="share">Share your result</button><button class="btn alt" id="again">Draft again</button>` : `<button class="btn ${perfect?"alt":""}" id="again">Draft again</button><button class="btn alt" id="share">Share</button>`}<button class="btn alt" id="home">Change mode</button><button class="btn alt" id="board">🏆 Leaderboard</button>${lookBtn()}</div>
-    <p class="hint num">Drafted in ${fmtTime(S.draftSecs)}.</p></div>
+    <div class="verdict ${perfect?"perfect":""}"><h2>${msg[0]}</h2><p>${msg[1]} ${d17 ? d17.practice ? `Practice run on Daily 17-0 #${dlNum(S.daily)}: <span class="nb">${w}-${l}</span> in ${fmtTime(S.draftSecs)}. Not on the board.` : `Daily 17-0 #${dlNum(S.daily)}: <span class="nb">${w}-${l}</span> in ${fmtTime(S.draftSecs)}. Your official try is on the board.` : dp ? `Daily Packs ${dpDate(S.dp)}, run ${dp.n} of ${DP_RUNS}: ${w}-${l}, ${Math.round(teamOvr())} OVR, drafted in ${fmtTime(S.draftSecs)}. Best today ${dpRec(dp.best)}.` : `Perfect seasons in ${MODES[S.mode].label} · ${LEVELS[S.level].label}: ${r.perfect} of ${r.played}. Titles: ${r.titles||0}.`}${S.filter ? ` <span class="vfilter">Filter: ${esc(filterLabel(S.filter))}.${S.filterOut ? " One spin found nothing left in it and drew from every team." : ""}</span>` : ""}</p>${nearMissHTML(w,l)}
+    ${dp ? "" : (L => `<div class="shcard" aria-label="Your result card"><div class="shc-t num">${L[0]}</div><div class="shc-s">${L[1]}</div><div class="shc-p num" id="pctline"></div></div>`)(d17 ? d17ShareLines(w, l, d17) : seasonShareLines(w, l))}
+    <div class="actions">${d17 ? `${d17.practice ? "" : `<button class="btn" id="share">Share your result</button>`}<button class="btn alt" id="again">${d17.practice ? "Practice again" : "Practice the deal"}</button>` : `<button class="btn ${perfect?"alt":""}" id="again">Draft again</button><button class="btn alt" id="share">Share</button>`}<button class="btn alt" id="home">Change mode</button><button class="btn alt" id="board">🏆 Leaderboard</button>${lookBtn()}</div>
+    ${d17 ? "" : `<p class="hint num">Drafted in ${fmtTime(S.draftSecs)}.</p>`}</div>
     ${poHTML}${banked?ringStripHTML(banked):""}
     ${boostsHTML()}
     <h3 class="cmp-h">How you could have done better</h3>
@@ -3619,8 +3637,9 @@ function finish(w,l,po0,quiet){   // po0: the playoffs the animated season alrea
     <div class="tablewrap"><table class="cmp"><thead><tr><th>Spot</th><th>Your pick</th><th>OVR</th><th>Should have picked</th><th>OVR</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   $("#again").onclick = () => S.dp ? dpStart() : S.daily ? d17Start() : newDraft(S.level, S.mode, S.off, S.def, S.filter);
   $("#home").onclick = renderHome;
-  $("#share").onclick = () => share(w,l,d17);
+  if($("#share")) $("#share").onclick = () => share(w,l,d17);
   $("#board").onclick = () => renderBoard(S.mode, S.level);
+  pctFill(d17, w, l, stage);
   if(banked){
     $("#ringopen").onclick = renderRing; ringCeremony(banked.pct[0], banked.pct[1]);
     // Signing Day tiles open the card view with the just-banked Ring line.
@@ -7709,7 +7728,7 @@ async function renderBoard(mode, level){
     const tr = document.createElement("tr"); if(me) tr.className = "me";
     const L = LEVELS[x.r.level];
     tr.innerHTML = `<td class="num rank">${i+1}</td><td><span class="cn"></span><span class="cs"><b style="color:${L.color}">${L.label}</b> · ${x.r.ovr} OVR<span class="mpo"> · ${STAGES[x.r.stage]||""}</span></span></td>
-      <td class="num rec">${x.r.w}–${x.r.l}</td><td class="po ${x.r.stage===5?"champ":""}">${STAGES[x.r.stage]||""}</td><td class="num">${fmtTime(x.r.secs||0)}</td>`;
+      <td class="num rec">${x.r.w}-${x.r.l}</td><td class="po ${x.r.stage===5?"champ":""}">${STAGES[x.r.stage]||""}</td><td class="num">${fmtTime(x.r.secs||0)}</td>`;
     tr.querySelector(".cn").textContent = me ? (myName ? myName+" (you)" : "You") : (cleanName(x.nick) || "Player");
     tb.appendChild(tr);
   });
@@ -7720,8 +7739,10 @@ async function renderBoard(mode, level){
 // under a test hash (as d17Global: no read). The tab, the view and the Global season chips live in seventeen-lbtab (test twin).
 // Other lanes plug in through globals called only if they exist: eloBoardCard, dpBoardCard, rankBoardCard (Me cards, each given the
 // card helper) and eloBoardHTML, ntBoardHTML, dpBoardHTML, rankBoardHTML (Global panels, signed in).
-const LB_TABS = [["seasons","Seasons"],["daily","Daily"],["ranks","Ranks"]];
-const LB_AREA = {packs:"seasons", classic:"seasons", full:"seasons", daily:"daily", td:"daily", nt:"daily", d17:"daily", dp:"daily", ring:"ranks", ranks:"ranks"};
+// 2026-11-09: Seasons (3,500 Packs drafts a week) and the Daily 17-0 are what players compete in; trivia, Daily Packs, the Ring and the
+// ranks (a few dozen plays a week between them) sit under More, last.
+const LB_TABS = [["seasons","Seasons"],["daily","Daily 17-0"],["more","More"]];
+const LB_AREA = {packs:"seasons", classic:"seasons", full:"seasons", daily:"daily", d17:"daily", td:"more", nt:"more", dp:"more", ring:"more", ranks:"more", elo:"more"};
 const lbKey = () => testWin() ? "seventeen-lbtab-test" : "seventeen-lbtab";
 function lbState(){ const s = store.get(lbKey(), null) || {};
   return {tab:LB_TABS.some(t=>t[0]===s.tab) ? s.tab : "seasons", view:s.view==="global" ? "global" : "me", mode:MODES[s.mode] ? s.mode : "packs", level:LEVELS[s.level] ? s.level : "beginner"}; }
@@ -7746,9 +7767,9 @@ function renderBoards(area, view){
   };
   const d17Card = all => { const key = dlKey(), day = all.days[key] || {tries:[]}, best = d17Best(day.tries), ever = d17AllBest(all), used = d17Used(day);
     const ranked = [...day.tries].sort((a,b)=>d17Better(a,b) ? -1 : 1).map(t=>`${n(t.w)}-${n(t.l)} in ${fmtTime(n(t.secs))}`).join(", ");   // this device's tries today, best first
-    const today = used ? `${fmt(used)} of ${D17_TRIES} tries today${ranked ? `: ${ranked}` : ", none finished"}` : "", everS = ever ? `Best ever ${n(ever.w)}-${n(ever.l)} in ${fmtTime(n(ever.secs))} (#${dlNum(ever.key)})` : "";
-    return card("d17", "Daily 17-0", best ? `${n(best.w)}-${n(best.l)}` : "No tries yet", best ? `Best today · ${fmtTime(n(best.secs))}` : `${D17_TRIES - Math.min(used, D17_TRIES)} of ${D17_TRIES} tries left`,
-      [today, everS].filter(Boolean).join(" · ") || "Draft today's spins to set a score", {none:!best, pill: d17Global() ? `<span class="pill">Global</span>` : ""}); };
+    const today = used && !best ? "Today's try spent, not finished" : "", everS = ever ? `Best ever ${n(ever.w)}-${n(ever.l)} in ${fmtTime(n(ever.secs))} (#${dlNum(ever.key)})` : "";
+    return card("d17", "Daily 17-0", best ? `${n(best.w)}-${n(best.l)}` : "No try yet", best ? `Today · ${fmtTime(n(best.secs))}` : used ? "Try spent" : "One try today",
+      [today, everS].filter(Boolean).join(" · ") || "Same deal for everyone. Draft it to set a score", {none:!best, pill: d17Global() ? `<span class="pill">Global</span>` : ""}); };
   const seg = (items, cur, attr, label, cls="") => `<div class="seg${cls}" role="tablist" aria-label="${label}">${items.map(([k,l])=>`<button role="tab" aria-selected="${cur===k}" data-${attr}="${k}">${l}</button>`).join("")}</div>`;
   const sign = `<div class="lbsign"><p>Sign in to see the global boards.</p>${acctOn() ? signInBtnHTML("lbsignin") : ""}</div>`;
   let body;
@@ -7756,12 +7777,12 @@ function renderBoards(area, view){
     const dl = dlLoad(), fin = Object.values(dl.days).filter(d=>d && Array.isArray(d.a) && dlDrive(d).done), yds = Math.max(0, ...fin.map(d=>n(dlDrive(d).yds)));
     const nt = ntLoad(), ring = loadRing(), pool = ringPool(), rm = ring.m || {}, got = pool.filter(p=>ring.p[ringKey(p)]).length;
     const cards = tab==="seasons" ? MODE_ORDER.map(season).join("")
-      : tab==="daily" ? card("td", "TD Trivia", fmt(dlTDs(dl)), "Touchdowns", `Streak ${fmt(dlStreak(dl))} · Best drive ${fmt(yds)} yds`)
+      : tab==="daily" ? d17Card(d17Load())
+      : card("td", "TD Trivia", fmt(dlTDs(dl)), "Touchdowns", `Streak ${fmt(dlStreak(dl))} · Best drive ${fmt(yds)} yds`)
         + (typeof eloBoardCard==="function" ? eloBoardCard(card) : "")
         + card("nt", "NFL Trivia", fmt(nt.best), "Best day", `Streak ${fmt(nt.streak)}`)
-        + d17Card(d17Load())
         + (typeof dpBoardCard==="function" ? dpBoardCard(card) : "")
-      : card("ring", "Ring of Honor", `${fmt(got)} of ${fmt(pool.length)}`, "Collected", `Best 17-0 streak ${fmt(rm.bestStreak)} · ${fmt(rm.titles)} title${n(rm.titles)===1?"":"s"}`)
+        + card("ring", "Ring of Honor", `${fmt(got)} of ${fmt(pool.length)}`, "Collected", `Best 17-0 streak ${fmt(rm.bestStreak)} · ${fmt(rm.titles)} title${n(rm.titles)===1?"":"s"}`)
         + (typeof rankBoardCard==="function" ? rankBoardCard(card) : "");
     body = `<p class="hint">${lbCloud() ? "Your scores on this device. Tap Global for everyone's." : "Your scores on this device."}</p>
     <div class="bcards">${cards}</div>`;
@@ -7769,10 +7790,12 @@ function renderBoards(area, view){
     const chips = `<div class="lbchips">${seg(MODE_ORDER.map(k=>[k, k==="full" ? `Full<span class="lbxl"> Roster</span>` : MODES[k].label]), st.mode, "lbmode", "Season mode", " small")}${seg(Object.entries(LEVELS).map(([k,L])=>[k, k==="medium" ? `Med<span class="lbxl">ium</span>` : L.label]), st.level, "lblevel", "Level", " small")}</div>`;
     body = signedIn() ? `${chips}<div id="lbg"><p class="msg">Loading…</p></div>` : sign;
   } else if(tab==="daily"){
+    body = `<div class="bcards">${d17Card(d17Load())}</div>${d17Global() ? `${d17NameHTML()}<div id="d17top"></div>` : ""}`;
+  } else {
     const more = [typeof eloBoardHTML==="function" ? "elo" : "", typeof ntBoardHTML==="function" ? "nt" : "", typeof dpBoardHTML==="function" ? "dp" : ""].filter(Boolean);
-    body = `<div class="bcards">${d17Card(d17Load())}</div>${d17Global() ? `${d17NameHTML()}<div id="d17top"></div>` : ""}
-    ${signedIn() ? (more.includes("elo") ? eloBoardHTML() : "") + (more.includes("nt") ? ntBoardHTML() : "") + (more.includes("dp") ? dpBoardHTML() : "") : more.length ? sign : ""}`;
-  } else body = signedIn() ? (typeof rankBoardHTML==="function" ? rankBoardHTML() : `<p class="hint">The global rank board is not open yet.</p>`) : sign;
+    body = signedIn() ? (more.includes("elo") ? eloBoardHTML() : "") + (more.includes("nt") ? ntBoardHTML() : "") + (more.includes("dp") ? dpBoardHTML() : "")
+      + (typeof rankBoardHTML==="function" ? rankBoardHTML() : `<p class="hint">The global rank board is not open yet.</p>`) : sign;
+  }
   $("#app").innerHTML = `${header(`${lookBtn()}<button class="ghost" id="back">Home</button>`)}
   <section class="lboard boards">
     <h2>Leaderboards</h2>
@@ -7789,7 +7812,7 @@ function renderBoards(area, view){
   document.querySelectorAll("[data-lbmode]").forEach(b=>b.onclick=()=>{ lbSet({mode:b.dataset.lbmode}); renderBoards(); });
   document.querySelectorAll("[data-lblevel]").forEach(b=>b.onclick=()=>{ lbSet({level:b.dataset.lblevel}); renderBoards(); });
   document.querySelectorAll("[data-runs]").forEach(b=>b.onclick=()=>renderBoard(b.dataset.runs, "all"));
-  const on = area && v==="me" && document.querySelector(`.bcard[data-area="${area==="daily" ? "td" : area}"]`);   // the card the player came from
+  const on = area && v==="me" && document.querySelector(`.bcard[data-area="${area==="daily" ? "d17" : area}"]`);   // the card the player came from
   if(on){ on.classList.add("on"); on.scrollIntoView({block:"nearest"}); }
 }
 // Global season board: the top 50 of scores for one mode and level (the server orders it like better()), the caller's row marked; when the
@@ -7816,16 +7839,32 @@ async function lbSeasonsFill(mode, level){
 }
 const lbNum = v => Number.isFinite(+v) ? Math.max(0, Math.round(+v)) : 0;
 
-// Share cards (1.6.2, aso plan D4): text only, through shareCard (the share sheet on the app, the clipboard on the web). Every card ends
-// with the play page, never the App Store URL (the page carries the Smart App Banner). The season card's strip is the 17 regular-season
-// games in order plus the playoff result in the game's own round names; the Daily 17-0 try shares its day, record, clock and try number.
+// Share cards (1.6.2, aso plan D4; result card on every season 2026-11-09): text only, through shareCard (the share sheet on the app, the
+// clipboard on the web). Every card ends with the App Store campaign link (shareLink, ct names the surface). The season card: record and
+// playoff tail, the 17-game strip, the QB's era and the rarest pick, today's percentile when known (pctFill); the Daily: day, record, clock.
 const SHARE_URL = "https://jtaylen.github.io/17-0-play/";   // with https: email apps and some messengers link only a full URL
 // Share links point at the App Store as campaign links (growth plan 2026-11-07): pt is the App Store Connect provider token (public, it is
 // in every campaign URL), ct names the share kind, and ASC Analytics > Acquisition > Campaigns then counts installs per kind.
 const SHARE_PT = "129583968";
 const shareLink = ct => `https://apps.apple.com/app/apple-store/id6820769527?pt=${SHARE_PT}&ct=${ct}&mt=8`;
 // The Daily 17-0 result as lines: the end screen previews them (Wordle-style) and share() posts them with the link under them.
-const d17ShareLines = (w, l, d17) => [`Daily 17-0 #${dlNum(S.daily)} · ${w}-${l} in ${fmtTime(S.draftSecs)} · try ${d17.n} of ${D17_TRIES}`, winStrip(S.season)];
+const d17ShareLines = (w, l, d17) => [`${d17.practice ? "Practice · " : ""}Daily 17-0 #${dlNum(S.daily)} · ${w}-${l} in ${fmtTime(S.draftSecs)}`, winStrip(S.season)];
+const seasonShareLines = (w, l) => { const po = S.playoffs, last = po.games[po.games.length-1], tail = po.champ ? " + Super Bowl" : last ? ` · out in the ${last.round}` : "";
+  return [`${w}-${l}${tail} · ${MODES[S.mode].label} ${LEVELS[S.level].label}`, winStrip(S.season)]; };
+// Today's percentile, from the server: daily_pct over the day's official tries, run_pct over today's season_end events for the mode and
+// level (supabase/pct.sql). Shown from 5 daily drafters or 30 seasons; a missing function, a test hash or no cloud shows nothing. The line
+// lands in the result card (#pctline) and, once known, in the share text (S.pct).
+const runPct = (p, perfect, label) => !p || p.n<30 ? "" : perfect ? `17-0 today: ${p.perfect} of ${p.n} ${label} seasons` : `Top ${Math.max(1, 100 - Math.round(100*p.beat/p.n))}% of today's ${p.n} ${label} seasons`;
+async function pctFill(d17, w, l, stage){
+  if(!cloudOn() || testWin() || S.dp || (d17 && d17.practice)) return;
+  const el = $("#pctline"); if(!el) return;
+  const r = d17 ? await api("/rest/v1/rpc/daily_pct", {method:"POST", auth:false, body:{p_day:S.daily, p_w:w, p_secs:S.draftSecs}})
+    : await api("/rest/v1/rpc/run_pct", {method:"POST", auth:false, body:{p_mode:S.mode, p_level:S.level, p_w:w, p_stage:stage}});
+  if(!r.ok || $("#pctline")!==el) return;
+  const p = Array.isArray(r.data) ? r.data[0] : r.data; if(!p) return;
+  S.pct = d17 ? d17Pct(p) : runPct(p, l===0, `${MODES[S.mode].label} ${LEVELS[S.level].label}`);
+  if(S.pct) el.textContent = S.pct;
+}
 const winStrip = season => season.map(g=>g.win?"🟩":"🟥").join("");
 // Packs: the rarest card on the roster (the Baby GOAT, then Mythic, the season families, a Legend variant, then the top OVR); other modes: the best card.
 const RARE_RANK = {mythic:5, winner:4.5, ghouls:4, turkey:4, moment:4, rookie:4, throwback:4, farewell:4, legend:3};
@@ -7833,15 +7872,15 @@ function rarestPick(){
   const rank = p => p.gronk ? 9 : p.v ? (RARE_RANK[p.v.fam]||2) : 0;
   const p = SLOTS.map(s=>S.roster[s.key]).filter(Boolean).reduce((a,b)=>!a || rank(b)>rank(a) || (rank(b)===rank(a) && b.ovr>a.ovr) ? b : a, null);
   if(!p) return "";
-  const tag = p.gronk ? "1 of 1" : p.v ? FAM[p.v.fam].label : `${p.ovr} OVR`;
+  const tag = p.gronk ? "1 of 1" : p.v ? FAM[p.v.fam].label.replace(/\b([A-Z])([A-Z]+)/g, (m, a, b) => a + b.toLowerCase()) : `${p.ovr} OVR`;
   return `${S.mode==="packs" ? "Rarest pick" : "Best card"}: ${p.name} (${tag})`;
 }
 function share(w,l,d17){
   const strip = winStrip(S.season), po = S.playoffs;
-  if(d17) return shareCard([...d17ShareLines(w, l, d17), shareLink("share-d17")].join("\n"), "d17");
-  const last = po.games[po.games.length-1], tail = po.champ ? " + Super Bowl" : last ? ` out in the ${last.round}` : "";
+  if(d17) return shareCard([...d17ShareLines(w, l, d17), S.pct, shareLink("share-d17")].filter(Boolean).join("\n"), "d17");
+  const last = po.games[po.games.length-1], tail = po.champ ? " + Super Bowl" : last ? ` · out in the ${last.round}` : "";
   const qb = S.roster[SLOTS.find(s=>s.acc.includes("QB")).key];
-  shareCard(`17-0: Draft a Perfect Season\n${strip}${tail}\n${dec(qb.decade)} ${TEAMS[qb.draftedFor][1]} · ${MODES[S.mode].label} ${LEVELS[S.level].label} · ${w}-${l}\n${rarestPick()}\n${shareLink("share-season")}`, "season");
+  shareCard([`17-0: Draft a Perfect Season`, `${w}-${l}${tail} · ${MODES[S.mode].label} ${LEVELS[S.level].label}`, strip, `${dec(qb.decade)} ${TEAMS[qb.draftedFor][1]} · ${rarestPick()}`, S.pct, shareLink("share-season")].filter(Boolean).join("\n"), "season");
 }
 // ---------- v12 lane F: the Ideas inbox (D6) ----------
 // The envelope in the Home corner opens #ideasov (an .overlay with its own .sheet.ideas). Reading is open to everyone; posting, voting and
